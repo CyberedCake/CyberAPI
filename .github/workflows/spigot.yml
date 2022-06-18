@@ -1,0 +1,68 @@
+name: CyberAPI Spigot Workflow
+
+on:
+  push:
+    paths:
+    - 'spigot/**'
+ 
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [17]
+      fail-fast: true
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Actions Checkout
+        uses: actions/checkout@v3.0.2
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3.3.0
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'temurin'
+          cache: 'gradle'
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1.0.4
+      - name: Set Gradle Version
+        uses: gradle/gradle-build-action@v2.2.0
+        with:
+          gradle-version: release-candidate
+      - name: Build Gradle
+        run: |
+          cd spigot/
+          gradle build --stacktrace
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: CyberAPI-Spigot-3.0.0.jar
+          path: spigot/build/libs
+      - name: Publish Package
+        run: |
+          cd spigot/
+          gradle publish --stacktrace
+        env:
+          USERNAME: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Read Version
+        id: version
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: 'spigot/build/build.properties'
+          property: 'version'
+      - name: Read Protocol
+        id: protocol
+        uses: christian-draeger/read-properties@1.0.1
+        with:
+          path: 'spigot/build/build.properties'
+          property: 'protocol'
+      - name: Release CyberAPI
+        uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: spigot/build/libs/spigot-${{ steps.version.outputs.value }}.jar,spigot/build/libs/spigot-${{ steps.version.outputs.value }}-sources.jar,spigot/build/libs/spigot-${{ steps.version.outputs.value }}-javadoc.jar
+          name: Version ${{ steps.version.outputs.value }} (${{ steps.protocol.outputs.value }})
+          tag: v${{ steps.version.outputs.value }}-spigot
+          generateReleaseNotes: true
