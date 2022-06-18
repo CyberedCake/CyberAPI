@@ -1,0 +1,154 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+static String getGroup() { return "net.cybercake.cyberapi"; }
+static String getVersion() { return "3.0.0"; }
+static int getProtocol() { return 0; }
+static URL getWebsite() { return new URL("https://github.com/CyberedCake/CyberAPI"); }
+static String getDescription() { return "The new and improved CyberAPI!"; }
+
+group = getGroup()
+version = getVersion();
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation 'commons-io:commons-io:2.11.0'
+
+    // adventure API (https://docs.adventure.kyori.net/)
+    compileOnly "net.kyori:adventure-api:4.11.0"
+    compileOnly "net.kyori:adventure-text-serializer-legacy:4.11.0"
+    compileOnly "net.kyori:adventure-text-minimessage:4.11.0"
+    compileOnly 'net.kyori:adventure-platform-bukkit:4.1.1'
+
+    // spigot and plugin hooks
+    compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
+    compileOnly 'net.luckperms:api:5.4'
+
+    // project properties
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/cyberedcake/cyberapi")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+def targetJavaVersion = 17
+java {
+    withSourcesJar()
+    withJavadocJar()
+
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+jar {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+    from ('build/build.properties')
+}
+
+javadoc {
+    configure(options) {
+        tags(
+                'apiNote:a"API Note:"',
+                'implNote:b"Implementation Note:"',
+                'website:b"Website:"'
+        )
+    }
+}
+
+task createProperties(dependsOn: processResources) {
+    doLast {
+        new File("$buildDir/build.properties").withWriter { writer ->
+            Properties properties = new Properties()
+            properties['name'] = getRootProject().getName()
+            properties['buildFile'] = getBuildFile().getName()
+            properties['website'] = getWebsite().toString()
+            properties['user'] = System.getProperty("user.name")
+            properties['currentJavaVersion'] = System.getProperty("java.version")
+            properties['currentJavaVendor'] = System.getProperty("java.vendor")
+            properties['builderOS'] = System.getProperty("os.name")
+            properties['builderArch'] = System.getProperty("os.arch")
+            properties['builderVersion'] = System.getProperty("os.version")
+            properties['task'] = name
+            properties['group'] = getGroup()
+            properties['targetJavaVersion'] = targetJavaVersion.toString()
+            properties['built'] = new Date().toInstant().toEpochMilli().toString()
+            properties['protocol'] = String.valueOf(getProtocol())
+            properties['version'] = getVersion()
+            properties['description'] = this.getDescription()
+            properties.store writer, "CyberAPI Build Information\n(all information from the computer that built CyberAPI)"
+        }
+    }
+}
+
+classes {
+    dependsOn createProperties
+}
