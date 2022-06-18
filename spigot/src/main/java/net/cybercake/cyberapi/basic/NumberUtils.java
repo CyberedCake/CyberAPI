@@ -2,6 +2,8 @@ package net.cybercake.cyberapi.basic;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Random;
 
 /**
  * All static methods of general number utils, everything to do with integers, longs, doubles, floats, etc.
@@ -199,6 +201,32 @@ public class NumberUtils {
      */
     public static String formatDecimal(double value, int places) {
         return formatDecimal(value, places, RoundingMode.HALF_EVEN);
+    }
+
+    /**
+     * Formats a long number to have commas in between (for example, "321,123")
+     * @param number the number to format
+     * @return the formatted long
+     * @since 3.0.2
+     */
+    public static String formatLong(long number) {
+        NumberFormat format = NumberFormat.getInstance();
+        format.setGroupingUsed(false);
+
+        return format.format(number);
+    }
+
+    /**
+     * Gets a random integer between a minimum and a maximum
+     * @param min the minimum number, should be smaller than and not equal to maximum
+     * @param max the maximum number, should be bigger than and not equal to minimum
+     * @return the random integer
+     * @since 3.0.2
+     */
+    public static int randomInt(int min, int max) {
+        if(min > max) throw new IllegalArgumentException("Minimum cannot be greater than maximum!");
+        if(min == max) throw new IllegalArgumentException("Minimum and maximum cannot be the exact same number!");
+        return new Random().nextInt((max - min) + 1) + min;
     }
 
 }
