@@ -8,6 +8,7 @@ static String getVersion() { return "3.0.0"; }
 static int getProtocol() { return 0; }
 static URL getWebsite() { return new URL("https://github.com/CyberedCake/CyberAPI"); }
 static String getDescription() { return "The new and improved CyberAPI!"; }
+static String[] getAuthors() { return new String[]{"CyberedCake"}; }
 
 group = getGroup()
 version = getVersion();
@@ -43,6 +44,8 @@ dependencies {
 
     // project properties
 }
+
+
 
 publishing {
     repositories {
