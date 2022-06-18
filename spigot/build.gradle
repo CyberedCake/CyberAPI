@@ -4,8 +4,8 @@ plugins {
 }
 
 static String getGroup() { return "net.cybercake.cyberapi"; }
-static String getVersion() { return "3.0.0"; }
-static int getProtocol() { return 0; }
+static String getVersion() { return "3.0.1"; }
+static int getProtocol() { return 1; }
 static URL getWebsite() { return new URL("https://github.com/CyberedCake/CyberAPI"); }
 static String getDescription() { return "The new and improved CyberAPI!"; }
 static String[] getAuthors() { return new String[]{"CyberedCake"}; }
