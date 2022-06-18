@@ -2,7 +2,6 @@ package net.cybercake.cyberapi.items;
 
 import net.cybercake.cyberapi.CyberAPI;
 import net.cybercake.cyberapi.basic.BetterStackTraces;
-import net.cybercake.cyberapi.chat.Log;
 import net.cybercake.cyberapi.chat.UChat;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
