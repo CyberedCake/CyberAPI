@@ -40,6 +40,29 @@ public class UChat {
     }
 
     /**
+     * A short-form way of creating a list from an array that are all formatted with {@link ChatColor#translateAlternateColorCodes(char, String)}
+     * @param character the alternate color code to replace
+     * @param messages the messages containing the alternate color code
+     * @return the {@link List} of {@link String}s that are formatted
+     * @since 3.0.3
+     */
+    public static List<String> listChat(Character character, String... messages) {
+        List<String> returned = new ArrayList<>();
+        for(String message : messages) { returned.add(chat(character, message)); }
+        return returned;
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link ChatColor#translateAlternateColorCodes(char, String)}
+     * @param messages the messages containing the alternate color codes of '{@literal &}'
+     * @return the {@link List} of {@link String}s that are formatted
+     * @since 3.0.3
+     */
+    public static List<String> listChat(String... messages) {
+        return listChat('&', messages);
+    }
+
+    /**
      * A short-form way of creating a new {@link net.md_5.bungee.api.chat.BaseComponent} with {@link ChatColor#translateAlternateColorCodes(char, String)}.
      * The name simply means '<b>b</b>ase<b>Component</b>'
      * @param character the alternate color code to replace
@@ -58,6 +81,29 @@ public class UChat {
      * @since 3.0.0
      */
     public static BaseComponent bComponent(String message) { return bComponent('&', message); }
+
+    /**
+     * A short-form way of creating a list from an array with {@link ChatColor#translateAlternateColorCodes(char, String)}
+     * @param character the alternate color code to replace
+     * @param messages the messages containing the alternate color code
+     * @return the {@link List} of {@link BaseComponent}s that are formatted
+     * @since 3.0.3
+     */
+    public static List<BaseComponent> listBComponent(Character character, String... messages) {
+        List<BaseComponent> returned = new ArrayList<>();
+        for(String message : messages) { returned.add(UChat.bComponent(character, message)); }
+        return returned;
+    }
+
+    /**
+     * A short-form way of creating a list from an array with {@link ChatColor#translateAlternateColorCodes(char, String)}
+     * @param messages the messages containing the alternate color code of '{@literal &}'
+     * @return the {@link List} of {@link BaseComponent}s that are formatted
+     * @since 3.0.3
+     */
+    public static List<BaseComponent> listBComponent(String... messages) {
+        return listBComponent('&', messages);
+    }
 
     /**
      * Returns a {@link Component#text(String)} but with an alternate color code and message
@@ -85,6 +131,32 @@ public class UChat {
     }
 
     /**
+     * A short-form way of creating a list from an array that are all formatted with {@link ChatColor#translateAlternateColorCodes(char, String)}
+     * @param character the alternate color code to replace
+     * @param messages the messages containing the alternate color code
+     * @return the {@link List} of {@link Component}s that are formatted
+     * @since 3.0.3
+     * @apiNote requires Adventure API support
+     */
+    public static List<Component> listComponent(Character character, String... messages) {
+        Validators.validateAdventureSupport();
+        List<Component> returned = new ArrayList<>();
+        for(String message : messages) returned.add(UChat.component(character, message));
+        return returned;
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link ChatColor#translateAlternateColorCodes(char, String)}
+     * @param messages the messages containing the alternate color code of '{@literal &}'
+     * @return the {@link List} of {@link Component}s that are formatted
+     * @since 3.0.3
+     * @apiNote requires Adventure API support
+     */
+    public static List<Component> listComponent(String... messages) {
+        return listComponent('&', messages);
+    }
+
+    /**
      * Returns a {@link MiniMessage} message but formatted with {@link MiniMessage#deserialize(Object)}
      * @param message the message containing MiniMessage formats
      * @return the {@link Component} containing the formatted message
@@ -98,7 +170,7 @@ public class UChat {
 
     /**
      * Returns a {@link MiniMessage} message but formatted with {@link MiniMessage#deserialize(Object)}
-     * @param strict whether or not the message is held to be strict, default: false
+     * @param strict whether the message is held to be strict, default: false
      * @param message the message containing MiniMessage formats
      * @see <a href="https://docs.adventure.kyori.net/minimessage/api.html#error-handling">MiniMessage's Builder Documentation</a>
      * @return the {@link Component} containing the formatted message
@@ -112,16 +184,58 @@ public class UChat {
 
     /**
      * Returns a {@link MiniMessage} message but formatted with {@link MiniMessage#deserialize(Object)}
-     * @param builder the {@link net.kyori.adventure.text.minimessage.MiniMessage.Builder} from MiniMessage
+     * @param builder the built {@link MiniMessage} instance
      * @param message the message containing MiniMessage formats
      * @see <a href="https://docs.adventure.kyori.net/minimessage/api.html#error-handling">MiniMessage's Builder Documentation</a>
      * @return the {@link Component} containing the formatted message
      * @apiNote requires MiniMessage support
      * @since 3.0.0
      */
-    public static Component miniMessage(MiniMessage.Builder builder, String message) {
+    public static Component miniMessage(MiniMessage builder, String message) {
         Validators.validateMiniMessageSupport();
-        return builder.build().deserialize(message);
+        return builder.deserialize(message);
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link MiniMessage}
+     * @param messages the messages containing MiniMessage format
+     * @return the {@link List} of {@link Component}s in MiniMessage format
+     * @since 3.0.3
+     * @apiNote requires MiniMessage support
+     */
+    public static List<Component> listMiniMessage(String... messages) {
+        Validators.validateMiniMessageSupport();
+        return listMiniMessage(MiniMessage.builder().build(), messages);
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link MiniMessage}
+     * @param strict whether the message is held to be strict, default: false
+     * @param messages the messages containing MiniMessage format
+     * @return the {@link List} of {@link Component}s in MiniMessage format
+     * @see <a href="https://docs.adventure.kyori.net/minimessage/api.html#error-handling">MiniMessage's Builder Documentation</a>
+     * @apiNote requires MiniMessage support
+     * @since 3.0.3
+     */
+    public static List<Component> listMiniMessage(boolean strict, String... messages) {
+        Validators.validateMiniMessageSupport();
+        return listMiniMessage(MiniMessage.builder().strict(strict).build(), messages);
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link MiniMessage}
+     * @param builder the built {@link MiniMessage} instance
+     * @param messages the messages containing MiniMessage format
+     * @return the {@link List} of {@link Component}s in MiniMessage format
+     * @see <a href="https://docs.adventure.kyori.net/minimessage/api.html#error-handling">MiniMessage's Builder Documentation</a>
+     * @since 3.0.3
+     * @apiNote requires MiniMessage support
+     */
+    public static List<Component> listMiniMessage(MiniMessage builder, String... messages) {
+        Validators.validateMiniMessageSupport();
+        List<Component> returned = new ArrayList<>();
+        for(String message : messages) returned.add(miniMessage(builder, message));
+        return returned;
     }
 
     /**

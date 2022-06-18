@@ -102,7 +102,7 @@ public class StringUtils {
 
     /**
      * Get strings from arguments, usually from {@link org.bukkit.command.CommandExecutor#onCommand(CommandSender, Command, String, String[])}
-     * @param startFrom what index to start from, typically the {@code args.length()} value
+     * @param startFrom what index to start from in the arguments
      * @param args the arguments to check against
      * @return the arguments combined
      * @since 3.0.0
