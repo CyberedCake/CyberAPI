@@ -40,13 +40,13 @@ jobs:
         id: version
         uses: christian-draeger/read-properties@1.0.1
         with:
-          path: 'build/cyberapi-spigot-build.properties'
+          path: 'build/spigot-build.properties'
           property: 'version'
       - name: Read Build Number
         id: build
         uses: christian-draeger/read-properties@1.0.1
         with:
-          path: 'build/cyberapi-spigot-build.properties'
+          path: 'build/spigot-build.properties'
           property: 'buildNumber'
       - name: Release CyberAPI
         uses: ncipollo/release-action@v1.10.0
