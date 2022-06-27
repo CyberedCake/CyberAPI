@@ -32,13 +32,10 @@ jobs:
         uses: gradle/gradle-build-action@v2.2.0
         with:
           gradle-version: release-candidate
-      - name: Build & Publish Gradle
+      - name: Build Gradle
         uses: gradle/gradle-build-action@v2.2.0
         with:
-          arguments: build publish --stacktrace
-        env:
-          USERNAME: ${{ github.actor }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          arguments: build --stacktrace
       - name: Read Version
         id: version
         uses: christian-draeger/read-properties@1.0.1
