@@ -110,7 +110,7 @@ subprojects { Project subProject ->
 
     task createProperties {
         doLast {
-            File file = new File(this.getBuildDir().getAbsolutePath() + File.separator + "cyberapi-" + getProject().getName() + "-build.properties");
+            File file = new File(this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties");
             if(!file.exists()) {
                 file.getParentFile().mkdirs()
                 file.createNewFile()
@@ -187,7 +187,7 @@ subprojects { Project subProject ->
         tasks.withType(Javadoc) {
             options.addStringOption("Xdoclint:none", '-quiet')
         }
-        from (this.getBuildDir().getAbsolutePath() + File.separator + "cyberapi-" + getProject().getName() + "-build.properties")
+        from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
             attributes 'fullVersion': fullVersion.toString()
         }

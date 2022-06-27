@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.cybercake.cyberapi.basic.BetterStackTraces;
@@ -32,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
 import java.time.Duration;
 import java.util.*;
 import java.util.logging.Level;
@@ -707,7 +709,7 @@ public class CyberAPI extends JavaPlugin {
          * @since 3.0.0
          */
         public Properties getBuildProperties() {
-            InputStream in = getClassLoader().getResourceAsStream("build.properties");
+            InputStream in = getClassLoader().getResourceAsStream("spigot-build.properties");
             Properties properties = new Properties();
             try {
                 properties.load(in);
@@ -775,18 +777,18 @@ public class CyberAPI extends JavaPlugin {
 
             log.verbose("VERSION_CHECKER", "Checking for updates...");
             try {
-                URL url = new URL("https://raw.githubusercontent.com/CyberedCake/CyberAPI/main/spigot/build.gradle");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                // thanks stack overflow (https://stackoverflow.com/a/21964051/15519255)
+                URL url = new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest");
+                URLConnection connection = url.openConnection();
+                connection.connect();
 
-                String line;
-                while((line = reader.readLine()) != null) {
-                    if(line.startsWith("static String getVersion() { return ")) {
-                        latestVersion = "v" + line.replace("static String getVersion() { return \"", "").replace("\"; }", "");
-                        log.verbose("VERSION_CHECKER", "Version checker has found the latest version to be " + latestVersion);
-                    }else if(line.startsWith("static int getProtocol() { return ")) {
-                        latestBuild = Integer.parseInt(line.replace("static int getProtocol() { return ", "").replace("; }", ""));
-                        log.verbose("VERSION_CHECKER", "Version checker has found the latest protocol to be " + latestBuild);
-                    }
+                JsonElement element = JsonParser.parseReader(new InputStreamReader((InputStream)connection.getContent()));
+                try {
+                    String tag = element.getAsJsonObject().get("tag_name").getAsString();
+                    latestVersion = tag.split("-")[0];
+                    latestBuild = Integer.parseInt(tag.split("-")[1]);
+                } catch (Exception exception) {
+                    log.error("An error occurred fetching the latest version for GitHub repo 'CyberAPI', tag=" + element.getAsJsonObject().get("tag_name").getAsString() + ": " + ChatColor.DARK_GRAY + exception.toString());
                 }
             } catch (Exception exception) {
                 log.error("Failed version checking for CyberAPI version " + getVersion() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException("VERSION_CHECKER", exception);return;

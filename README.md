@@ -70,7 +70,7 @@ To use CyberAPI, write this in your main onEnable method:
 import net.cybercake.cyberapi.CyberAPI;
 import net.cybercake.cyberapi.settings.Settings;
 
-public class MainClass extends CyberAPI { // you must extend CyberAPI
+public class MainClass extends CyberAPI { // you must extend CyberAPI instead of JavaPlugin
 
     @Override
     public void onEnable() {
