@@ -209,26 +209,6 @@ subprojects { Project subProject ->
     }
 }
 
-
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/cyberedcake/cyberapi")
-            credentials {
-                username = System.getenv("USERNAME")
-                password = System.getenv("TOKEN")
-            }
-        }
-    }
-
-    publications {
-        gpr(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
-
 wrapper {
     gradleVersion = "7.4"
     distributionType = Wrapper.DistributionType.ALL
