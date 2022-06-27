@@ -13,6 +13,8 @@ repositories {
     }
 }
 
+// version bump (this commit)
+
 dependencies {
     // adventure API (https://docs.adventure.kyori.net/)
     compileOnly "net.kyori:adventure-api:4.11.0"
