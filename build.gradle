@@ -66,6 +66,8 @@ ext {
     fullVersion = version.toString()
 }
 
+logger.quiet("> Found version " + version.toString() + " and build #" + build.toString())
+
 subprojects { Project subProject ->
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -78,8 +80,6 @@ subprojects { Project subProject ->
     def website = getWebsite()
     def description = getDescription()
     def authors = String.join(", ", getAuthors())
-
-    logger.quiet("> Found version " + version.toString() + " and build #" + build.toString())
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
