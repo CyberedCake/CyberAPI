@@ -13,8 +13,56 @@ The new and improved CyberAPI, version 3, is here! This is a library used for mo
 ## Installation - Spigot
 ### (It is recommended that you use [PaperSpigot](https://papermc.io/) instead of Spigot, but Spigot is still supported and PaperSpigot works on the 'spigot' portion of the library!)
     
-You can install the maven package and gradle package by going **_[here (jitpack.io)](https://jitpack.io/#CyberedCake/CyberAPI/)_** and clicking the platform you wish to use CyberAPI on.
+<details>
+  <summary><b>INSTALL WITH GRADLE [RECOMMENDED]</b> (click to expand/shrink)</summary>
+
+Step 1) Include the below code in your build.gradle "repositories" section.
+```gradle
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+```
+
+Step 2) Include the below code in your build.gradle "dependencies" and replace "VERSION" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI)
+```gradle
+	dependencies {
+	        ...
+	        implementation 'com.github.CyberedCake.CyberAPI:spigot:VERSION'
+	}
+```
+
+Step 3) Reload your gradle project and follow the usage instructions below.
+</details>
     
+<details>
+  <summary><b>INSTALL WITH MAVEN</b> (click to expand/shrink)</summary>
+
+Step 1) Include the below code in your pom.xml "repositories" section.
+```maven
+	<repositories>
+	    ...
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+```
+
+Step 2) Include the below code in your pom.xml as a "dependency" and replace "VERSION" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI)
+```maven
+    <dependencies>
+    	<dependency>
+            <groupId>com.github.CyberedCake.CyberAPI</groupId>
+            <artifactId>spigot</artifactId>
+            <version>VERSION</version>
+	    </dependency>
+    </dependencies>
+```
+
+Step 3) Reload your maven project and follow the usage instructions below.
+</details>
+
 ## How to use - Spigot
 To use CyberAPI, write this in your main onEnable method:
 
