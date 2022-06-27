@@ -16,51 +16,56 @@ The new and improved CyberAPI, version 3, is here! This is a library used for mo
 <details>
   <summary><b>INSTALL WITH GRADLE [RECOMMENDED]</b> (click to expand/shrink)</summary>
 
+--------------------------------------------------------------------------------------------------------------
 Step 1) Include the below code in your build.gradle "repositories" section.
 ```gradle
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+	repositories {
+		maven { url 'https://jitpack.io' }
+	}
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "VERSION" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI)
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI) <br>
+Step 2) <b>NOTE: You must keep the "v" at the beginning of the version number!</b>
 ```gradle
 	dependencies {
-	        ...
-	        implementation 'com.github.CyberedCake.CyberAPI:spigot:VERSION'
+	        implementation 'com.github.CyberedCake.CyberAPI:spigot:vLATEST'
 	}
 ```
 
 Step 3) Reload your gradle project and follow the usage instructions below.
+
+--------------------------------------------------------------------------------------------------------------
 </details>
     
 <details>
   <summary><b>INSTALL WITH MAVEN</b> (click to expand/shrink)</summary>
 
+--------------------------------------------------------------------------------------------------------------
 Step 1) Include the below code in your pom.xml "repositories" section.
-```maven
-	<repositories>
-	    ...
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+```xml
+    <repositories>
+    	<repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+	 </repository>
+    </repositories>
 ```
 
-Step 2) Include the below code in your pom.xml as a "dependency" and replace "VERSION" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI)
-```maven
+Step 2) Include the below code in your pom.xml as a "dependency" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI) <br>
+Step 2) <b>NOTE: You must keep the "v" at the beginning of the version number!</b>
+```xml
     <dependencies>
     	<dependency>
             <groupId>com.github.CyberedCake.CyberAPI</groupId>
             <artifactId>spigot</artifactId>
-            <version>VERSION</version>
-	    </dependency>
+            <version>vLATEST</version>
+	 </dependency>
     </dependencies>
 ```
 
 Step 3) Reload your maven project and follow the usage instructions below.
+
+--------------------------------------------------------------------------------------------------------------
 </details>
 
 ## How to use - Spigot
