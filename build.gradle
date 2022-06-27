@@ -1,0 +1,235 @@
+import groovy.json.JsonSlurper
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'org.tenne.rest' version '0.4.2'
+}
+
+static String getGroup() { return "net.cybercake.cyberapi"; }
+static URL getWebsite() { return new URL("https://github.com/CyberedCake/CyberAPI"); }
+static String getDescription() { return "The new and improved CyberAPI!"; }
+static String[] getAuthors() { return new String[]{"CyberedCake"}; }
+static int getTargetJavaVersion() { return 17; }
+
+// version info
+def major = '3'
+def minor = '0'
+
+
+
+
+
+
+def getLatestTag = new JsonSlurper().parse(new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest")).tag_name
+
+def currentPatch = {
+    String tagSplit = getLatestTag.split("\\.")[2].split("-")[0]
+    try {
+        return Integer.parseInt(tagSplit)
+    } catch (NumberFormatException ignored) { return 0 }
+}
+
+def currentBuild = {
+    String tagSplit = getLatestTag.split("-")[1]
+    try {
+        return Integer.parseInt(tagSplit)
+    } catch (NumberFormatException ignored) { return 0 }
+}
+
+// runner or jitpack should add 1
+
+def patch = 0
+def build = 0
+def setBasic = {
+    try {
+        patch = currentPatch()
+        build = currentBuild()
+        String username = System.getProperty("user.name")
+        if(username == "runner") { // check if github is building the plugin
+            patch = patch+1
+            build = build+1
+            println '> Found using GitHub Runner, going to increment patch (' + String.valueOf(patch-1) + ' -> ' + String.valueOf(patch) + ') and build (' + String.valueOf(build-1) + ' -> ' + String.valueOf(patch) + ')'
+        }
+    } catch (Exception exception) {
+        logger.error '> Exception, an error occurred: ' + exception.toString()
+    }
+}
+setBasic()
+
+def basicVersion = major + "." + minor
+
+group = getGroup()
+version = basicVersion + "." + patch
+
+ext {
+    fullVersion = version.toString()
+}
+
+subprojects { Project subProject ->
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    group = getGroup()
+    version = basicVersion.toString() + "." + patch
+
+    def fullVersion = version.toString()
+
+    def website = getWebsite()
+    def description = getDescription()
+    def authors = String.join(", ", getAuthors())
+
+    logger.quiet("> Found version " + version.toString() + " and build #" + build.toString())
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.release = getTargetJavaVersion()
+    }
+
+    task copyArtifacts {
+        doLast {
+            def NEW_DIR = "${getRootProject().buildDir}/artifacts"
+            def SRC_DIR = "${buildDir}/libs"
+
+            ant.copy(todir: NEW_DIR) {
+                fileset(dir: SRC_DIR)
+            }
+        }
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+        finalizedBy(copyArtifacts)
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    task createProperties {
+        doLast {
+            File file = new File(this.getBuildDir().getAbsolutePath() + File.separator + "cyberapi-" + getProject().getName() + "-build.properties");
+            if(!file.exists()) {
+                file.getParentFile().mkdirs()
+                file.createNewFile()
+            }
+            file.withWriter { writer ->
+                Properties properties = new Properties()
+                properties['name'] = getProject().getName()
+                properties['buildFile'] = getBuildFile().getName()
+                properties['website'] = getWebsite().toString()
+                properties['user'] = System.getProperty("user.name")
+                properties['currentJavaVersion'] = System.getProperty("java.version")
+                properties['currentJavaVendor'] = System.getProperty("java.vendor")
+                properties['builderOS'] = System.getProperty("os.name")
+                properties['builderArch'] = System.getProperty("os.arch")
+                properties['builderVersion'] = System.getProperty("os.version")
+                properties['task'] = name
+                properties['group'] = getGroup()
+                properties['targetJavaVersion'] = String.valueOf(getTargetJavaVersion())
+                properties['built'] = new Date().toInstant().toEpochMilli().toString()
+                properties['buildNumber'] = String.valueOf(build)
+                properties['version'] = getVersion()
+                properties['description'] = this.getDescription()
+                properties.store writer, "CyberAPI Build Information {project: " + getProject().getName() + "}\n(all information from the computer that built CyberAPI)"
+            }
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            name = 'sonatype'
+            url = 'https://oss.sonatype.org/content/groups/public/'
+        }
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    processResources {
+        def props = [version: version]
+        inputs.properties props
+        filteringCharset 'UTF-8'
+        filesMatching('plugin.yml') {
+            expand props
+        }
+    }
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+
+        def javaVersion = JavaVersion.toVersion(getTargetJavaVersion())
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+        if(JavaVersion.current() < javaVersion) {
+            toolchain.languageVersion = JavaLanguageVersion.of(getTargetJavaVersion())
+        }
+    }
+
+    javadoc {
+        configure(options) {
+            tags(
+                    'apiNote:a"API Note:"',
+                    'implNote:b"Implementation Note:"',
+                    'website:c"Website:"'
+            )
+        }
+    }
+
+    jar {
+        tasks.withType(Javadoc) {
+            options.addStringOption("Xdoclint:none", '-quiet')
+        }
+        from (this.getBuildDir().getAbsolutePath() + File.separator + "cyberapi-" + getProject().getName() + "-build.properties")
+        manifest {
+            attributes 'fullVersion': fullVersion.toString()
+        }
+    }
+
+    classes {
+        dependsOn createProperties
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                version project.version
+                from components.java
+            }
+        }
+    }
+}
+
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/cyberedcake/cyberapi")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
+
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+wrapper {
+    gradleVersion = "7.4"
+    distributionType = Wrapper.DistributionType.ALL
+}

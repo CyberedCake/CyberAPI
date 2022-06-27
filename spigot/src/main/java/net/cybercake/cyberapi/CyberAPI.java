@@ -21,8 +21,10 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
@@ -692,7 +694,7 @@ public class CyberAPI extends JavaPlugin {
     public class CyberAPISpecific {
 
         private static String latestVersion;
-        private static int latestProtocol;
+        private static int latestBuild;
 
         /**
          * Gets a new instance of {@link CyberAPISpecific}, but you're not supposed to use this, please instead use {@link CyberAPI#getCyberAPISpecific()}
@@ -726,12 +728,12 @@ public class CyberAPI extends JavaPlugin {
         }
 
         /**
-         * Gets the current protocol of {@link CyberAPI}
-         * @return the protocol of {@link CyberAPI}
+         * Gets the current build number of {@link CyberAPI}
+         * @return the build number of {@link CyberAPI}
          * @since 3.0.0
          */
-        public int getProtocol() {
-            return Integer.parseInt(getBuildProperties().getProperty("protocol"));
+        public int getBuild() {
+            return Integer.parseInt(getBuildProperties().getProperty("buildNumber"));
         }
 
         /**
@@ -742,11 +744,11 @@ public class CyberAPI extends JavaPlugin {
         public String getLatestVersion() { return latestVersion; }
 
         /**
-         * Gets the latest protocol of {@link CyberAPI}
-         * @return the latest protocol of {@link CyberAPI}
+         * Gets the latest build number of {@link CyberAPI}
+         * @return the latest build number of {@link CyberAPI}
          * @since 3.0.0
          */
-        public int getLatestProtocol() { return latestProtocol; }
+        public int getLatestBuild() { return latestBuild; }
 
         /**
          * Gets the website associated with {@link CyberAPI}
@@ -761,7 +763,7 @@ public class CyberAPI extends JavaPlugin {
          * @since 3.0.0
          */
         public String getVersionString() {
-            return "&fThe plugin &a" + getPluginName() + " &fis using CyberAPI version &e" + getVersion() + " &6(" + getProtocol() + ")&f!";
+            return "&fThe plugin &a" + getPluginName() + " &fis using CyberAPI version &e" + getVersion() + " &6(" + getBuild() + ")&f!";
         }
 
         /**
@@ -782,8 +784,8 @@ public class CyberAPI extends JavaPlugin {
                         latestVersion = "v" + line.replace("static String getVersion() { return \"", "").replace("\"; }", "");
                         log.verbose("VERSION_CHECKER", "Version checker has found the latest version to be " + latestVersion);
                     }else if(line.startsWith("static int getProtocol() { return ")) {
-                        latestProtocol = Integer.parseInt(line.replace("static int getProtocol() { return ", "").replace("; }", ""));
-                        log.verbose("VERSION_CHECKER", "Version checker has found the latest protocol to be " + latestProtocol);
+                        latestBuild = Integer.parseInt(line.replace("static int getProtocol() { return ", "").replace("; }", ""));
+                        log.verbose("VERSION_CHECKER", "Version checker has found the latest protocol to be " + latestBuild);
                     }
                 }
             } catch (Exception exception) {
@@ -791,9 +793,9 @@ public class CyberAPI extends JavaPlugin {
             }
 
             net.md_5.bungee.api.ChatColor DEFAULT_WARN_LOG = net.md_5.bungee.api.ChatColor.of(new java.awt.Color(249, 241, 165));
-            if(getProtocol() != latestProtocol) {
-                if(latestProtocol - getProtocol() > 0) {
-                    log.warn( DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest version is " + ChatColor.GREEN + latestVersion + DEFAULT_WARN_LOG + ", using " + ChatColor.RED + getVersion() + ChatColor.GRAY + " (" + (latestProtocol -  getProtocol()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
+            if(getBuild() != latestBuild) {
+                if(latestBuild - getBuild() > 0) {
+                    log.warn( DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest version is " + ChatColor.GREEN + latestVersion + DEFAULT_WARN_LOG + ", using " + ChatColor.RED + getVersion() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
                     log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
                 }
             }
