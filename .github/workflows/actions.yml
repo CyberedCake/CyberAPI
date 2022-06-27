@@ -1,9 +1,10 @@
-name: CyberAPI Spigot Workflow
+name: CyberAPI
 
 on:
   push:
-    paths:
-    - 'spigot/**'
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
  
 jobs:
   build:
@@ -31,19 +32,10 @@ jobs:
         uses: gradle/gradle-build-action@v2.2.0
         with:
           gradle-version: release-candidate
-      - name: Build Gradle
-        run: |
-          cd spigot/
-          gradle build --stacktrace
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3.1.0
+      - name: Build & Publish Gradle
+        uses: gradle/gradle-build-action@v2.2.0
         with:
-          name: CyberAPI-Spigot-3.0.0.jar
-          path: spigot/build/libs
-      - name: Publish Package
-        run: |
-          cd spigot/
-          gradle publish --stacktrace
+          arguments: build publish --stacktrace
         env:
           USERNAME: ${{ github.actor }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,18 +43,20 @@ jobs:
         id: version
         uses: christian-draeger/read-properties@1.0.1
         with:
-          path: 'spigot/build/build.properties'
+          path: 'build/cyberapi-spigot-build.properties'
           property: 'version'
-      - name: Read Protocol
-        id: protocol
+      - name: Read Build Number
+        id: build
         uses: christian-draeger/read-properties@1.0.1
         with:
-          path: 'spigot/build/build.properties'
-          property: 'protocol'
+          path: 'build/cyberapi-spigot-build.properties'
+          property: 'buildNumber'
       - name: Release CyberAPI
         uses: ncipollo/release-action@v1.10.0
         with:
-          artifacts: spigot/build/libs/spigot-${{ steps.version.outputs.value }}.jar,spigot/build/libs/spigot-${{ steps.version.outputs.value }}-sources.jar,spigot/build/libs/spigot-${{ steps.version.outputs.value }}-javadoc.jar
+          artifacts: "build/artifacts/*.jar"
           name: Version ${{ steps.version.outputs.value }}
-          tag: v${{ steps.version.outputs.value }}-spigot
+          tag: v${{ steps.version.outputs.value }}-${{ steps.build.outputs.value }}
+          body: |
+            **It is not recommended you download the files from here, please use the [README's download link](https://github.com/CyberedCake/CyberAPI#how-to-install-and-use=)**
           generateReleaseNotes: true

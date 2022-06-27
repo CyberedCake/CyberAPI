@@ -1,0 +1,11 @@
+repositories {
+    mavenCentral()
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+dependencies {
+    compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
+}
