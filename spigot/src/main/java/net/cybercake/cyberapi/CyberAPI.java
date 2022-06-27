@@ -12,20 +12,17 @@ import net.cybercake.cyberapi.player.CyberPlayer;
 import net.cybercake.cyberapi.settings.FinalizedSettings;
 import net.cybercake.cyberapi.settings.Settings;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +31,6 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.time.Duration;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -57,10 +53,6 @@ public class CyberAPI extends JavaPlugin {
 
     public CyberAPI() {
         api = this;
-    }
-    public CyberAPI(FinalizedSettings settings) {
-        api = this;
-        startCyberAPI(settings);
     }
 
     private static CyberAPI api;
@@ -223,7 +215,7 @@ public class CyberAPI extends JavaPlugin {
     @Override
     @Deprecated(forRemoval = true)
     public @NotNull FileConfiguration getConfig() {
-        throw new UnsupportedOperationException("The method, `getConfig()`, is disabled. Please use `CyebrAPI.getPlugin().getMainConfig()` or `CyberAPI.getPlugin().getConfig(name)`");
+        throw new UnsupportedOperationException("The method, `getConfig()`, is disabled. Please use `CyberAPI.getPlugin().getMainConfig()` or `CyberAPI.getPlugin().getConfig(name)`");
     }
 
     /**
@@ -368,39 +360,6 @@ public class CyberAPI extends JavaPlugin {
      */
     public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
         player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
-    }
-
-    /**
-     * Sends a title to a player with specified settings
-     * @param player the player to send the title to
-     * @param title the title to send
-     * @param subtitle the subtitle to send
-     * @since 3.0.0
-     * @apiNote if you support Adventure API, it will attempt to use Adventure API's {@link Audience#showTitle(Title)} feature
-     */
-    public void sendTitleAdventure(Player player, String title, String subtitle) {
-        Validators.validateAdventureSupport();
-        sendTitleAdventure(player, title, subtitle, 20, 100, 20);
-    }
-
-    /**
-     * Sends a title to a player with specified settings
-     * @param player the player to send the title to
-     * @param title the title to send
-     * @param subtitle the subtitle to send
-     * @param fadeIn the amount of ticks to fadein
-     * @param stay the amount of ticks to stay
-     * @param fadeOut the amount of ticks to fadeout
-     * @since 3.0.0
-     * @apiNote if you support Adventure API, it will attempt to use Adventure API's {@link Audience#showTitle(Title)} feature
-     */
-    public void sendTitleAdventure(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-        Validators.validateAdventureSupport();
-
-        BukkitAudiences bukkitAudiences = BukkitAudiences.create(this);
-        Audience audience = bukkitAudiences.player(player);
-        audience.showTitle(Title.title(UChat.component(title), UChat.component(subtitle), Title.Times.times(Duration.ofMillis(fadeIn * 50L), Duration.ofMillis(stay * 50L), Duration.ofMillis(fadeOut * 50L))));
-        bukkitAudiences.close();
     }
 
     /**
@@ -615,7 +574,7 @@ public class CyberAPI extends JavaPlugin {
      * Registers a command with the Spigot server
      * @param name the name of the command, without a slash
      * @param commandExecutor the executor to parse with the command
-     * @see CyberAPI#registerTabCompleter(String, TabExecutor)
+     * @see CyberAPI#registerTabCompleter(String, TabCompleter)
      * @since 3.0.0
      */
     public void registerCommand(String name, CommandExecutor commandExecutor) {
@@ -625,12 +584,12 @@ public class CyberAPI extends JavaPlugin {
     /**
      * Registers a tab completer that is associated with a command with the Spigot server
      * @param name the name of the command, without a slash
-     * @param tabExecutor the tab executor to parse with the command
+     * @param tabCompleter the tab completer to parse with the command
      * @see CyberAPI#registerCommand(String, CommandExecutor)
      * @since 3.0.0
      */
-    public void registerTabCompleter(String name, TabExecutor tabExecutor) {
-        this.getCommand(name).setTabCompleter(tabExecutor);
+    public void registerTabCompleter(String name, TabCompleter tabCompleter) {
+        this.getCommand(name).setTabCompleter(tabCompleter);
     }
 
     /**
