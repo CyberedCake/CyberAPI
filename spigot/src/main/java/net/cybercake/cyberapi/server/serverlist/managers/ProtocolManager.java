@@ -76,9 +76,7 @@ public class ProtocolManager {
      * Resets the protocol number to its default value (aka what the server's protocol version number is)
      * @since 3.1.0
      */
-    public void resetProtocolNumber() {
-        this.protocol = CyberAPI.getInstance().getMinecraftProtocol();
-    }
+    public void resetProtocolNumber() { this.protocol = Integer.MIN_VALUE; }
 
     /**
      * Sets whether the server should always show an outdated client, which would mean the version name is constantly shown

@@ -177,4 +177,38 @@ public class StringUtils {
         return ret;
     }
 
+    /**
+     * Checks if a char sequence is alphanumeric (contains only letters and numbers)
+     * @param sequence the sequence to check
+     * @return whether the sequence is alphanumeric
+     * @since 3.1.0
+     */
+    public static boolean isAlphanumeric(final CharSequence sequence) {
+        if(sequence == null) return false;
+        for(int i =0; i < sequence.length(); i++) {
+            final char currentCharacter = sequence.charAt(i);
+            if(!Character.isLetterOrDigit(currentCharacter)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a char sequence is alphanumeric space (contains only letters, numbers, and spaces)
+     * @param sequence the sequence to check
+     * @return whether the sequence is alphanumeric space
+     * @since 3.1.0
+     */
+    public static boolean isAlphanumericSpace(final CharSequence sequence) {
+        if(sequence == null) return false;
+        for(int i =0; i < sequence.length(); i++) {
+            final char currentCharacter = sequence.charAt(i);
+            if(currentCharacter != ' ' && !Character.isLetterOrDigit(currentCharacter)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

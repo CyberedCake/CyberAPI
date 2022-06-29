@@ -220,16 +220,6 @@ public class CyberAPI extends JavaPlugin {
     }
 
     /**
-     * Gets the protocol version of the Minecraft server
-     * @return the Minecraft server protocol version, looks something like '759'
-     * @since 3.1.0
-     * @apiNote <a href="https://wiki.vg/Protocol_version_numbers">view the protcol numbers by clicking here</a>
-     */
-    public int getMinecraftProtocol() {
-        return net.minecraft.SharedConstants.b().getProtocolVersion(); // uses NMS, may want to find a better way to do this later
-    }
-
-    /**
      * <b>THIS METHOD IS DISABLED, IT WILL THROW AN {@link UnsupportedOperationException} WHENEVER YOU TRY TO UES IT</b>
      * <br> PLEASE USE {@link CyberAPI#getMainConfig()} AS AN ALTERNATIVE OR {@link CyberAPI#getConfig(String)}
      * @see CyberAPI#getMainConfig()

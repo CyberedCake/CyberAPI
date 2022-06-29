@@ -62,7 +62,8 @@ public class ServerListInfoListener {
             ping.setPlayers(profiles);
 
             ping.setVersionName(serverListPingEvent.getVersionName());
-            ping.setVersionProtocol((serverListPingEvent.isVersionNameAlwaysVisible() ? 0 : serverListPingEvent.getProtocolVersion()));
+            if(serverListPingEvent.isVersionNameAlwaysVisible() || serverListPingEvent.getProtocolVersion() != Integer.MIN_VALUE)
+                ping.setVersionProtocol((serverListPingEvent.isVersionNameAlwaysVisible() ? 0 : serverListPingEvent.getProtocolVersion()));
 
             ping.setPlayersVisible(serverListPingEvent.isPlayerListVisible()); // overrides the 'player count' and 'hover over player count' sections
         } catch (Exception exception){

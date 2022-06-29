@@ -1,8 +1,8 @@
 package net.cybercake.cyberapi.server.serverlist.motd;
 
 import net.cybercake.cyberapi.CyberAPI;
+import net.cybercake.cyberapi.basic.StringUtils;
 import net.cybercake.cyberapi.server.ServerProperties;
-import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Nullable;
 import java.io.File;
