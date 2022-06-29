@@ -31,7 +31,9 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
@@ -78,6 +80,7 @@ public class CyberAPI extends JavaPlugin {
      */
     protected CyberAPI startCyberAPI(@Nullable FinalizedSettings settings) {
         long mss = System.currentTimeMillis();
+        this.serverStarted = mss;
 
         log = new APILog(); // for private use only
 
@@ -104,6 +107,8 @@ public class CyberAPI extends JavaPlugin {
     }
 
     // variables
+    private long serverStarted;
+
     private FinalizedSettings settings;
 
     private APILog log;
@@ -256,6 +261,53 @@ public class CyberAPI extends JavaPlugin {
     public void saveDefaultConfig() {
         getMainConfig().saveDefaults();
     }
+
+    /**
+     * Returns when the server started in Unix time.
+     * @return the server start date, in unix time with milliseconds
+     * @since 3.0.7
+     */
+    public long getServerStartedUnix() { return serverStarted; }
+
+    /**
+     * Returns when the server started with a specific time unit.
+     * @param unit the {@link TimeUnit} to convert the unix time to
+     * @return the unix time with the applied {@link TimeUnit}
+     * @since 3.0.7
+     */
+    public long getServerStartedUnix(TimeUnit unit) { return (unit.convert(Duration.ofMillis(serverStarted))); }
+
+    /**
+     * Returns when the server started as formatted with {@link java.text.SimpleDateFormat}'s formats with a specified timezone offset
+     * @param pattern the pattern to format with {@link java.text.SimpleDateFormat}
+     * @param timeOffset the timezone offset
+     * @return the human-readable server start-date with timezone offset
+     * @since 3.0.7
+     */
+    public String getServerStartedDate(String pattern, int timeOffset) { return Time.getFormattedDateUnix(getServerStartedUnix(TimeUnit.SECONDS), pattern, timeOffset); }
+
+    /**
+     * Returns when the server started as formatted with {@link java.text.SimpleDateFormat}'s formats
+     * @param pattern the pattern to format with {@link java.text.SimpleDateFormat}
+     * @return the human-readable server start-date
+     * @since 3.0.7
+     */
+    public String getServerStartedDate(String pattern) { return getServerStartedDate(pattern, 0); }
+
+    /**
+     * Returns how long the server has been online
+     * @param showAll whether to show all units, see description of {@link Time#getBetterTimeDisplay(long, long, boolean)}
+     * @return the time since the server has started
+     * @since 3.0.7
+     */
+    public String getServerUptime(boolean showAll) { return Time.getBetterTimeDisplay(Time.getUnix(), getServerStartedUnix(TimeUnit.SECONDS), showAll); }
+
+    /**
+     * Returns how long the server has been online
+     * @return the time since the server started
+     * @since 3.0.7
+     */
+    public String getServerUptime() { return getServerUptime(false); }
 
     /**
      * Gets a new CyberPlayer. Please note: It's better to use {@link CyberPlayer} constructors or static methods instead of this method.
