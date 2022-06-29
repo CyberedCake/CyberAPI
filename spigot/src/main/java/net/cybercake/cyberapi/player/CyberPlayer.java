@@ -394,7 +394,7 @@ public class CyberPlayer {
             else if(NumberUtils.isBetweenEquals(ping, settings.getYellowMin(), settings.getYellowMax())) return ChatColor.YELLOW;
             else if(NumberUtils.isBetweenEquals(ping, settings.getRedMin(), settings.getRedMax())) return ChatColor.RED;
             else if(ping >= settings.getDarkRedMin()) return ChatColor.DARK_RED;
-            throw new IllegalArgumentException("An error occurred with the " + PingSettings.class.getPackageName() + " for " + CyberAPI.getInstance().getPluginName() + " -> a value was somehow missed in the " + PingSettingsBuilder.class.getPackageName() + " (" + ping + ")");
+            throw new IllegalArgumentException("An error occurred with the " + PingSettings.class.getCanonicalName() + " for " + CyberAPI.getInstance().getPluginName() + " -> a value was somehow missed in the " + PingSettingsBuilder.class.getPackageName() + " (" + ping + ")");
         }
 
         /**

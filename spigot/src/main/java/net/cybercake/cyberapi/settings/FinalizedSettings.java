@@ -60,10 +60,16 @@ public final class FinalizedSettings {
     public Settings.FeatureSupport getFeatureSupportStatus(String feature) {
         try {
             String value = getString(feature);
-            Settings.FeatureSupport featureSupport = Settings.FeatureSupport.valueOf(value.split("-")[1]);
-            featureSupport.setFeature(value.split("-")[0]);
+           // CyberAPI.getInstance().getAPILogger().verbose("SETTINGS", "Found value " + value + " for " + this.getClass().getMethod("getFeatureSupportStatus", String.class).getName() + "!");
+           // I know it's suppose to be verbose, but I feel it's **too** verbose
+            Settings.FeatureSupport featureSupport = Settings.FeatureSupport.valueOf(value.split("-")[0]);
+            featureSupport.setFeature(value.split("-")[1]);
             return featureSupport;
-        } catch (Exception exception) { return Settings.FeatureSupport.AUTO; }
+        } catch (Exception exception) {
+            CyberAPI.getInstance().getAPILogger().verbose("SETTINGS", "Exception occurred whilst getting FeatureSupport status in " + this.getClass().getCanonicalName() + ": " + exception);
+            CyberAPI.getInstance().getAPILogger().verboseException("SETTINGS", exception);
+            return Settings.FeatureSupport.AUTO;
+        }
     }
 
     /**
@@ -84,7 +90,7 @@ public final class FinalizedSettings {
      * @return a boolean on whether the key exists, 'true' if yes, 'false' if no
      */
     public boolean keyExists(String key) { return values.containsKey(key); }
-    private void validateKey(String key) { if(!keyExists(key)) throw new IllegalArgumentException("There is no key '" + key + "' in Settings!"); }
+    private void validateKey(String key) { if(!keyExists(key)) throw new IllegalArgumentException("There is no key '" + key + "' in " + this.getClass().getSimpleName() + "!"); }
 
 
     /**
@@ -98,7 +104,7 @@ public final class FinalizedSettings {
         for(String value : data.split(", ")) {
             if(value.split("=").length != 2) throw new IllegalStateException("Values must be key-value pairs!");
 
-            values.put(value.split("=")[0], value.split("=")[1]);
+            values.put(value.split("=")[0], value.split("=")[1].replace("${EQUALS}", "=").replace("${COMMA}", ","));
         }
         return values;
     }

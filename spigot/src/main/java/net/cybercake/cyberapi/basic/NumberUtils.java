@@ -224,8 +224,8 @@ public class NumberUtils {
      * @since 3.0.2
      */
     public static int randomInt(int min, int max) {
-        if(min > max) throw new IllegalArgumentException("Minimum cannot be greater than maximum!");
-        if(min == max) throw new IllegalArgumentException("Minimum and maximum cannot be the exact same number!");
+        if(min > max) throw new IllegalArgumentException("Minimum (" + min + ") cannot be greater than maximum (" + max + ")!");
+        if(min == max) throw new IllegalArgumentException("Minimum (" + min + ") and maximum (" + max + ") cannot be the exact same number!");
         return new Random().nextInt((max - min) + 1) + min;
     }
 

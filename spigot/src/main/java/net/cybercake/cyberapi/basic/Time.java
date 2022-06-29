@@ -168,7 +168,6 @@ public class Time {
      * @since 3.0.0
      */
     public static Map<TimeUnit,Long> getDateDifference(Date biggerDate, Date smallerDate) {
-
         long diffInSeconds = biggerDate.getTime()-smallerDate.getTime();
 
         //create the list

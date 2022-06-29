@@ -34,6 +34,11 @@ public class Validators {
         if(!CyberAPI.getInstance().getMiniMessageSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw new UnsupportedOperationException("MiniMessage in " + CyberAPI.getInstance().getPluginName() + " is not marked as supported in CyberAPI!");
     }
 
+    /**
+     * --{@literal >} <b>MAINLY FOR USE INSIDE CYBERAPI ONLY</b> {@literal <}--
+     * <br><br>
+     * Validates that LuckPerms is supported and working
+     */
     public static void validateLuckPermsHook() {
         validateIsNotAuto(CyberAPI.getInstance().getLuckPermsSupport());
         if(!CyberAPI.getInstance().getLuckPermsSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw new UnsupportedOperationException("LuckPerms in " + CyberAPI.getInstance().getPluginName() + " is not marked as supported in CyberAPI!");

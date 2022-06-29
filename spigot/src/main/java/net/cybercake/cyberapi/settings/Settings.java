@@ -33,8 +33,19 @@ public class Settings {
      * Allows plugin to use 'SUPPORTED', 'UNSUPPORTED', or 'AUTO' for determining a certain feature's support
      */
     public enum FeatureSupport {
+        /**
+         * Represents a feature that is supported
+         */
         SUPPORTED,
+
+        /**
+         * Represents a feature that is unsupported
+         */
         UNSUPPORTED,
+
+        /**
+         * Allows CyberAPI to determine if a feature is {@link FeatureSupport#SUPPORTED} or {@link FeatureSupport#UNSUPPORTED}
+         */
         AUTO;
 
         private String feature;
@@ -152,7 +163,7 @@ public class Settings {
     }
 
     private String attachValue(String name, FeatureSupport value) { return name + "=" + value.name() + "-" + value.getFeature() + ", "; }
-    private String attachValue(String name, Object value) { return name + "=" + value + ", "; }
+    private String attachValue(String name, Object value) { return name + "=" + String.valueOf(value).replace("=", "${EQUALS}").replace(",", "${COMMA}")  + ", "; }
     private String attachValue(String name, Object value, boolean last) { return attachValue(name, value).substring(0, last ? attachValue(name, value).length()-2 : 0) + (last ? "}" : ""); }
 
 }

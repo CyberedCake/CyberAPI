@@ -59,7 +59,15 @@ public class CenteredMessage {
      * Represents the method of centering messaging that is used
      */
     public enum Method {
-        ONE, TWO
+        /**
+         * Represents the first centering method, usually better for non-chat related operations
+         */
+        ONE,
+
+        /**
+         * Represents the second centering method, usually better for only-chat related operations
+         */
+        TWO
     }
 
     /**
@@ -75,8 +83,6 @@ public class CenteredMessage {
     /**
      * A {@link String} representing the centered message
      * @param method the method at which to get the centered message
-     *               <br> <br>
-     *               <b>Method.ONE</b> ->
      * @return the centered message
      */
     public String getString(Method method) {
