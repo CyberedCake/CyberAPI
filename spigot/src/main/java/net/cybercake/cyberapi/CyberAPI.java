@@ -307,7 +307,7 @@ public class CyberAPI extends JavaPlugin {
      * @return the time since the server started
      * @since 3.0.7
      */
-    public String getServerUptime() { return getServerUptime(false); }
+    public String getServerUptime() { return getServerUptime(true); }
 
     /**
      * Gets a new CyberPlayer. Please note: It's better to use {@link CyberPlayer} constructors or static methods instead of this method.

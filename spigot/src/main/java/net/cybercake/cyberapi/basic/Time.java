@@ -57,7 +57,7 @@ public class Time {
     /**
      * Gets a better duration display, assumes "showAll" is true
      * @param duration the duration to display, must be a positive number
-     * @return the better time display, looks like {@code "0 years, 0 months, 1 week, 2 days, 3 hours, 4 minutes, 5 seconds"}
+     * @return the better time display, looks like {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"}
      * @since 3.0.0
      */
     public static String getBetterTimeDisplay(long duration) {
@@ -68,7 +68,7 @@ public class Time {
      * Gets a better duration display, assumes "showAll" is true
      * @param biggerDuration the duration to display, must be bigger than {@code smallerNumber}
      * @param smallerDuration the duration to display, must be smaller than {@code biggerNumber}
-     * @return the better time display, looks like {@code "0 years, 0 months, 1 week, 2 days, 3 hours, 4 minutes, 5 seconds"}
+     * @return the better time display, looks like {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"}
      * @since 3.0.0
      */
     public static String getBetterTimeDisplay(long biggerDuration, long smallerDuration) {
@@ -80,7 +80,7 @@ public class Time {
      * @param biggerDuration the duration to display, must be bigger than {@code smallerNumber}
      * @param smallerDuration the duration to display, must be smaller than {@code biggerNumber}
      * @param showAll whether to show all values or just the ones that aren't zero
-     * @return the better time display, looks like {@code "0 years, 0 months, 1 week, 2 days, 3 hours, 4 minutes, 5 seconds"} <br> or if '<b>showAll</b>' is false {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"}
+     * @return the better time display, looks like {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"} <br> or if '<b>showAll</b>' is false {@code "1 week"} (just shows the biggest time value)
      * @since 3.0.0
      */
     public static String getBetterTimeDisplay(long biggerDuration, long smallerDuration, boolean showAll) {
@@ -91,8 +91,7 @@ public class Time {
      * Gets a better duration display
      * @param duration the duration to display, must be a positive number
      * @param showAll whether to show all values or just the ones that aren't zero
-     * @return the better time display, looks like {@code "0 years, 0 months, 1 week, 2 days, 3 hours, 4 minutes, 5 seconds"} <br> or if '<b>showAll</b>' is false {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"}
-     * @since 3.0.0
+     * @return the better time display, looks like {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"} <br> or if '<b>showAll</b>' is false {@code "1 week"} (just shows the biggest time value)     * @since 3.0.0
      */
     public static String getBetterTimeDisplay(long duration, boolean showAll) {
         StringBuilder durationBuilder = new StringBuilder();
