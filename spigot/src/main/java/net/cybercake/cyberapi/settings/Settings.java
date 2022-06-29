@@ -14,6 +14,7 @@ public class Settings {
     private FeatureSupport adventureSupport;
     private FeatureSupport miniMessageSupport;
     private FeatureSupport luckPermsSupport;
+    private FeatureSupport protocolLibSupport;
     private String name;
     private String prefix;
 
@@ -25,6 +26,7 @@ public class Settings {
         this.adventureSupport = FeatureSupport.AUTO;
         this.miniMessageSupport = FeatureSupport.AUTO;
         this.luckPermsSupport = FeatureSupport.AUTO;
+        this.protocolLibSupport = FeatureSupport.AUTO;
         this.name = CyberAPI.getInstance().getDescription().getName();
         this.prefix = CyberAPI.getInstance().getDescription().getPrefix();
     }
@@ -119,7 +121,17 @@ public class Settings {
      * <em>Default Value:</em> {@link FeatureSupport#AUTO}
      * @param luckPermsSupport set this to whether or not LuckPerms will be supported
      */
-    public Settings luckPermsSupport(FeatureSupport luckPermsSupport) { adventureSupport.feature = "LUCK_PERMS"; this.luckPermsSupport = luckPermsSupport; return this; }
+    public Settings luckPermsSupport(FeatureSupport luckPermsSupport) { adventureSupport.feature = "LUCKPERMS"; this.luckPermsSupport = luckPermsSupport; return this; }
+
+    /**
+     * Should CyberAPI attempt and allow the use of LuckPerms data? {@link net.luckperms.api.LuckPerms}
+     * <br> <br>
+     * If you have ProtocolLib installed on your server (check via <em>/plugins</em>), this should be fine to set to {@link FeatureSupport#SUPPORTED}
+     * <br> <br>
+     * <em>Default Value:</em> {@link FeatureSupport#AUTO}
+     * @param protocolLibSupport set this to whether or not ProtocolLib will be supported
+     */
+    public Settings protocolLibSupport(FeatureSupport protocolLibSupport) { protocolLibSupport.feature = "PROTOCOLLIB"; this.protocolLibSupport = protocolLibSupport; return this; }
 
     /**
      * Sets the name of the plugin CyberAPI uses
@@ -159,6 +171,7 @@ public class Settings {
                 attachValue("adventureSupport", adventureSupport) +
                 attachValue("miniMessageSupport", miniMessageSupport) +
                 attachValue("luckPermsSupport", luckPermsSupport) +
+                attachValue("protocolLibSupport", protocolLibSupport) +
                 attachValue("prefix", prefix, true);
     }
 

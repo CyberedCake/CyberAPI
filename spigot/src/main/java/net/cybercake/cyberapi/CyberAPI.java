@@ -1,5 +1,7 @@
 package net.cybercake.cyberapi;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -9,6 +11,8 @@ import net.cybercake.cyberapi.chat.Log;
 import net.cybercake.cyberapi.chat.UChat;
 import net.cybercake.cyberapi.config.Config;
 import net.cybercake.cyberapi.player.CyberPlayer;
+import net.cybercake.cyberapi.server.serverlist.ServerListInfo;
+import net.cybercake.cyberapi.server.serverlist.ServerListInfoListener;
 import net.cybercake.cyberapi.settings.FinalizedSettings;
 import net.cybercake.cyberapi.settings.Settings;
 import net.kyori.adventure.audience.Audience;
@@ -94,6 +98,12 @@ public class CyberAPI extends JavaPlugin {
         getAdventureAPISupport();
         getMiniMessageSupport();
         getLuckPermsSupport();
+        getProtocolLibSupport();
+
+        if(getProtocolLibSupport().equals(Settings.FeatureSupport.SUPPORTED)) {
+            ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+            new ServerListInfoListener().init();
+        }
 
         CyberAPISpecific specific = getCyberAPISpecific();
 
@@ -119,6 +129,7 @@ public class CyberAPI extends JavaPlugin {
     private Settings.FeatureSupport adventureAPISupport = null;
     private Settings.FeatureSupport miniMessageSupport = null;
     private Settings.FeatureSupport luckPermsSupport = null;
+    private Settings.FeatureSupport protocolLibSupport = null;
 
     /**
      * Gets the finalized settings CyberAPI is using to determine the developer's preferences
@@ -200,13 +211,22 @@ public class CyberAPI extends JavaPlugin {
 
     /**
      * Gets the version of the Minecraft server
-     * @return the Minecraft server version, looks something like 'v1_19_R1'
+     * @return the Minecraft server version, looks something like '1.19'
      * @since 3.0.0
      * @apiNote if you are using the PaperSpigot API, a more conventional way of doing this would be {@code Bukkit.getServer().getMinecraftVersion()} (as that would return a more standard '1.19')
      */
     public String getMinecraftVersion() {
-        String pack = Bukkit.getServer().getClass().getPackage().getName();
-        return pack.substring(pack.lastIndexOf(".") + 1);
+        return Bukkit.getBukkitVersion().split("-")[0];
+    }
+
+    /**
+     * Gets the protocol version of the Minecraft server
+     * @return the Minecraft server protocol version, looks something like '759'
+     * @since 3.1.0
+     * @apiNote <a href="https://wiki.vg/Protocol_version_numbers">view the protcol numbers by clicking here</a>
+     */
+    public int getMinecraftProtocol() {
+        return net.minecraft.SharedConstants.b().getProtocolVersion(); // uses NMS, may want to find a better way to do this later
     }
 
     /**
@@ -337,7 +357,7 @@ public class CyberAPI extends JavaPlugin {
                 } catch (Exception exception) {
                     this.adventureAPISupport = Settings.FeatureSupport.UNSUPPORTED;
                 }
-                log.verbose("Adventure API Support was set to auto, detected: " + adventureAPISupport.name());
+                log.verbose("Adventure API support was set to auto, detected: " + adventureAPISupport.name());
             }
         }
         return this.adventureAPISupport;
@@ -359,7 +379,7 @@ public class CyberAPI extends JavaPlugin {
                 } catch (Exception exception) {
                     this.miniMessageSupport = Settings.FeatureSupport.UNSUPPORTED;
                 }
-                log.verbose("MiniMessage Support was set to auto, detected: " + miniMessageSupport.name());
+                log.verbose("MiniMessage support was set to auto, detected: " + miniMessageSupport.name());
             }
         }
         return this.miniMessageSupport;
@@ -381,10 +401,32 @@ public class CyberAPI extends JavaPlugin {
                 } catch (Exception exception) {
                     this.luckPermsSupport = Settings.FeatureSupport.UNSUPPORTED;
                 }
-                log.verbose("LuckPerms Support was set to auto, detected: " + luckPermsSupport.name());
+                log.verbose("LuckPerms support was set to auto, detected: " + luckPermsSupport.name());
             }
         }
         return this.luckPermsSupport;
+    }
+
+    /**
+     * Gets the ProtocolLib support. This method assumes the best of the developer as if they marked ProtocolLib Support as {@link Settings.FeatureSupport#SUPPORTED}, it will allow the use of ProtocolLib.
+     * @return the {@link Settings.FeatureSupport} enum of the value
+     * @since 3.1.0
+     */
+    public Settings.FeatureSupport getProtocolLibSupport() {
+        if(protocolLibSupport == null) {
+            protocolLibSupport = settings.getFeatureSupportStatus("protocolLibSupport");
+
+            if(protocolLibSupport.equals(Settings.FeatureSupport.AUTO)) {
+                try {
+                    Class.forName("com.comphenix.protocol.ProtocolManager");
+                    this.protocolLibSupport = Settings.FeatureSupport.SUPPORTED;
+                } catch (Exception exception) {
+                    this.protocolLibSupport = Settings.FeatureSupport.UNSUPPORTED;
+                }
+                log.verbose("ProtocolLib support was set to auto, detected: " + protocolLibSupport.name());
+            }
+        }
+        return this.protocolLibSupport;
     }
 
     /**
@@ -423,13 +465,13 @@ public class CyberAPI extends JavaPlugin {
     public void broadcast(String message) {
         broadcast(message, "");
     }
-    
+
     /**
      * Broadcast a message to all online players if they have a specified permission and logs to console
      * @param message the message to send
      * @param permission the permission required to see the message
      * @since 3.0.0
-     * @see UChat#broadcast(String) 
+     * @see UChat#broadcast(String)
      * @see UChat#broadcast(String, String)
      */
     public void broadcast(String message, String permission) {
@@ -448,7 +490,17 @@ public class CyberAPI extends JavaPlugin {
         }
         player.performCommand(command);
     }
-    
+
+    /**
+     * Returns an instance of {@link ServerListInfo}, which allows you to change things like the MOTD, player count, icon, etc.
+     * @return the {@link ServerListInfo} instance
+     * @since 3.1.0
+     * @apiNote requires ProtocolLib support
+     */
+    public ServerListInfo getServerListInfo() {
+        return ServerListInfo.serverListInfo();
+    }
+
     /**
      * Returns a list of online players in forms of {@link Player} objects
      * @return the online players in {@link Player} objects

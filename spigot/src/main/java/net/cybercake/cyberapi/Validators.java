@@ -44,4 +44,14 @@ public class Validators {
         if(!CyberAPI.getInstance().getLuckPermsSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw new UnsupportedOperationException("LuckPerms in " + CyberAPI.getInstance().getPluginName() + " is not marked as supported in CyberAPI!");
     }
 
+    /**
+     * --{@literal >} <b>MAINLY FOR USE INSIDE CYBERAPI ONLY</b> {@literal <}--
+     * <br><br>
+     * Validates that ProtocolLib is supported and working
+     */
+    public static void validateProtocolLibHook() {
+        validateIsNotAuto(CyberAPI.getInstance().getProtocolLibSupport());
+        if(!CyberAPI.getInstance().getProtocolLibSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw new UnsupportedOperationException("ProtocolLib in " + CyberAPI.getInstance().getPluginName() + " is not marked as supported in CyberAPI!");
+    }
+
 }

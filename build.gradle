@@ -14,7 +14,7 @@ static int getTargetJavaVersion() { return 17; }
 
 // version info
 def major = '3'
-def minor = '0'
+def minor = '1'
 
 
 
