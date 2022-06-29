@@ -2,6 +2,8 @@
 [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI)
 <br> <br>
 The new and improved CyberAPI, version 3, is here! This is a library used for most of [CyberedCake's](https://github.com/CyberedCake) plugins and can be used by you for free! It adds additional features that Spigot and Bungeecord (bungee coming soon) do not have and makes existing stuff easier.
+<br> <br>
+You can view the to-do list and future plans [by clicking here](https://github.com/CyberedCake/CyberAPI/projects/1)
 
 ## As of now, only \*\*SPIGOT\*\* and Spigot forks are supported! Bungeecord support coming soon!
 
