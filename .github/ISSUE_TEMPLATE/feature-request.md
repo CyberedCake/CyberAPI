@@ -13,11 +13,11 @@ If your feature is related to a problem (this doesn't work, this is broken, this
 **Describe Your Feature**
 Describe the feature you would like and how you would like it to work. This should be clearly understandable as some of it may be used in the javadoc. 
 
-**Describe Alternatives You've Considered**
+**Describe Alternatives You've Considered** (optional)
 Are there any other round-a-bout alternatives or just obvious alternates you can think of? If so, please describe why we shouldn't just use that alternative instead of creating a new feature for it. If no, please leave this field blank.
 
-**Describe Feature Type**
+**Describe Feature Type** (optional)
 What type of feature are you proposing? Quality of Life (QoL), feature addition, feature removal in favor of another, a new feature altogether, or other.
 
-**Additional Comments or Context**
+**Additional Comments or Context** (optional)
 Add any other comments, context, screenshots, or anything else to this field.
