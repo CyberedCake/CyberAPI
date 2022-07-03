@@ -252,6 +252,7 @@ public class CyberAPI extends JavaPlugin {
          if(mainConfig == null) mainConfig = new Config();
          return mainConfig;
     }
+
     /**
      * Gets a config of the server. If no config exists, create one and save.
      * @param fileName the name of the config file, usually from the "resources/" folder
