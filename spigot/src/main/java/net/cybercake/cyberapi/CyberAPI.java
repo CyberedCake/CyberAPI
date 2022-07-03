@@ -6,12 +6,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.cybercake.cyberapi.basic.BetterStackTraces;
+import net.cybercake.cyberapi.basic.NumberUtils;
 import net.cybercake.cyberapi.basic.Time;
 import net.cybercake.cyberapi.chat.Log;
 import net.cybercake.cyberapi.chat.UChat;
 import net.cybercake.cyberapi.config.Config;
 import net.cybercake.cyberapi.player.CyberPlayer;
+import net.cybercake.cyberapi.player.userhead.UserHeadSettingsBuilder;
 import net.cybercake.cyberapi.server.CyberAPIListeners;
+import net.cybercake.cyberapi.server.commands.CommandManager;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfoListener;
 import net.cybercake.cyberapi.settings.FinalizedSettings;
@@ -24,11 +27,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.ChatPaginator;
 import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
 
@@ -1073,6 +1081,71 @@ public class CyberAPI extends JavaPlugin {
             if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------");
 
             return UChat.chat(builder.toString());
+        }
+
+        /**
+         * A tribute to one of the best Minecraft content creators in existence! <br> <br>
+         * <em>"If I had another hundred lives, I think I would choose to be Technoblade again every single time."</em> <br>
+         * - Alexander "Technoblade" (1999 - 2022)
+         * @since 3.1.1
+         */
+        public void technoblade() {
+            Log.info("&d-".repeat(60));
+            UUID uuid = UUID.fromString("b876ec32-e396-476b-a115-8438d83c67d4"); // Technoblade UUID
+            try {
+                CyberPlayer cyberPlayer = new CyberPlayer(uuid);
+                UChat.broadcast(cyberPlayer.getUserHead(
+                        new UserHeadSettingsBuilder()
+                                .showHelmet(true)
+                                .lines(
+                                        " ",
+                                        " ",
+                                        "&f\"If I had another hundred lives, I think",
+                                        "&fI would choose to be &dTechnoblade &fagain",
+                                        "&fevery single time.\"",
+                                        " &7- Alexander \"Technoblade\" (1999 - 2022)"
+                                        )
+                                .build()
+                ));
+                int amount = 0;
+                int distance = 16;
+                int amountOfFireworks = 16;
+                for(Player player : Bukkit.getOnlinePlayers()) {
+                    for(int i = 0; i < 360; i += 360/amountOfFireworks) {
+                        double angle = (i * Math.PI / 180);
+                        double x = 16 * Math.cos(angle);
+                        double z = 16 * Math.sin(angle);
+                        Location location = player.getLocation().add(x, 1, z);
+                        Firework firework = player.getWorld().spawn(location, Firework.class);
+                        FireworkMeta fireworkMeta = firework.getFireworkMeta();
+                        fireworkMeta.addEffect(FireworkEffect.builder()
+                                .withColor(Color.fromRGB(245, 66, 215))
+                                .flicker(true)
+                                .trail(true)
+                                .with(FireworkEffect.Type.STAR)
+                                .build());
+                        fireworkMeta.setDisplayName("Technoblade-Tribute-" + (amount > 999 ? "" : "0" ) + (amount > 99 ? "" : "0") + (amount > 9 ? "" : "0") + amount);
+                        fireworkMeta.setPower(NumberUtils.randomInt(1, 3));
+                        firework.setFireworkMeta(fireworkMeta);
+                        amount++;
+                    }
+                    ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
+                    SkullMeta meta = (SkullMeta) skull.getItemMeta();
+                    meta.setOwnerProfile(Bukkit.createPlayerProfile(uuid, "Technoblade"));
+                    meta.setDisplayName(UChat.chat("&d[PIG&b+++&d] Technoblade"));
+                    meta.setLore(UChat.listChat(ChatPaginator.paginate(
+                            "&7\"I hope you guys enjoyed my content, and that I made &7some of you laugh. And I hope you all " +
+                                    "go on to live &7long, prosperous, and happy lives. Because I love you &7guys.\"\n\n&fYou will be in our hearts forever more, Technoblade, &fand " +
+                                    "may you rest in peace and fly high!\n\n&dIn Memoriam: Technoblade &8(1999 - 2022)", 25).getLines()));
+                    skull.setItemMeta(meta);
+                    player.getInventory().addItem(skull);
+                    amount++;
+                }
+            } catch (Exception exception) {
+                getAPILogger().error("An error occurred with Technoblade's tribute! " + ChatColor.DARK_GRAY + exception);
+                getAPILogger().verboseException("TECHNOBLADE", exception);
+            }
+            Log.info("&d-".repeat(60));
         }
     }
 
