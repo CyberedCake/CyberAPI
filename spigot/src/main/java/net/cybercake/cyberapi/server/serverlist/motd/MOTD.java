@@ -1,163 +1,218 @@
 package net.cybercake.cyberapi.server.serverlist.motd;
 
-import com.comphenix.protocol.wrappers.WrappedServerPing;
 import net.cybercake.cyberapi.chat.UChat;
 import net.cybercake.cyberapi.chat.centered.CenteredMessage;
 import net.cybercake.cyberapi.chat.centered.TextType;
+import net.cybercake.cyberapi.server.ServerProperties;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.util.CachedServerIcon;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import javax.imageio.stream.ImageInputStream;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 
 /**
- * The built version of {@link MOTDBuilder}
  * @since 3.1.0
  */
 public class MOTD {
 
-    private final String data;
-    private final HashMap<String, Object> values;
-
-    private MOTD() { this.data = null; this.values = null; }
-    public MOTD(String data) {
-        this.data = data;
-        this.values = fromData(data);
-    }
+    /**
+     * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link MOTD}
+     * @param id the ID of the new {@link MOTD}
+     * @return the Builder instance
+     * @since 3.1.1
+     */
+    public static Builder builder(String id) { return new Builder(id); }
 
     /**
-     * Returns the ID provided by {@link MOTDBuilder}
-     * @return the ID
+     * @since 3.1.1
      */
-    public String getID() { return getString("id"); }
+    public static class Builder {
+        private final String id;
 
-    /**
-     * Returns the MOTD in String form
-     * @return the MOTD
-     */
-    public String getStringMOTD() { return getString("motd"); }
+        private String motd;
+        private boolean centered;
+        private boolean useMiniMessage;
+        private @Nullable File iconFile;
+        private @Nullable URL iconURL;
+        private MOTDIconType iconType;
 
-    /**
-     * Returns whether the MOTD should be centered or not
-     * @return should be centered
-     */
-    public boolean shouldBeCentered() { return getBoolean("centered"); }
+        /**
+         * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link MOTD}
+         * @param id the ID of the new {@link MOTD}
+         * @since 3.1.1
+         */
+        public Builder(String id) {
+            this.id = id;
 
-    /**
-     * Returns whether the MOTD should use MiniMessage parsing
-     * @return should use MiniMessage
-     */
-    public boolean shouldUseMiniMessage() { return getBoolean("useMiniMessage"); }
+            this.motd = String.valueOf(new ServerProperties().getProperty("motd"));
+            this.centered = false;
+            this.useMiniMessage = false;
+            this.iconFile = null;
+            this.iconURL = null;
+            this.iconType = MOTDIconType.UNSET;
+        }
 
-    /**
-     * Returns the {@link File} at which the server icon is stored for this MOTD
-     * @return the server icon
-     */
-    public File getIconFile() { return (getString("iconDir").equalsIgnoreCase("unset") ? null : new File(getString("iconDir"))); }
+        /**
+         * Sets the MOTD to a String.
+         * @param motd the motd string
+         */
+        public Builder text(String motd) {
+            this.motd = motd; return this;
+        }
 
-    /**
-     * Returns the {@link CachedServerIcon} at which the server icon is stored for this MOTD
-     * @return the server icon
-     */
-    public CachedServerIcon getIcon() {
-        if(getIconFile() == null) return Bukkit.getServerIcon();
-        try {
-            return Bukkit.loadServerIcon(getIconFile());
-        } catch (Exception exception) {
-            return Bukkit.getServerIcon();
+        /**
+         * Sets the MOTD to two strings as different lines
+         * @param line1 the first line of the MOTD
+         * @param line2 the second line of the MOTD
+         */
+        public Builder text(String line1, String line2) {
+            this.motd = line1 + "\n" + line2; return this;
+        }
+
+        /**
+         * Sets the MOTD to multiple strings
+         * @param motd the motd strings
+         */
+        public Builder text(String... motd) {
+            this.motd = String.join("\n", motd); return this;
+        }
+
+        /**
+         * Should the text be Centered (only works with legacy color codes, {@link Builder#shouldUseMiniMessage(boolean)} (boolean)} will cancel this out)
+         * @param centered should the MOTD be centered
+         */
+        public Builder shouldCenter(boolean centered) {
+            this.centered = centered; return this;
+        }
+
+        /**
+         * Should the text use MiniMessage formatting instead of legacy bukkit color codes (will cancel out {@link Builder#shouldCenter(boolean)} (boolean)})
+         * @param useMiniMessage use bukkit color codes (set to 'false') or use mini message (set to 'true')
+         */
+        public Builder shouldUseMiniMessage(boolean useMiniMessage) {
+            this.useMiniMessage = useMiniMessage; return this;
+        }
+
+        /**
+         * Sets the MOTD icon to this image, a {@link File}
+         * @param icon the {@link File} to cache
+         */
+        public Builder icon(File icon) {
+            this.iconType = MOTDIconType.FILE; this.iconFile = icon; return this;
+        }
+
+        /**
+         * Sets the MOTD icon to this image, a {@link java.net.URL}
+         * @param icon the {@link java.net.URL} to cache
+         */
+        public Builder icon(URL icon) {
+            this.iconType = MOTDIconType.URL; this.iconURL = icon; return this;
+        }
+
+        /**
+         * Builds the builder into an {@link MOTD} instance
+         * @return the {@link MOTD} instance
+         * @since 3.1.1
+         */
+        public MOTD build() {
+            return new MOTD(this);
         }
     }
 
+    private final Builder builder;
+
     /**
-     * Gets a formatted MOTD
+     * The {@link MOTD} instance, created by the {@link Builder} instance
+     * @param builder the builder that can then be transformed into a {@link MOTD}
+     * @since 3.1.1
+     */
+    public MOTD(Builder builder) {
+        this.builder = builder;
+    }
+
+    /**
+     * Gets the {@link String} ID of the MOTD
+     * @return the MOTD ID
+     * @since 3.1.1
+     */
+    public String getID() {
+        return builder.id;
+    }
+
+    /**
+     * Gets the {@link String} form of the {@link MOTD}, a.k.a. what is shown on the server list
+     * @return the MOTD
+     * @since 3.1.1
+     */
+    public String getStringMOTD() {
+        return builder.motd;
+    }
+
+    /**
+     * Gets whether the {@link MOTD} should be centered or not. {@link MOTD#isUsingMiniMessage()} overrides this.
+     * @return whether the {@link MOTD} should be centered or not
+     * @since 3.1.1
+     */
+    public boolean isCentered() {
+        return builder.centered;
+    }
+
+    /**
+     * Gets whether the {@link MOTD} should be using MiniMessage parsing or not. This overrides {@link MOTD#isCentered()}.
+     * @return whether the {@link MOTD} should be using MiniMessage
+     * @since 3.1.1
+     */
+    public boolean isUsingMiniMessage() {
+        return builder.useMiniMessage;
+    }
+
+    /**
+     * Gets the icon type of the MOTD
+     * @return the icon type of MOTD
+     * @since 3.1.1
+     */
+    public MOTDIconType getMOTDIconType() {
+        return builder.iconType;
+    }
+
+    /**
+     * Gets the {@link File} of the icon
+     * @return the icon in {@link File} form, {@code null} if {@link MOTDIconType} is {@link MOTDIconType#UNSET} or not {@link MOTDIconType#FILE}
+     * @since 3.1.1
+     */
+    public File getFileIcon() {
+        if(builder.iconFile != null && getMOTDIconType().equals(MOTDIconType.FILE)) {
+            return builder.iconFile;
+        }
+        return null;
+    }
+
+    /**
+     * Gets the {@link URL} of the icon
+     * @return the icon in {@link URL} form, {@code null} if {@link MOTDIconType} is {@link MOTDIconType#UNSET} or not {@link MOTDIconType#URL}
+     * @since 3.1.1
+     */
+    public URL getURLIcon() {
+        if(builder.iconURL != null && getMOTDIconType().equals(MOTDIconType.URL)) {
+            return builder.iconURL;
+        }
+        return null;
+    }
+
+    /**
+     * Gets the formatted MOTD with MiniMessage and proper centering
      * @return the formatted {@link String} MOTD
+     * @since 3.1.1
      */
     public String getFormattedMOTD() {
-        boolean centered = shouldBeCentered();
-        boolean mini = shouldUseMiniMessage(); // cancels out centered
+        boolean centered = isCentered();
+        boolean mini =isUsingMiniMessage();
         String text = getStringMOTD();
 
-        if(mini) return UChat.chat(LegacyComponentSerializer.legacyAmpersand().serialize(MiniMessage.miniMessage().deserialize(text)));
+        if(mini) return UChat.chat(LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(text)));
         else if(centered) return new CenteredMessage(text, TextType.MOTD).getString(CenteredMessage.Method.TWO);
         return UChat.chat(text);
-    }
-
-    /**
-     * Get a value from a key
-     * @param key the key, will return an object
-     * @return the value associated with the key provided
-     */
-    @Nullable
-    public Object get(String key) {
-        validateKey(key);
-        return values.get(key);
-    }
-
-    /**
-     * Get a value, in {@link String} form, from a key
-     * @param key the key, will return a {@link String}
-     * @return the value associated with the key provided, in {@link String} form
-     */
-    @Nullable
-    public String getString(String key) {
-        validateKey(key);
-        return String.valueOf(values.get(key));
-    }
-
-    /**
-     * Get a value, in {@link Boolean} form, from a key
-     * @param key the key, will return a {@link Boolean}
-     * @return the value associated with the key provided, in {@link Boolean} form
-     */
-    public @NotNull Boolean getBoolean(String key) {
-        return Boolean.valueOf(getString(key));
-    }
-
-    /**
-     * Gets the "stringified" version of the data
-     * @return the data in {@link String} form
-     */
-    public String getData() { return data; }
-
-    /**
-     * Gets the values from the {@link HashMap} directly
-     * @return the data in {@link HashMap} form
-     */
-    public HashMap<String, Object> getValues() { return values; }
-
-    /**
-     * Check if a key exists in the data
-     * @param key the key
-     * @return a boolean on whether the key exists, 'true' if yes, 'false' if no
-     */
-    public boolean keyExists(String key) { return values.containsKey(key); }
-    private void validateKey(String key) { if(!keyExists(key)) throw new IllegalArgumentException("There is no key '" + key + "' in " + this.getClass().getSimpleName() + "!"); }
-
-
-    /**
-     * Convert the "stringified" version of the data into a {@link HashMap}
-     * @param data the {@link String} version of the data
-     * @return a {@link HashMap} with the data
-     */
-    public HashMap<String, Object> fromData(String data) {
-        HashMap<String, Object> values = new HashMap<>();
-        data = data.substring((MOTDBuilder.class.getSimpleName() + "{").length(), data.length()-1);
-        for(String value : data.split(", ")) {
-            if(value.split("=").length != 2) throw new IllegalStateException("Values must be key-value pairs!");
-
-            values.put(value.split("=")[0], value.split("=")[1].replace("${EQUALS}", "=").replace("${COMMA}", ","));
-        }
-        return values;
     }
 
 }

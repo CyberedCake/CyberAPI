@@ -11,6 +11,7 @@ import net.cybercake.cyberapi.chat.Log;
 import net.cybercake.cyberapi.chat.UChat;
 import net.cybercake.cyberapi.config.Config;
 import net.cybercake.cyberapi.player.CyberPlayer;
+import net.cybercake.cyberapi.server.CyberAPIListeners;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfoListener;
 import net.cybercake.cyberapi.settings.FinalizedSettings;
@@ -103,6 +104,7 @@ public class CyberAPI extends JavaPlugin {
         if(getProtocolLibSupport().equals(Settings.FeatureSupport.SUPPORTED)) {
             ProtocolManager manager = ProtocolLibrary.getProtocolManager();
             new ServerListInfoListener().init();
+            registerListener(new CyberAPIListeners());
         }
 
         CyberAPISpecific specific = getCyberAPISpecific();

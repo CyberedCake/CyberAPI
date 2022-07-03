@@ -4,7 +4,6 @@ import net.cybercake.cyberapi.CyberAPI;
 import net.cybercake.cyberapi.basic.NumberUtils;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.server.serverlist.motd.MOTD;
-import net.cybercake.cyberapi.server.serverlist.motd.MOTDBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,14 +69,14 @@ public class MOTDManager {
 
     /**
      * Add an {@link MOTD} to the
-     * @param motd the {@link MOTD} to add, create by creating a new instance of {@link MOTDBuilder}
+     * @param motd the {@link MOTD} to add, create by creating a new instance of {@link MOTD.Builder}
      * @since 3.1.0
      */
     public void addMOTD(MOTD motd) { motds.add(motd); }
 
     /**
      * Adds multiple {@link MOTD}s to the {@link MOTD} cache, the best place to put this is in your {@link CyberAPI#onEnable()}
-     * @param motds the {@link MOTD} to add, create by creating a new instance of {@link MOTDBuilder}
+     * @param motds the {@link MOTD} to add, create by creating a new instance of {@link MOTD.Builder}
      * @since 3.1.0
      */
     public void addMOTDs(MOTD... motds) { this.motds.addAll(Arrays.asList(motds)); }
@@ -90,7 +89,7 @@ public class MOTDManager {
 
     /**
      * Removes an {@link MOTD} from the cached {@link MOTD}s using its distinctive {@link String} ID
-     * @param id the {@link String} ID given to an {@link MOTD} when building it with {@link net.cybercake.cyberapi.server.serverlist.motd.MOTDBuilder}
+     * @param id the {@link String} ID given to an {@link MOTD} when building it with {@link MOTD.Builder}
      * @since 3.1.0
      */
     public void removeMOTD(String id) { motds.remove(getMOTDFromID(id)); }
