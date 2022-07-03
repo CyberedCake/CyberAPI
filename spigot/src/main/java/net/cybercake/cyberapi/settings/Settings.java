@@ -176,7 +176,7 @@ public class Settings {
     }
 
     private String attachValue(String name, FeatureSupport value) { return name + "=" + value.name() + "-" + value.getFeature() + ", "; }
-    private String attachValue(String name, Object value) { return name + "=" + String.valueOf(value).replace("=", "${EQUALS}").replace(",", "${COMMA}")  + ", "; }
+    private String attachValue(String name, Object value) { return name + "=" + String.valueOf((value == null ? "${ISNULL}" : value)).replace("=", "${EQUALS}").replace(",", "${COMMA}")  + ", "; }
     private String attachValue(String name, Object value, boolean last) { return attachValue(name, value).substring(0, last ? attachValue(name, value).length()-2 : 0) + (last ? "}" : ""); }
 
 }

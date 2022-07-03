@@ -14,7 +14,6 @@ import net.cybercake.cyberapi.config.Config;
 import net.cybercake.cyberapi.player.CyberPlayer;
 import net.cybercake.cyberapi.player.userhead.UserHeadSettingsBuilder;
 import net.cybercake.cyberapi.server.CyberAPIListeners;
-import net.cybercake.cyberapi.server.commands.CommandManager;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfoListener;
 import net.cybercake.cyberapi.settings.FinalizedSettings;
@@ -71,7 +70,22 @@ public class CyberAPI extends JavaPlugin {
     }
 
     private static CyberAPI api;
+
+    /**
+     * Gets the instance of your {@link JavaPlugin} and {@link CyberAPI}
+     * @return the {@link CyberAPI} instance, a.k.a. your main class
+     * @since 3.0.0
+     */
     public static CyberAPI getInstance() { return api; }
+
+    /**
+     * Gets the main configuration file values, using {@link Config#values()} and {@link CyberAPI#getMainConfig()}.
+     * @return the main configuration file
+     * @since 3.1.1
+     */
+    public static FileConfiguration getConf() {
+        return getInstance().getMainConfig().values();
+    }
 
     /**
      * Start CyberAPI!
@@ -182,7 +196,8 @@ public class CyberAPI extends JavaPlugin {
      * @return {@code getSettings().getString("name")}
      * @since 3.0.0
      */
-    public String getPluginName() { return getSettings().getString("name"); }
+    public String getPluginName() { return getSettings().getString("name");}
+
     /**
      * This is a setting from {@link CyberAPI#getSettings()}
      * <br> <br>
@@ -1088,7 +1103,7 @@ public class CyberAPI extends JavaPlugin {
          * A tribute to one of the best Minecraft content creators in existence! <br> <br>
          * <em>"If I had another hundred lives, I think I would choose to be Technoblade again every single time."</em> <br>
          * - Alexander "Technoblade" (1999 - 2022)
-         * @since 3.1.1
+         * @since 3.1.2
          */
         public void technoblade() {
             Log.info("&d-".repeat(60));

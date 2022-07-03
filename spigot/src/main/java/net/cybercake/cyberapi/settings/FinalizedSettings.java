@@ -29,6 +29,7 @@ public final class FinalizedSettings {
     @Nullable
     public Object get(String key) {
         validateKey(key);
+        if(values.get(key).equals("${ISNULL}")) return null;
         return values.get(key);
     }
 
@@ -40,7 +41,7 @@ public final class FinalizedSettings {
     @Nullable
     public String getString(String key) {
         validateKey(key);
-        return String.valueOf(values.get(key));
+        return String.valueOf(get(key));
     }
 
     /**
