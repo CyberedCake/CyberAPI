@@ -17,6 +17,7 @@ public class Settings {
     private FeatureSupport protocolLibSupport;
     private String name;
     private String prefix;
+    private String commandsPath;
 
     public Settings() {
         this.verbose = false;
@@ -29,6 +30,7 @@ public class Settings {
         this.protocolLibSupport = FeatureSupport.AUTO;
         this.name = CyberAPI.getInstance().getDescription().getName();
         this.prefix = CyberAPI.getInstance().getDescription().getPrefix();
+        this.commandsPath = null;
     }
 
     /**
@@ -149,6 +151,13 @@ public class Settings {
      */
     public Settings prefix(String prefix) { this.prefix = prefix; return this; }
 
+    /**
+     * Sets the commands path to a certain path. This is for registering commands, if no path is given, it will attempt to get your path for you, and it can take a while everytime your server starts if this value is not set.
+     * <br> <br>
+     * <em>Default Value:</em> *your project's group ID*
+     * @param commandsPath set this to the path where all your commands are localed (usually like 'net.cybercake.myplugin.commands')
+     */
+    public Settings commandsPath(String commandsPath) { this.commandsPath = commandsPath; return this; }
 
     /**
      * Builds the settings into a {@link FinalizedSettings} object, to be used by CyberAPI
@@ -172,7 +181,8 @@ public class Settings {
                 attachValue("miniMessageSupport", miniMessageSupport) +
                 attachValue("luckPermsSupport", luckPermsSupport) +
                 attachValue("protocolLibSupport", protocolLibSupport) +
-                attachValue("prefix", prefix, true);
+                attachValue("prefix", prefix) +
+                attachValue("commandsPath", commandsPath, true);
     }
 
     private String attachValue(String name, FeatureSupport value) { return name + "=" + value.name() + "-" + value.getFeature() + ", "; }

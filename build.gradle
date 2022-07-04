@@ -14,7 +14,7 @@ static int getTargetJavaVersion() { return 17; }
 
 // version info
 def major = '3'
-def minor = '1'
+def minor = '2'
 
 
 
@@ -40,7 +40,9 @@ def currentBuild = {
     String tagSplit = getLatestTag.split("-")[1]
     try {
         return Integer.parseInt(tagSplit)
-    } catch (NumberFormatException ignored) { return 0 }
+    } catch (NumberFormatException ignored) {
+        return 0
+    }
 }
 
 // runner or jitpack should add 1

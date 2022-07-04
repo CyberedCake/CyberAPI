@@ -41,7 +41,7 @@ public final class FinalizedSettings {
     @Nullable
     public String getString(String key) {
         validateKey(key);
-        return String.valueOf(get(key));
+        return get(key) == null ? null : String.valueOf(get(key)); // yes I have to do it this way
     }
 
     /**
@@ -68,7 +68,7 @@ public final class FinalizedSettings {
             return featureSupport;
         } catch (Exception exception) {
             CyberAPI.getInstance().getAPILogger().verbose("SETTINGS", "Exception occurred whilst getting FeatureSupport status in " + this.getClass().getCanonicalName() + ": " + exception);
-            CyberAPI.getInstance().getAPILogger().verboseException("SETTINGS", exception);
+            CyberAPI.getInstance().getAPILogger().verboseException(exception);
             return Settings.FeatureSupport.AUTO;
         }
     }

@@ -14,12 +14,16 @@ import net.cybercake.cyberapi.config.Config;
 import net.cybercake.cyberapi.player.CyberPlayer;
 import net.cybercake.cyberapi.player.userhead.UserHeadSettingsBuilder;
 import net.cybercake.cyberapi.server.CyberAPIListeners;
+import net.cybercake.cyberapi.server.commands.CommandManager;
+import net.cybercake.cyberapi.server.commands.ReflectionsConsoleFilter;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfoListener;
 import net.cybercake.cyberapi.settings.FinalizedSettings;
 import net.cybercake.cyberapi.settings.Settings;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.title.Title;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
@@ -123,10 +127,14 @@ public class CyberAPI extends JavaPlugin {
         getLuckPermsSupport();
         getProtocolLibSupport();
 
+        registerListener(new CyberAPIListeners());
+
+        ((Logger)LogManager.getRootLogger()).addFilter(new ReflectionsConsoleFilter());
+        CommandManager.commandManager().init(settings.getString("commandsPath"));
+
         if(getProtocolLibSupport().equals(Settings.FeatureSupport.SUPPORTED)) {
             ProtocolManager manager = ProtocolLibrary.getProtocolManager();
             new ServerListInfoListener().init();
-            registerListener(new CyberAPIListeners());
         }
 
         CyberAPISpecific specific = getCyberAPISpecific();
@@ -753,13 +761,15 @@ public class CyberAPI extends JavaPlugin {
         public void warn(String message) { log(Level.WARNING, message); }
         public void error(String message) { log(Level.SEVERE, ChatColor.RED + message); }
 
-        public void verbose(String message) { if(isVerbose()) log(Level.INFO, ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "VERBOSE" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message); }
-        public void verbose(String type, String message) { if(isVerbose()) log(Level.INFO, ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "VERBOSE/" + type + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message); }
-
-        public void verboseException(String type, Throwable throwable) {
-            for(String element : BetterStackTraces.get(throwable)) { verbose(type, element); }
+        public void verbose(String message) { verbose(StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass().getCanonicalName(), message);}
+        public void verbose(String canonical, String message) {
+            if(isVerbose())
+                log(Level.INFO, ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "VERBOSE/" + canonical + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message);
         }
-        public void verboseException(Throwable throwable) { verboseException("EXCEPTION", throwable); }
+
+        public void verboseException(Throwable throwable) {
+            for(String element : BetterStackTraces.get(throwable)) { verbose(StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass().getCanonicalName(), element); }
+        }
 
         public void log(Level level, String message) {
             if(Boolean.TRUE.equals(CyberAPI.this.settings.getBoolean("silenced"))) return;
@@ -870,13 +880,13 @@ public class CyberAPI extends JavaPlugin {
                     log.error("An error occurred fetching the latest version for GitHub repo 'CyberAPI', tag=" + element.getAsJsonObject().get("tag_name").getAsString() + ": " + ChatColor.DARK_GRAY + exception.toString());
                 }
             } catch (Exception exception) {
-                log.error("Failed version checking for CyberAPI version " + getVersion() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException("VERSION_CHECKER", exception);return;
+                log.error("Failed version checking for CyberAPI version " + getVersion() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException(exception);return;
             }
 
             net.md_5.bungee.api.ChatColor DEFAULT_WARN_LOG = net.md_5.bungee.api.ChatColor.of(new java.awt.Color(249, 241, 165));
             if(getBuild() != latestBuild) {
                 if(latestBuild - getBuild() > 0) {
-                    log.warn( DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest version is " + ChatColor.GREEN + latestVersion + DEFAULT_WARN_LOG + ", using " + ChatColor.RED + getVersion() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
+                    log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest version is " + ChatColor.GREEN + latestVersion + DEFAULT_WARN_LOG + ", using " + ChatColor.RED + getVersion() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
                     log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
                 }
             }
@@ -1159,7 +1169,7 @@ public class CyberAPI extends JavaPlugin {
                 }
             } catch (Exception exception) {
                 getAPILogger().error("An error occurred with Technoblade's tribute! " + ChatColor.DARK_GRAY + exception);
-                getAPILogger().verboseException("TECHNOBLADE", exception);
+                getAPILogger().verboseException(exception);
             }
             Log.info("&d-".repeat(60));
         }

@@ -14,11 +14,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.net.InetAddress;
 import java.nio.file.Files;
-import java.util.List;
 import java.util.*;
 
 public class ServerListInfoListener {
@@ -90,7 +87,7 @@ public class ServerListInfoListener {
             ping.setPlayersVisible(serverListPingEvent.isPlayerListVisible()); // overrides the 'player count' and 'hover over player count' sections
         } catch (Exception exception){
             CyberAPI.getInstance().getAPILogger().error("An exception occurred whilst sending server ping packet: " + ChatColor.DARK_GRAY + exception);
-            CyberAPI.getInstance().getAPILogger().verboseException("SERVERLISTINFO", exception);
+            CyberAPI.getInstance().getAPILogger().verboseException(exception);
         }
     }
 

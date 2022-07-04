@@ -12,18 +12,13 @@ import java.util.Locale;
 public class UTabComp {
 
     /**
-     * Represents the type of tab completion that will be used in some of {@link UTabComp}'s methods
-     */
-    public enum TabCompleteType {
-        CONTAINS, SEARCH
-    }
-
-    /**
      * The main tab completion method that you would return on with {@link org.bukkit.command.TabExecutor#onTabComplete(CommandSender, Command, String, String[])}
      * <br> <br> <br>
-     * {@link TabCompleteType#SEARCH} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake" but not "BestCyber"
+     * {@link TabCompleteType#SEARCH} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake" but not "BestCyber" and "BlueStar"
      * <br> <br>
-     * {@link TabCompleteType#CONTAINS} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake" and "Best<b>Cyb</b>er"
+     * {@link TabCompleteType#CONTAINS} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake" and "Best<b>Cyb</b>er" but not "BlueStar"
+     * <br> <br>
+     * {@link TabCompleteType#NONE} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake", "Best<b>Cyb</b>er", and "BlueStar"
      * @param type the tab completion type, a {@link TabCompleteType}, describes how the {@code currentArg} would tab complete the {@code completions}
      * @param currentArg the current argument, what the player is currently typing
      * @param completions what to tab complete
@@ -37,18 +32,22 @@ public class UTabComp {
         if (currentArg.length() <= 0) { return completions; }
         currentArg = currentArg.toLowerCase(Locale.ROOT);
         List<String> returnedCompletions = new ArrayList<>();
-        if (type == TabCompleteType.CONTAINS) {
-            for (String str : completions) {
-                if (str.toLowerCase(Locale.ROOT).contains(currentArg)) {
-                    returnedCompletions.add(str);
+        switch(type) {
+            case CONTAINS -> {
+                for (String str : completions) {
+                    if (str.toLowerCase(Locale.ROOT).contains(currentArg)) {
+                        returnedCompletions.add(str);
+                    }
                 }
             }
-        }else if (type == TabCompleteType.SEARCH) {
-            for (String str : completions) {
-                if (str.toLowerCase(Locale.ROOT).startsWith(currentArg)) {
-                    returnedCompletions.add(str);
+            case SEARCH -> {
+                for (String str : completions) {
+                    if (str.toLowerCase(Locale.ROOT).startsWith(currentArg)) {
+                        returnedCompletions.add(str);
+                    }
                 }
             }
+            case NONE -> returnedCompletions.addAll(completions);
         }
         return returnedCompletions;
     }
@@ -62,6 +61,8 @@ public class UTabComp {
      * {@link TabCompleteType#SEARCH} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake" but not "BestCyber"
      * <br> <br>
      * {@link TabCompleteType#CONTAINS} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake" and "Best<b>Cyb</b>er"
+     * <br> <br>
+     * {@link TabCompleteType#NONE} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake", "Best<b>Cyb</b>er", and "BlueStar"
      * @param currentArg the current argument, what the player is currently typing
      * @param completions what to tab complete
      * @return the purified list for the tab completions, return this to the {@code onTabComplete()} method
@@ -81,6 +82,8 @@ public class UTabComp {
      * {@link TabCompleteType#SEARCH} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake" but not "BestCyber"
      * <br> <br>
      * {@link TabCompleteType#CONTAINS} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake" and "Best<b>Cyb</b>er"
+     * <br> <br>
+     * {@link TabCompleteType#NONE} would work like "/customcommand Cyb" and would tab complete "<b>Cyb</b>eredCake", "Best<b>Cyb</b>er", and "BlueStar"
      * @param currentArg the current argument, what the player is currently typing
      * @param completions what to tab complete
      * @return the purified list for the tab completions, return this to the {@code onTabComplete()} method
