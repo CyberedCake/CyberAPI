@@ -184,6 +184,13 @@ subprojects { Project subProject ->
     shadowJar {
         archiveFileName = getProject().getName() + "-" + fullVersion.toString() + ".jar"
 
+        def javaVersion = JavaVersion.toVersion(getTargetJavaVersion())
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+        if(JavaVersion.current() < javaVersion) {
+            toolchain.languageVersion = JavaLanguageVersion.of(getTargetJavaVersion())
+        }
+
         tasks.withType(Javadoc) {
             options.addStringOption("Xdoclint:none", '-quiet')
         }
