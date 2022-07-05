@@ -1,6 +1,6 @@
 package net.cybercake.cyberapi.common.player;
 
-import net.cybercake.cyberapi.bungee.CyberAPI;
+import net.cybercake.cyberapi.common.CommonAdapter;
 import net.cybercake.cyberapi.common.basic.Time;
 
 import java.util.HashMap;
@@ -54,13 +54,13 @@ public class CachedUsername {
     }
 
     /**
-     * Forces the instance to re-cache the known username, uses {@link CyberAPI#getName(UUID)}
+     * Forces the instance to re-cache the known username, uses {@code CyberAPI.getInstance().getName(UUID)}
      * <p>This automatically happens every 30 minutes anyway!</p>
      * @since 3.3
      */
     public void forceRecache() {
         this.lastCached = Time.getUnix();
-        this.username = CyberAPI.getInstance().getName(uuid);
+        this.username = CommonAdapter.adapter().getName(uuid);
     }
 
     /**

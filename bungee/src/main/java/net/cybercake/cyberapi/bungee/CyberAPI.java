@@ -1,7 +1,6 @@
 package net.cybercake.cyberapi.bungee;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.cybercake.cyberapi.bungee.chat.Log;
 import net.cybercake.cyberapi.bungee.chat.UChat;
@@ -10,7 +9,8 @@ import net.cybercake.cyberapi.bungee.player.BungeeTitle;
 import net.cybercake.cyberapi.bungee.player.CyberPlayer;
 import net.cybercake.cyberapi.bungee.server.commands.CommandManager;
 import net.cybercake.cyberapi.bungee.server.commands.ReflectionsConsoleFilter;
-import net.cybercake.cyberapi.common.basic.BetterStackTraces;
+import net.cybercake.cyberapi.common.CommonManager;
+import net.cybercake.cyberapi.bungee.basic.BetterStackTraces;
 import net.cybercake.cyberapi.common.basic.Time;
 import net.cybercake.cyberapi.common.builders.player.UserHeadSettings;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
@@ -27,8 +27,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
 import javax.annotation.Nullable;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -47,7 +45,7 @@ import java.util.logging.Level;
  * @Website: <a href="https://github.com/CyberedCake/CyberAPI">github.com/CyberedCake/CyberAPI</a>
  */
 @SuppressWarnings({"unused"})
-public class CyberAPI extends Plugin {
+public class CyberAPI extends Plugin implements CommonManager {
 
     public CyberAPI() { api = this; }
     private static CyberAPI api;
@@ -379,46 +377,6 @@ public class CyberAPI extends Plugin {
         List<String> usernames = new ArrayList<>();
         getOnlinePlayers().forEach(player -> usernames.add(player.getName()));
         return usernames;
-    }
-
-    /**
-     * Gets a player's {@link UUID} from a given {@link String} username
-     * <br>
-     * <b>Note: This is obtaining the {@link UUID} from a URL, meaning you should cache this or use asynchronous events</b>
-     * @param name the name to retrieve the UUID from
-     * @return the UUID associated with the name
-     * @since 3.3
-     */
-    public UUID getUUID(String name) {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://api.mojang.com/users/profiles/minecraft/" + name).openStream()));
-            String strUUID = (((JsonObject) JsonParser.parseReader(reader)).get("id")).toString().replaceAll("\"", "");
-            strUUID = strUUID.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
-            reader.close();
-            return UUID.fromString(strUUID);
-        } catch (ClassCastException | IOException exception) {
-            throw new IllegalArgumentException("Unable to get the UUID of " + name, exception);
-        }
-    }
-
-    /**
-     * Gets a player's {@link String} username from a given {@link UUID}
-     * <br>
-     * <b>Note: This is obtaining the {@link UUID} from a URL, meaning you should cache this or use asynchronous events</b>
-     * @param uuid the uuid to retrieve the name from
-     * @return the name associated with the UUID
-     * @since 3.3
-     */
-    public String getName(UUID uuid) {
-        try {
-            String name;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid).openStream()));
-            name = (((JsonObject)JsonParser.parseReader(reader)).get("name")).toString().replaceAll("\"", "");
-            reader.close();
-            return name;
-        } catch (ClassCastException | IOException exception) {
-            throw new IllegalArgumentException("Unable to get the username of " + uuid.toString(), exception);
-        }
     }
 
     /**

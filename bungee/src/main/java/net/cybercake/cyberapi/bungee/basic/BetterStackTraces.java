@@ -1,4 +1,4 @@
-package net.cybercake.cyberapi.common.basic;
+package net.cybercake.cyberapi.bungee.basic;
 
 import net.cybercake.cyberapi.bungee.chat.Log;
 

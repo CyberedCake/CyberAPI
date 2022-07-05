@@ -1,6 +1,6 @@
 package net.cybercake.cyberapi.spigot.server;
 
-import net.cybercake.cyberapi.common.basic.BetterStackTraces;
+import net.cybercake.cyberapi.spigot.basic.BetterStackTraces;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

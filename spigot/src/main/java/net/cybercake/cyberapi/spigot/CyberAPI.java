@@ -3,14 +3,14 @@ package net.cybercake.cyberapi.spigot;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.cybercake.cyberapi.common.basic.BetterStackTraces;
+import net.cybercake.cyberapi.common.CommonManager;
 import net.cybercake.cyberapi.common.basic.NumberUtils;
 import net.cybercake.cyberapi.common.basic.Time;
 import net.cybercake.cyberapi.common.builders.player.UserHeadSettings;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import net.cybercake.cyberapi.common.builders.settings.Settings;
+import net.cybercake.cyberapi.spigot.basic.BetterStackTraces;
 import net.cybercake.cyberapi.spigot.chat.Log;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.config.Config;
@@ -42,7 +42,10 @@ import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.Duration;
@@ -65,7 +68,7 @@ import java.util.logging.Level;
  * @see Time
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
-public class CyberAPI extends JavaPlugin {
+public class CyberAPI extends JavaPlugin implements CommonManager {
 
     public CyberAPI() {
         api = this;
@@ -210,9 +213,7 @@ public class CyberAPI extends JavaPlugin {
      * @return the Bukkit version string, for example, my server shows '1.19-R0.1-SNAPSHOT' (as of June 17th, 2022)
      * @since 3.0.0
      */
-    public String getBukkitVersionString() {
-        return Bukkit.getServer().getBukkitVersion();
-    }
+    public String getBukkitVersionString() { return Bukkit.getServer().getBukkitVersion(); }
 
     /**
      * Gets the version of the Minecraft server
@@ -588,46 +589,6 @@ public class CyberAPI extends JavaPlugin {
     public double getDistance(Location location1, Location location2) {
         if(!location1.getWorld().getName().equals(location2.getWorld().getName())) throw new IllegalArgumentException("The two locations, location1 and location2, must be in the same world!");
         return location1.distance(location2);
-    }
-
-    /**
-     * Gets a player's {@link UUID} from a given {@link String} username
-     * <br>
-     * <b>Note: This is obtaining the {@link UUID} from a URL, meaning you should cache this or use asynchronous events</b>
-     * @param name the name to retrieve the UUID from
-     * @return the UUID associated with the name
-     * @since 3.0.0
-     */
-    public UUID getUUID(String name) {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://api.mojang.com/users/profiles/minecraft/" + name).openStream()));
-            String strUUID = (((JsonObject)JsonParser.parseReader(reader)).get("id")).toString().replaceAll("\"", "");
-            strUUID = strUUID.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
-            reader.close();
-            return UUID.fromString(strUUID);
-        } catch (ClassCastException | IOException exception) {
-            throw new IllegalArgumentException("Unable to get the UUID of " + name, exception);
-        }
-    }
-
-    /**
-     * Gets a player's {@link String} username from a given {@link UUID}
-     * <br>
-     * <b>Note: This is obtaining the {@link UUID} from a URL, meaning you should cache this or use asynchronous events</b>
-     * @param uuid the uuid to retrieve the name from
-     * @return the name associated with the UUID
-     * @since 3.0.0
-     */
-    public String getName(UUID uuid) {
-        try {
-            String name;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid).openStream()));
-            name = (((JsonObject)JsonParser.parseReader(reader)).get("name")).toString().replaceAll("\"", "");
-            reader.close();
-            return name;
-        } catch (ClassCastException | IOException exception) {
-            throw new IllegalArgumentException("Unable to get the username of " + uuid.toString(), exception);
-        }
     }
 
     /**

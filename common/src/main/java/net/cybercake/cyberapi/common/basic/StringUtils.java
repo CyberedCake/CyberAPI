@@ -1,8 +1,5 @@
 package net.cybercake.cyberapi.common.basic;
 
-import net.cybercake.cyberapi.bungee.server.commands.Command;
-import net.md_5.bungee.api.CommandSender;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;

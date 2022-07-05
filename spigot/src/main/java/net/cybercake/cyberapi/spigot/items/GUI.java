@@ -1,7 +1,7 @@
 package net.cybercake.cyberapi.spigot.items;
 
-import net.cybercake.cyberapi.common.basic.BetterStackTraces;
 import net.cybercake.cyberapi.spigot.CyberAPI;
+import net.cybercake.cyberapi.spigot.basic.BetterStackTraces;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
