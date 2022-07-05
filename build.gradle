@@ -162,6 +162,18 @@ subprojects { Project subProject ->
         }
     }
 
+    java {
+        withSourcesJar()
+        withJavadocJar()
+
+        def javaVersion = JavaVersion.toVersion(getTargetJavaVersion())
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+        if(JavaVersion.current() < javaVersion) {
+            toolchain.languageVersion = JavaLanguageVersion.of(getTargetJavaVersion())
+        }
+    }
+
     classes {
         dependsOn createProperties
     }
