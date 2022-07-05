@@ -75,6 +75,10 @@ ext {
     fullVersion = version.toString()
 }
 
+def javaVersion = JavaVersion.toVersion(getTargetJavaVersion())
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+
 logger.quiet("> Found version " + version.toString() + " and build #" + build.toString())
 
 subprojects { Project subProject ->
@@ -152,6 +156,12 @@ subprojects { Project subProject ->
         }
     }
 
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+        archives shadowJar
+    }
+
     javadoc {
         configure(options) {
             tags(
@@ -166,9 +176,6 @@ subprojects { Project subProject ->
         withSourcesJar()
         withJavadocJar()
 
-        def javaVersion = JavaVersion.toVersion(getTargetJavaVersion())
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
         if(JavaVersion.current() < javaVersion) {
             toolchain.languageVersion = JavaLanguageVersion.of(getTargetJavaVersion())
         }
@@ -196,7 +203,6 @@ subprojects { Project subProject ->
     shadowJar {
         archiveFileName = getProject().getName() + "-" + fullVersion.toString() + ".jar"
 
-        def javaVersion = JavaVersion.toVersion(getTargetJavaVersion())
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
 
