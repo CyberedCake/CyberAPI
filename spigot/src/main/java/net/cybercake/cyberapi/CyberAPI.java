@@ -20,8 +20,6 @@ import net.cybercake.cyberapi.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.server.serverlist.ServerListInfoListener;
 import net.cybercake.cyberapi.settings.FinalizedSettings;
 import net.cybercake.cyberapi.settings.Settings;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.title.Title;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.*;
@@ -141,7 +139,7 @@ public class CyberAPI extends JavaPlugin {
 
         CyberAPISpecific specific = getCyberAPISpecific();
 
-        log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
+        if(settings.getBoolean("muteStartMessage")) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
         if(isVerbose()) specific.printBuildInformation();
 
         specific.checkForUpdates(); // check for CyberAPI updates

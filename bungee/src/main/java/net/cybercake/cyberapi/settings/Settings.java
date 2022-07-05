@@ -19,14 +19,9 @@ public class Settings {
      * @since 3.3
      */
     public static class Builder {
-        private boolean verbose;
-        private boolean silenced;
-        private boolean checkForUpdates;
-        private boolean showPrefixInLogs;
+        private boolean verbose, silenced, checkForUpdates, showPrefixInLogs, muteStartMessage;
         private FeatureSupport luckPermsSupport;
-        private String name;
-        private String prefix;
-        private String commandsPath;
+        private String name, prefix, commandsPath;
 
         /**
          * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link Settings}
@@ -39,6 +34,7 @@ public class Settings {
             this.silenced = false;
             this.checkForUpdates = true;
             this.showPrefixInLogs = false;
+            this.muteStartMessage = false;
             this.luckPermsSupport = FeatureSupport.AUTO;
             this.name = CyberAPI.getInstance().getDescription().getName();
             this.prefix = CyberAPI.getInstance().getDescription().getName();
@@ -76,6 +72,14 @@ public class Settings {
          * @param showPrefixInLogs set this to 'true' to show prefix in logs, 'false' is not default
          */
         public Builder showPrefixInLogs(boolean showPrefixInLogs) { this.showPrefixInLogs = showPrefixInLogs; return this; }
+
+        /**
+         * Should CyberAPI mute the start message?
+         * <br> <br>
+         * <em>Default Value:</em> {@code false}
+         * @param muteStartMessage set this to 'true' to mute the start message, 'false' is default
+         */
+        public Builder muteStartMessage(boolean muteStartMessage) { this.muteStartMessage = muteStartMessage; return this; }
 
         /**
          * Should CyberAPI attempt and allow the use of LuckPerms data? {@link net.luckperms.api.LuckPerms}
@@ -157,6 +161,13 @@ public class Settings {
      * @since 3.3
      */
     public boolean shouldShowPrefixInLogs() { return builder.showPrefixInLogs; }
+
+    /**
+     * Gets whether CyberAPI should mute the start message
+     * @return should mute start message
+     * @since 3.3.2
+     */
+    public boolean shouldMuteStartMessage() { return builder.muteStartMessage; }
 
     /**
      * Gets whether CyberAPI supports LuckPerms or not

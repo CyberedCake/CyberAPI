@@ -105,7 +105,7 @@ public class CyberAPI extends Plugin {
 
         CyberAPISpecific specific = getCyberAPISpecific();
 
-        log.info(specific.getVersionString());
+        if(getSettings().shouldMuteStartMessage()) log.info(specific.getVersionString());
         if(getSettings().isVerbose()) specific.printBuildInformation();
 
         specific.checkForUpdates();

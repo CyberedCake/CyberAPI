@@ -7,23 +7,16 @@ import net.cybercake.cyberapi.CyberAPI;
  */
 public class Settings {
 
-    private boolean verbose;
-    private boolean silenced;
-    private boolean checkForUpdates;
-    private boolean showPrefixInLogs;
-    private FeatureSupport adventureSupport;
-    private FeatureSupport miniMessageSupport;
-    private FeatureSupport luckPermsSupport;
-    private FeatureSupport protocolLibSupport;
-    private String name;
-    private String prefix;
-    private String commandsPath;
+    private boolean verbose, silenced, checkForUpdates, showPrefixInLogs, muteStartMessage;
+    private FeatureSupport adventureSupport, miniMessageSupport, luckPermsSupport, protocolLibSupport;
+    private String name, prefix, commandsPath;
 
     public Settings() {
         this.verbose = false;
         this.silenced = false;
         this.checkForUpdates = true;
         this.showPrefixInLogs = true;
+        this.muteStartMessage = false;
         this.adventureSupport = FeatureSupport.AUTO;
         this.miniMessageSupport = FeatureSupport.AUTO;
         this.luckPermsSupport = FeatureSupport.AUTO;
@@ -92,6 +85,14 @@ public class Settings {
      * @param showPrefixInLogs set this to 'true' to show prefix in logs, 'false' is not default
      */
     public Settings showPrefixInLogs(boolean showPrefixInLogs) { this.showPrefixInLogs = showPrefixInLogs; return this; }
+
+    /**
+     * Should CyberAPI mute the start message?
+     * <br> <br>
+     * <em>Default Value:</em> {@code false}
+     * @param muteStartMessage set this to 'true' to mute the start message, 'false' is default
+     */
+    public Settings muteStartMessage(boolean muteStartMessage) { this.muteStartMessage = muteStartMessage; return this; }
 
     /**
      * Should CyberAPI attempt and allow the use of Adventure components? {@link net.kyori.adventure.text.Component}
@@ -176,6 +177,7 @@ public class Settings {
                 attachValue("silenced", silenced) +
                 attachValue("checkForUpdates", checkForUpdates) +
                 attachValue("showPrefixInLogs", showPrefixInLogs) +
+                attachValue("muteStartMessage", muteStartMessage) +
                 attachValue("name", name) +
                 attachValue("adventureSupport", adventureSupport) +
                 attachValue("miniMessageSupport", miniMessageSupport) +
