@@ -20,7 +20,7 @@ public class StringUtils {
      * @since 3.3
      * @author LukeIThink
      */
-    public String capitalize(String string) {
+    public static String capitalize(String string) {
         if(string == null || string.isEmpty()) return string;
 
         return string.substring(0, 1).toUpperCase(Locale.ROOT) + string.substring(1);
