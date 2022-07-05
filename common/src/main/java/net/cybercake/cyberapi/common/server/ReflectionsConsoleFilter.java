@@ -1,4 +1,4 @@
-package net.cybercake.cyberapi.spigot.server.commands;
+package net.cybercake.cyberapi.common.server;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;

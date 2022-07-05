@@ -2,15 +2,14 @@ package net.cybercake.cyberapi.bungee;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import net.cybercake.cyberapi.bungee.basic.BetterStackTraces;
 import net.cybercake.cyberapi.bungee.chat.Log;
 import net.cybercake.cyberapi.bungee.chat.UChat;
 import net.cybercake.cyberapi.bungee.config.Config;
 import net.cybercake.cyberapi.bungee.player.BungeeTitle;
 import net.cybercake.cyberapi.bungee.player.CyberPlayer;
 import net.cybercake.cyberapi.bungee.server.commands.CommandManager;
-import net.cybercake.cyberapi.bungee.server.commands.ReflectionsConsoleFilter;
 import net.cybercake.cyberapi.common.CommonManager;
-import net.cybercake.cyberapi.bungee.basic.BetterStackTraces;
 import net.cybercake.cyberapi.common.basic.Time;
 import net.cybercake.cyberapi.common.builders.player.UserHeadSettings;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
@@ -23,8 +22,6 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 
 import javax.annotation.Nullable;
 import java.io.InputStream;
@@ -98,7 +95,7 @@ public class CyberAPI extends Plugin implements CommonManager {
         // automatically sets the variable in these methods, so returned values are not used
         getLuckPermsSupport();
 
-        ((Logger) LogManager.getRootLogger()).addFilter(new ReflectionsConsoleFilter());
+        reflectionsConsoleFilter(); // deprecated because I don't want anyone else using it
         CommandManager.commandManager().init(settings.getCommandsPath());
 
         CyberAPISpecific specific = getCyberAPISpecific();

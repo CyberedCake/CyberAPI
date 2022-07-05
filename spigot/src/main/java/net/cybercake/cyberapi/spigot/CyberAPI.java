@@ -17,11 +17,8 @@ import net.cybercake.cyberapi.spigot.config.Config;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.cybercake.cyberapi.spigot.server.CyberAPIListeners;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
-import net.cybercake.cyberapi.spigot.server.commands.ReflectionsConsoleFilter;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfoListener;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
@@ -131,7 +128,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
         registerListener(new CyberAPIListeners());
 
-        ((Logger)LogManager.getRootLogger()).addFilter(new ReflectionsConsoleFilter());
+        reflectionsConsoleFilter(); // deprecated because I don't want anyone else using it
         CommandManager.commandManager().init(settings.getCommandsPath());
 
         if(getProtocolLibSupport().equals(FeatureSupport.SUPPORTED)) {

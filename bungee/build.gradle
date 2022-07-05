@@ -14,10 +14,6 @@ dependencies {
     compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
     compileOnly 'net.luckperms:api:5.4'
 
-    // log4j
-    compileOnly 'org.apache.logging.log4j:log4j-api:2.18.0'
-    compileOnly 'org.apache.logging.log4j:log4j-core:2.18.0'
-
     // utils
     implementation 'org.reflections:reflections:0.10.2'
 }

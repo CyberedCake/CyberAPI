@@ -1,5 +1,7 @@
 package net.cybercake.cyberapi.common.builders.player;
 
+import net.md_5.bungee.api.ChatColor;
+
 /**
  * @since 3.3
  */

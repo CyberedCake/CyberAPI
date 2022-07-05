@@ -2,6 +2,9 @@ package net.cybercake.cyberapi.common;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.cybercake.cyberapi.common.server.ReflectionsConsoleFilter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +13,18 @@ import java.net.URL;
 import java.util.UUID;
 
 public interface CommonManager {
+
+    /**
+     * Registers the {@link org.apache.logging.log4j.core.filter.AbstractFilter AbstractFilter} for {@link ReflectionsConsoleFilter}
+     * <br>
+     * <b>I would not recommend calling this method yourself, just let CyberAPI handle it!</b>
+     * @deprecated please do not use this method, just what-so-ever, let CyberAPI handle it
+     */
+    @Deprecated()
+    @SuppressWarnings({"all"})
+    default void reflectionsConsoleFilter() {
+        ((Logger) LogManager.getRootLogger()).addFilter(new ReflectionsConsoleFilter());
+    }
 
     /**
      * Gets a player's {@link UUID} from a given {@link String} username

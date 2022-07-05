@@ -2,6 +2,7 @@ package net.cybercake.cyberapi.common.player;
 
 import net.cybercake.cyberapi.common.CommonAdapter;
 import net.cybercake.cyberapi.common.basic.Time;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class CachedUsername {
      */
     @Deprecated
     @SuppressWarnings({"all"})
-    public CachedUsername(UUID uuid) {
+    public CachedUsername(@NotNull UUID uuid) {
         if(cachedUsernames.containsKey(uuid)) throw new IllegalArgumentException("That UUID is already stored in cached usernames!");
 
         this.uuid = uuid;
@@ -48,7 +49,7 @@ public class CachedUsername {
      * @see CachedUsername#getUsername()
      * @since 3.3
      */
-    public static CachedUsername cachedUsername(UUID uuid) {
+    public static CachedUsername cachedUsername(@NotNull UUID uuid) {
         if(cachedUsernames.containsKey(uuid)) return cachedUsernames.get(uuid);
         return new CachedUsername(uuid);
     }

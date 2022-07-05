@@ -3,10 +3,25 @@ repositories {
 }
 
 dependencies {
+    // servers
+    compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
+
+    // adventure API (https://docs.adventure.kyori.net/)
+    compileOnly "net.kyori:adventure-api:4.11.0"
+    compileOnly "net.kyori:adventure-text-serializer-legacy:4.11.0"
+    compileOnly "net.kyori:adventure-text-minimessage:4.11.0"
+
+    // log4j
+    compileOnly 'org.apache.logging.log4j:log4j-api:2.18.0'
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.18.0'
+
     implementation 'org.jetbrains:annotations:23.0.0'
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.9.0'
 }
 
 shadowJar {
-
+    relocate 'org.intellij.lang.annotations', 'net.cybercake.cyberapi.dependencies.intellij.annotations'
+    relocate 'org.jetbrains.annotations', 'net.cybercake.cyberapi.dependencies.jetbrains.annotations'
+    relocate 'com.google.gson', 'net.cybercake.cyberapi.dependencies.google.gson'
 }
