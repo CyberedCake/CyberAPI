@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
+// and no, this isn't documented because, for the most part, it isn't used by non-CyberAPI classes
 public class CommandManager {
 
     private static CommandManager commandManager = null;

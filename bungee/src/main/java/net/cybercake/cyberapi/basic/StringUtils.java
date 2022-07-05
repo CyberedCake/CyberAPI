@@ -1,7 +1,6 @@
 package net.cybercake.cyberapi.basic;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
+import net.md_5.bungee.api.CommandSender;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -58,7 +57,7 @@ public class StringUtils {
      * @return the modified string
      * @since 3.0.0
      */
-    public static java.lang.String getCharacters(int beginCharacter, int endCharacter, java.lang.String string) {
+    public static String getCharacters(int beginCharacter, int endCharacter, String string) {
         if(beginCharacter < 0) {
             return null;
         }
@@ -115,7 +114,7 @@ public class StringUtils {
     }
 
     /**
-     * Get strings from arguments, usually from {@link org.bukkit.command.CommandExecutor#onCommand(CommandSender, Command, String, String[])}
+     * Get strings from arguments, usually from {@link net.cybercake.cyberapi.server.commands.Command#perform(CommandSender, String[])}
      * @param startFrom what index to start from in the arguments
      * @param args the arguments to check against
      * @return the arguments combined

@@ -3,14 +3,13 @@ package net.cybercake.cyberapi.chat.centered;
 import net.cybercake.cyberapi.CyberAPI;
 import net.cybercake.cyberapi.chat.UChat;
 import net.cybercake.cyberapi.player.CyberPlayer;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * {@link CenteredMessage} handles message centering, including MOTDs and chat
+ * @since 3.3
  */
 public class CenteredMessage {
 
@@ -19,6 +18,7 @@ public class CenteredMessage {
 
     /**
      * Creates a blank {@link CenteredMessage} instance, usually if you are going to use the {@link CenteredMessage#setMessage(String)}, {@link CenteredMessage#setLength(int)}, or {@link CenteredMessage#setTextType(TextType)} methods
+     * @since 3.3
      */
     public CenteredMessage() {
         this.message = "";
@@ -29,6 +29,7 @@ public class CenteredMessage {
      * Creates a {@link CenteredMessage} instance with an already pre-defined message and length
      * @param message the message to center
      * @param length the length of the message that will be used in determine the exact center of the message, in number of characters
+     * @since 3.3
      */
     public CenteredMessage(String message, int length) {
         this.message = message;
@@ -39,6 +40,7 @@ public class CenteredMessage {
      * Creates a {@link CenteredMessage} instance with an already pre-defined message and text type
      * @param message the message to center
      * @param type the type of the message
+     * @since 3.3
      */
     public CenteredMessage(String message, TextType type) {
         this.message = message;
@@ -49,6 +51,7 @@ public class CenteredMessage {
      * Creates a {@link CenteredMessage} instance with an already pre-defined message <br>
      * This method assumes the text type is {@link TextType#CHAT}
      * @param message the chat message to center
+     * @since 3.3
      */
     public CenteredMessage(String message) {
         this.message = message;
@@ -74,6 +77,7 @@ public class CenteredMessage {
      * A {@link String} representing the centered message
      * <p>If {@link TextType} is {@link TextType#CHAT}, it will use {@link Method#TWO}, if it is anything other than CHAT, it will use {@link Method#ONE}</p>
      * @return the centered message
+     * @since 3.3
      */
     public String getString() {
         if(TextType.CHAT.getLength() == length) return getString(Method.TWO);
@@ -84,6 +88,7 @@ public class CenteredMessage {
      * A {@link String} representing the centered message
      * @param method the method at which to get the centered message
      * @return the centered message
+     * @since 3.3
      */
     public String getString(Method method) {
         switch(method) {
@@ -167,27 +172,23 @@ public class CenteredMessage {
     }
 
     /**
-     * A {@link Component} representing the centered message
-     * @return the centered message, a {@link Component}
-     * @apiNote requires Adventure API support
-     */
-    public Component getComponent() { return LegacyComponentSerializer.legacyAmpersand().deserialize(getString()); }
-
-    /**
      * Sends a message to a {@link CommandSender} using the {@code sender.sendMessage()} method
      * @param sender the {@link CommandSender} to send the centered message to
+     * @since 3.3
      */
-    public void send(CommandSender sender) { sender.sendMessage(getString()); }
+    public void send(CommandSender sender) { sender.sendMessage(UChat.bComponent(getString())); }
 
     /**
-     * Sends a message to a {@link Player} using the {@code player.sendMessage()} method
-     * @param player the {@link Player} to send the centered message to
+     * Sends a message to a {@link ProxiedPlayer} using the {@code player.sendMessage()} method
+     * @param player the {@link ProxiedPlayer} to send the centered message to
+     * @since 3.3
      */
-    public void send(Player player) { player.sendMessage(getString()); }
+    public void send(ProxiedPlayer player) { player.sendMessage(UChat.bComponent(getString())); }
 
     /**
      * Sends a message to a {@link CyberPlayer} using the {@code cyberPlayer.getOnlineActions().sendColored()} method
      * @param cyberPlayer the {@link CyberPlayer} to send the centered message to
+     * @since 3.3
      */
     public void send(CyberPlayer cyberPlayer) {
         if(cyberPlayer.getOnlineActions() == null) throw new IllegalStateException("That Cyber Player (" + cyberPlayer.getUniqueID() + "), must be online to send them a " + this.getClass().getCanonicalName() + "!");
@@ -198,6 +199,7 @@ public class CenteredMessage {
      * Sets the message to a {@link String}, this var will then be used from now on as the message string
      * @param message what to set the message to
      * @return the current instance of {@link CenteredMessage}
+     * @since 3.3
      */
     public CenteredMessage setMessage(String message) {
         this.message = message; return this;
@@ -207,6 +209,7 @@ public class CenteredMessage {
      * Sets the length to an integer, this var will then be used from now as the length
      * @param length what to set the length to
      * @return the current instance of {@link CenteredMessage}
+     * @since 3.3
      */
     public CenteredMessage setLength(int length) {
         this.length = length; return this;
@@ -216,6 +219,7 @@ public class CenteredMessage {
      * Sets the {@link TextType}, this var will then be used from now on as the text type
      * @param textType what to set the text type to
      * @return the current instance of {@link CenteredMessage}
+     * @since 3.3
      */
     public CenteredMessage setTextType(TextType textType) {
         this.length = textType.getLength(); return this;
@@ -224,6 +228,7 @@ public class CenteredMessage {
     /**
      * Gets the current length of the {@link CenteredMessage} instance
      * @return the current length
+     * @since 3.3
      */
     public int getLength() { return length; }
 
@@ -231,6 +236,7 @@ public class CenteredMessage {
      * Checks if this instance of {@link CenteredMessage} is equal to another instance of {@link CenteredMessage}
      * @param centeredMessage the other instance, must be {@link CenteredMessage}
      * @return whether the two instances match, true (yes, they match) or false (no, they do not match)
+     * @since 3.3
      */
     public boolean equals(CenteredMessage centeredMessage) {
         return centeredMessage.getString().equalsIgnoreCase(this.getString()) &&

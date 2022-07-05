@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'org.tenne.rest' version '0.4.2'
+    id 'com.github.johnrengelman.shadow' version "7.1.2"
 }
 
 static String getGroup() { return "net.cybercake.cyberapi"; }
@@ -14,7 +15,7 @@ static int getTargetJavaVersion() { return 17; }
 
 // version info
 def major = '3'
-def minor = '2'
+def minor = '3'
 
 
 
@@ -79,15 +80,12 @@ logger.quiet("> Found version " + version.toString() + " and build #" + build.to
 subprojects { Project subProject ->
     apply plugin: 'java'
     apply plugin: 'maven-publish'
+    apply plugin: 'com.github.johnrengelman.shadow'
 
     group = getGroup()
     version = basicVersion.toString() + "." + patch
 
     def fullVersion = version.toString()
-
-    def website = getWebsite()
-    def description = getDescription()
-    def authors = String.join(", ", getAuthors())
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
@@ -108,7 +106,6 @@ subprojects { Project subProject ->
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
-        finalizedBy(copyArtifacts)
     }
 
     task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -155,32 +152,6 @@ subprojects { Project subProject ->
         }
     }
 
-    artifacts {
-        archives sourcesJar
-        archives javadocJar
-    }
-
-    processResources {
-        def props = [version: version]
-        inputs.properties props
-        filteringCharset 'UTF-8'
-        filesMatching('plugin.yml') {
-            expand props
-        }
-    }
-
-    java {
-        withSourcesJar()
-        withJavadocJar()
-
-        def javaVersion = JavaVersion.toVersion(getTargetJavaVersion())
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
-        if(JavaVersion.current() < javaVersion) {
-            toolchain.languageVersion = JavaLanguageVersion.of(getTargetJavaVersion())
-        }
-    }
-
     javadoc {
         configure(options) {
             tags(
@@ -188,16 +159,6 @@ subprojects { Project subProject ->
                     'implNote:b"Implementation Note:"',
                     'website:c"Website:"'
             )
-        }
-    }
-
-    jar {
-        tasks.withType(Javadoc) {
-            options.addStringOption("Xdoclint:none", '-quiet')
-        }
-        from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
-        manifest {
-            attributes 'fullVersion': fullVersion.toString()
         }
     }
 
@@ -213,6 +174,23 @@ subprojects { Project subProject ->
                 version project.version
                 from components.java
             }
+        }
+    }
+
+    shadowJar.finalizedBy javadocJar
+    shadowJar.finalizedBy sourcesJar
+    shadowJar.finalizedBy copyArtifacts
+
+    shadowJar {
+        archiveFileName = getProject().getName() + "-" + fullVersion.toString() + ".jar"
+
+        tasks.withType(Javadoc) {
+            options.addStringOption("Xdoclint:none", '-quiet')
+        }
+
+        from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
+        manifest {
+            attributes 'fullVersion': fullVersion.toString()
         }
     }
 }

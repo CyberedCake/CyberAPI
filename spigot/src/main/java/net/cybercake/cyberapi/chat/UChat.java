@@ -8,6 +8,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.ChatPaginator;
@@ -260,6 +261,27 @@ public class UChat {
     public static Component fromLegacy(String string) {
         Validators.validateAdventureSupport();
         return LegacyComponentSerializer.legacyAmpersand().deserialize(string);
+    }
+
+    /**
+     * Converts {@link BaseComponent} to legacy bukkit color codes
+     * @param component the component to convert to legacy string
+     * @return the formatted message
+     * @since 3.3
+     */
+    public static String toLegacyBungee(BaseComponent component) {
+        return UChat.chat(ComponentSerializer.toString(component));
+    }
+
+    /**
+     * Converts {@link String} legacy bukkit color codes to a {@link BaseComponent}
+     * @param string the string to convert to adventure component
+     * @return the component message
+     * @since 3.3
+     */
+    public static BaseComponent fromLegacyBungee(String string) {
+        Validators.validateAdventureSupport();
+        return bComponent(string);
     }
 
     /**

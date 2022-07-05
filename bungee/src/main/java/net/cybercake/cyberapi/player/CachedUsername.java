@@ -17,7 +17,7 @@ public class CachedUsername {
 
     private static final HashMap<UUID, CachedUsername> cachedUsernames = new HashMap<>();
 
-    @Deprecated private CachedUsername() {}
+    @Deprecated private CachedUsername() { }
 
     /**
      * Gets an instance of the cached username
@@ -28,6 +28,7 @@ public class CachedUsername {
      * @since 3.0.0
      */
     @Deprecated
+    @SuppressWarnings({"all"})
     public CachedUsername(UUID uuid) {
         if(cachedUsernames.containsKey(uuid)) throw new IllegalArgumentException("That UUID is already stored in cached usernames!");
 
@@ -45,7 +46,7 @@ public class CachedUsername {
      * @param uuid the UUID associated with the username you want to get
      * @return the {@link CachedUsername} instance
      * @see CachedUsername#getUsername()
-     * @since 3.0.0
+     * @since 3.3
      */
     public static CachedUsername cachedUsername(UUID uuid) {
         if(cachedUsernames.containsKey(uuid)) return cachedUsernames.get(uuid);
@@ -55,7 +56,7 @@ public class CachedUsername {
     /**
      * Forces the instance to re-cache the known username, uses {@link CyberAPI#getName(UUID)}
      * <p>This automatically happens every 30 minutes anyway!</p>
-     * @since 3.0.0
+     * @since 3.3
      */
     public void forceRecache() {
         this.lastCached = Time.getUnix();
@@ -65,21 +66,21 @@ public class CachedUsername {
     /**
      * Gets the {@link UUID} of the player involved
      * @return the player's UUID
-     * @since 3.0.0
+     * @since 3.3
      */
     public UUID getUUID() { return uuid; }
 
     /**
      * Gets when the last cache happened, in unix time (SECONDS)
      * @return when the last cached occurred, unix time
-     * @since 3.0.0
+     * @since 3.3
      */
     public long getLastCached() { return lastCached; }
 
     /**
      * Gets how long it's been since the last cache, returns -1 if it has not been cached yet
      * @return amount of seconds since last cache
-     * @since 3.0.0
+     * @since 3.3
      */
     public long getSecondsSinceLastCache() {
         if(lastCached == 0L) return -1L;
@@ -89,7 +90,7 @@ public class CachedUsername {
     /**
      * Gets the cached username of the player involved
      * @return the {@link String} username
-     * @since 3.0.0
+     * @since 3.3
      */
     public String getUsername() {
         if(getSecondsSinceLastCache() == -1 || getSecondsSinceLastCache() >= (30*60)) forceRecache();

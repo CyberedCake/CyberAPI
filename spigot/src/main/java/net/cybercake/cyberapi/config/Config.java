@@ -22,6 +22,7 @@ public class Config {
 
     /**
      * Creates a configuration from the default 'config.yml'
+     * @since 3.0.0
      */
     public Config() {
         this.name = "config";
@@ -32,6 +33,7 @@ public class Config {
     /**
      * Creates a configuration from a specified file name
      * @param fileName the file name, do not include the extension at the end, automatically assumes '.yml'
+     * @since 3.0.0
      */
     public Config(String fileName) {
         this.name = fileName;
@@ -41,7 +43,8 @@ public class Config {
 
     /**
      * Saves the config
-     * @throws IOException when an error occurrs with saving the config
+     * @throws IOException when an error occurs with saving the config
+     * @since 3.0.0
      */
     public void save() throws IOException {
         this.values().save(file);
@@ -49,6 +52,7 @@ public class Config {
 
     /**
      * Saves the defaults to the config from the "resources/" folder
+     * @since 3.0.0
      */
     public void saveDefaults() {
         if(!file.exists()) CyberAPI.getInstance().saveResource(name + ".yml", false);
@@ -56,6 +60,7 @@ public class Config {
 
     /**
      * Reloads the config and allows for the new values the user has edited to be obtained
+     * @since 3.0.0
      */
     public void reload() {
         config = YamlConfiguration.loadConfiguration(file);
@@ -67,18 +72,21 @@ public class Config {
     /**
      * Gets the name of the configuration file
      * @return the config file name
+     * @since 3.0.0
      */
     public String getName() { return name; }
 
     /**
-     * Gets the File of the configuration that is located in the plugin's Data Folder
+     * Gets the {@link File} of the configuration that is located in the plugin's data folder
      * @return the file in the "*\plugins\*your plugin*\file.example"
+     * @since 3.0.0
      */
     public File getFile() { return file; }
 
     /**
-     * Gets the FileConfiguration for the configuration.
-     * @return the FileConfiguration, allows developer to get keys and values from the config
+     * Gets the {@link FileConfiguration} for the configuration.
+     * @return the {@link FileConfiguration}, allows developer to get keys and values from the config
+     * @since 3.0.0
      */
     public FileConfiguration values() {
         if(config == null) reload();
