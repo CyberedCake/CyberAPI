@@ -33,3 +33,10 @@ dependencies {
     // utils
     implementation 'org.reflections:reflections:0.10.2'
 }
+
+shadowJar {
+    relocate 'javassist', 'net.cybercake.cyberapi.dependencies.javassist'
+    relocate 'javax.annotation', 'net.cybercake.cyberapi.dependencies.annotations'
+    relocate 'org.reflections', 'net.cybercake.cyberapi.dependencies.reflections'
+    relocate 'org.slf4j', 'net.cybercake.cyberapi.dependencies.slf4j'
+}
