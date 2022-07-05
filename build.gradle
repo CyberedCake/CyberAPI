@@ -157,9 +157,11 @@ subprojects { Project subProject ->
     }
 
     artifacts {
-        archives sourcesJar
-        archives javadocJar
-        archives shadowJar
+        if(!subProject.getName().contains("common")) {
+            archives sourcesJar
+            archives javadocJar
+            archives shadowJar
+        }
     }
 
     javadoc {
@@ -208,7 +210,7 @@ subprojects { Project subProject ->
 
     shadowJar.finalizedBy javadocJar
     shadowJar.finalizedBy sourcesJar
-    shadowJar.finalizedBy copyArtifacts
+    if(!subProject.getName().contains("common")) shadowJar.finalizedBy copyArtifacts
 
     shadowJar {
         archiveFileName = getProject().getName() + "-" + fullVersion.toString() + ".jar"
