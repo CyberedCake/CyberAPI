@@ -876,7 +876,7 @@ public class CyberAPI extends JavaPlugin {
         public void checkForUpdates() {
             if(!shouldCheckForUpdates()) return;
 
-            log.verbose("VERSION_CHECKER", "Checking for updates...");
+            log.verbose("Checking for updates...");
             try {
                 // thanks stack overflow (https://stackoverflow.com/a/21964051/15519255)
                 URL url = new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest");
@@ -903,7 +903,7 @@ public class CyberAPI extends JavaPlugin {
                 }
             }
 
-            log.verbose("VERSION_CHECKER", "Checked for updates! (version=" + getCyberAPISpecific().getVersion() + ", latest=" + getCyberAPISpecific().getLatestVersion() + ")");
+            log.verbose("Checked for updates! (version=" + getCyberAPISpecific().getVersion() + ", latest=" + getCyberAPISpecific().getLatestVersion() + ")");
         }
 
         /**

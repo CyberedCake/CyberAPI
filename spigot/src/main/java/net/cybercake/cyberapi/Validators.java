@@ -9,6 +9,14 @@ import net.cybercake.cyberapi.settings.Settings;
  */
 public class Validators {
 
+    private static UnsupportedOperationException dependency(String name) {
+        return new UnsupportedOperationException(name + " is not a dependency of " + CyberAPI.getInstance().getPluginName() + ", and therefore method " + Thread.currentThread().getStackTrace()[5] + " does not work!");
+    }
+
+    private static UnsupportedOperationException serverHook(String name) {
+        return new UnsupportedOperationException(name + " is not in the server's plugin folder, and therefore method " + Thread.currentThread().getStackTrace()[5] + " does not work!");
+    }
+
     public static void validateIsNotAuto(Settings.FeatureSupport featureSupport) {
         if(featureSupport.equals(Settings.FeatureSupport.AUTO)) throw new IllegalStateException("Feature Support cannot be set to auto in CyberAPI instance. Maybe it hasn't finished loading yet? (" + featureSupport.getFeature() + ")");
     }
@@ -20,7 +28,7 @@ public class Validators {
      */
     public static void validateAdventureSupport() {
         validateIsNotAuto(CyberAPI.getInstance().getAdventureAPISupport());
-        if(!CyberAPI.getInstance().getAdventureAPISupport().equals(Settings.FeatureSupport.SUPPORTED)) throw new UnsupportedOperationException("Adventure API in " + CyberAPI.getInstance().getPluginName() + " is not marked as supported in CyberAPI!");
+        if(!CyberAPI.getInstance().getAdventureAPISupport().equals(Settings.FeatureSupport.SUPPORTED)) throw dependency("Adventure API");
     }
 
     /**
@@ -31,7 +39,7 @@ public class Validators {
     public static void validateMiniMessageSupport() {
         validateIsNotAuto(CyberAPI.getInstance().getMiniMessageSupport());
         validateAdventureSupport();
-        if(!CyberAPI.getInstance().getMiniMessageSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw new UnsupportedOperationException("MiniMessage in " + CyberAPI.getInstance().getPluginName() + " is not marked as supported in CyberAPI!");
+        if(!CyberAPI.getInstance().getMiniMessageSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw dependency("MiniMessage");
     }
 
     /**
@@ -41,7 +49,7 @@ public class Validators {
      */
     public static void validateLuckPermsHook() {
         validateIsNotAuto(CyberAPI.getInstance().getLuckPermsSupport());
-        if(!CyberAPI.getInstance().getLuckPermsSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw new UnsupportedOperationException("LuckPerms in " + CyberAPI.getInstance().getPluginName() + " is not marked as supported in CyberAPI!");
+        if(!CyberAPI.getInstance().getLuckPermsSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw serverHook("LuckPerms");
     }
 
     /**
@@ -51,7 +59,7 @@ public class Validators {
      */
     public static void validateProtocolLibHook() {
         validateIsNotAuto(CyberAPI.getInstance().getProtocolLibSupport());
-        if(!CyberAPI.getInstance().getProtocolLibSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw new UnsupportedOperationException("ProtocolLib in " + CyberAPI.getInstance().getPluginName() + " is not marked as supported in CyberAPI!");
+        if(!CyberAPI.getInstance().getProtocolLibSupport().equals(Settings.FeatureSupport.SUPPORTED)) throw serverHook("ProtocolLib");
     }
 
 }
