@@ -139,7 +139,7 @@ public class CyberAPI extends JavaPlugin {
 
         CyberAPISpecific specific = getCyberAPISpecific();
 
-        if(settings.getBoolean("muteStartMessage")) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
+        if(!settings.getBoolean("muteStartMessage")) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
         if(isVerbose()) specific.printBuildInformation();
 
         specific.checkForUpdates(); // check for CyberAPI updates
