@@ -1,5 +1,2 @@
 jdk:
     - openjdk17
-install:
-    - echo "Building the plugin"
-    - ./gradlew build --stacktrace
