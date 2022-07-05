@@ -35,7 +35,7 @@ jobs:
       - name: Build Gradle
         uses: gradle/gradle-build-action@v2.2.0
         with:
-          arguments: build --stacktrace
+          arguments: shadowJar --stacktrace
       - name: Read Version
         id: version
         uses: christian-draeger/read-properties@1.0.1
