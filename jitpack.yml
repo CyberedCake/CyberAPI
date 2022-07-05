@@ -1,2 +1,5 @@
 jdk:
     - openjdk17
+install:
+    - echo "Building the plugin"
+    - ./gradlew clean shadowJar --stacktrace
