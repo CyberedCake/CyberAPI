@@ -375,7 +375,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     }
 
     /**
-     * Gets the Mini Message support. This method assumes the best of the developer as if they marked Mini Message as {@link FeatureSupport#SUPPORTED}, it will allow the use of Mini Message methods.
+     * Gets the MiniMessage support. This method assumes the best of the developer as if they marked MiniMessage as {@link FeatureSupport#SUPPORTED}, it will allow the use of MiniMessage methods.
      * @return the {@link FeatureSupport} enum of the value
      * @since 3.0.0
      */

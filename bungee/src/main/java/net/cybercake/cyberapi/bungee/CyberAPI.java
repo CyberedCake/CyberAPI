@@ -122,7 +122,10 @@ public class CyberAPI extends Plugin implements CommonManager {
     private Config mainConfig = null;
     private final HashMap<String, Config> configs = new HashMap<>();
 
+    private FeatureSupport adventureAPISupport = null;
+    private FeatureSupport miniMessageSupport = null;
     private FeatureSupport luckPermsSupport = null;
+    private FeatureSupport protocolLibSupport = null;
 
     /**
      * Gets the settings CyberAPI is using to determine the developer's preferences
@@ -281,6 +284,26 @@ public class CyberAPI extends Plugin implements CommonManager {
     public CyberPlayer getCyberPlayer(UUID uuid) { return new CyberPlayer(uuid); }
 
     /**
+     * Gets the Adventure API support. This method will always return {@link FeatureSupport#UNSUPPORTED} because this CyberAPI server type does not support it!
+     * @return the {@link FeatureSupport} enum of the value, always {@link FeatureSupport#UNSUPPORTED}
+     * @since 3.4.1
+     */
+    public FeatureSupport getAdventureAPISupport() {
+        if(this.adventureAPISupport == null) this.adventureAPISupport = FeatureSupport.UNSUPPORTED;
+        return this.adventureAPISupport;
+    }
+
+    /**
+     * Gets the MiniMessage support. This method will always return {@link FeatureSupport#UNSUPPORTED} because this CyberAPI server type does not support it!
+     * @return the {@link FeatureSupport} enum of the value, always {@link FeatureSupport#UNSUPPORTED}
+     * @since 3.4.1
+     */
+    public FeatureSupport getMiniMessageSupport() {
+        if(this.miniMessageSupport == null) this.miniMessageSupport = FeatureSupport.UNSUPPORTED;
+        return this.miniMessageSupport;
+    }
+
+    /**
      * Gets the LuckPerms support. This method assumes the best of the developer as if they have marked LuckPerms support as {@link FeatureSupport#SUPPORTED}, it will allow use of it.
      * @return the {@link FeatureSupport} enum of the value
      * @since 3.3
@@ -300,6 +323,16 @@ public class CyberAPI extends Plugin implements CommonManager {
             }
         }
         return this.luckPermsSupport;
+    }
+
+    /**
+     * Gets the ProtocolLib support. This method will always return {@link FeatureSupport#UNSUPPORTED} because this CyberAPI server type does not support it!
+     * @return the {@link FeatureSupport} enum of the value, always {@link FeatureSupport#UNSUPPORTED}
+     * @since 3.4.1
+     */
+    public FeatureSupport getProtocolLibSupport() {
+        if(this.protocolLibSupport == null) this.protocolLibSupport = FeatureSupport.UNSUPPORTED;
+        return this.protocolLibSupport;
     }
 
     /**
