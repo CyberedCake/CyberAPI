@@ -15,7 +15,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
         private String permission = "";
         private String usage = "";
         private String[] aliases = new String[]{};
-        private TabCompleteType tabCompleteType;
+        private TabCompleteType tabCompleteType = TabCompleteType.NONE;
 
         /**
          * Creates an instance of {@link CommandInformation}, allowing you to customize the stored information on the command.
