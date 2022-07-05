@@ -172,7 +172,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
      * @return whether the command was successful or not
      * @since 3.2
      */
-    public abstract boolean perform(@NotNull CommandSender sender, @NotNull String label, String[] args);
+    public abstract boolean perform(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args);
 
     /**
      * The Bukkit command's tab completions
@@ -182,17 +182,17 @@ public abstract class Command implements CommandExecutor, TabCompleter {
      * @return what to tab complete
      * @since 3.2
      */
-    public abstract List<String> tab(@NotNull CommandSender sender, @NotNull String label, String[] args);
+    public abstract List<String> tab(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args);
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
-        return perform(commandSender, command.getLabel(), strings);
+        return perform(commandSender, command, command.getLabel(), strings);
     }
 
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
-        List<String> tab = tab(commandSender, command.getLabel(), strings);
+        List<String> tab = tab(commandSender, command, command.getLabel(), strings);
         if(tab == null) return UTabComp.emptyList;
         return UTabComp.tabCompletions(getTabCompleteType(), List.of(strings).get(strings.length-1), tab);
     }
