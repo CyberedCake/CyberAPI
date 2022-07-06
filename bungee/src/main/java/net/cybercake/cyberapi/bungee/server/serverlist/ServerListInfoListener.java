@@ -94,7 +94,9 @@ public class ServerListInfoListener implements Listener {
             for(String name : serverListPingEvent.getOnlinePlayers()) {
                 profiles.add(new ServerPing.PlayerInfo(name, UUID.randomUUID()));
             }
-            ping.setPlayers(new ServerPing.Players(serverListPingEvent.getMaxPlayers(), (serverListPingEvent.isPlayerListVisible() ? serverListPingEvent.getOnlinePlayerCount() : Integer.MIN_VALUE), (serverListPingEvent.isPlayerListVisible() ? profiles.toArray(new ServerPing.PlayerInfo[]{}) : null)));
+
+            if(serverListPingEvent.isPlayerListVisible()) ping.setPlayers(new ServerPing.Players(serverListPingEvent.getMaxPlayers(), serverListPingEvent.getOnlinePlayerCount(), (serverListPingEvent.isPlayerListVisible() ? profiles.toArray(new ServerPing.PlayerInfo[]{}) : null)));
+            else ping.setPlayers(null);
 
             ping.setVersion(new ServerPing.Protocol(UChat.chat(serverListPingEvent.getVersionName()), (serverListPingEvent.isVersionNameAlwaysVisible() ? 0 : (serverListPingEvent.getProtocolVersion() == Integer.MIN_VALUE ? ProxyServer.getInstance().getProtocolVersion() : serverListPingEvent.getProtocolVersion()))));
 
