@@ -31,4 +31,14 @@ public class Validators {
         if(!CyberAPI.getInstance().getLuckPermsSupport().equals(FeatureSupport.SUPPORTED)) throw serverHook("LuckPerms");
     }
 
+    /**
+     * --{@literal >} <b>MAINLY FOR USE INSIDE CYBERAPI ONLY</b> {@literal <}--
+     * <br><br>
+     * Validates that Protocolize is supported and working
+     */
+    public static void validateProtocolizeHook() {
+        validateIsNotAuto(CyberAPI.getInstance().getProtocolizeSupport());
+        if(!CyberAPI.getInstance().getProtocolizeSupport().equals(FeatureSupport.SUPPORTED)) throw serverHook("Protocolize");
+    }
+
 }

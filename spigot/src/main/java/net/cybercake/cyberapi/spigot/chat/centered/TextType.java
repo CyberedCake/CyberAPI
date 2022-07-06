@@ -22,7 +22,7 @@ public enum TextType {
      * <br> <br>
      * <b>45 characters {@literal <}- default</b>
      */
-    MOTD(45);
+    MOTD(60);
 
     private final int length;
 

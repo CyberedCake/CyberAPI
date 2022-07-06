@@ -9,6 +9,8 @@ import net.cybercake.cyberapi.bungee.config.Config;
 import net.cybercake.cyberapi.bungee.player.BungeeTitle;
 import net.cybercake.cyberapi.bungee.player.CyberPlayer;
 import net.cybercake.cyberapi.bungee.server.commands.CommandManager;
+import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfo;
+import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfoListener;
 import net.cybercake.cyberapi.common.CommonManager;
 import net.cybercake.cyberapi.common.basic.Time;
 import net.cybercake.cyberapi.common.builders.player.UserHeadSettings;
@@ -94,6 +96,9 @@ public class CyberAPI extends Plugin implements CommonManager {
         // load all support variables, so they're not 'null'
         // automatically sets the variable in these methods, so returned values are not used
         getLuckPermsSupport();
+        getProtocolizeSupport();
+
+        registerListener(new ServerListInfoListener());
 
         reflectionsConsoleFilter(); // deprecated because I don't want anyone else using it
         CommandManager.commandManager().init(settings.getCommandsPath());
@@ -123,6 +128,7 @@ public class CyberAPI extends Plugin implements CommonManager {
     private FeatureSupport miniMessageSupport = null;
     private FeatureSupport luckPermsSupport = null;
     private FeatureSupport protocolLibSupport = null;
+    private FeatureSupport protocolizeSupport = null;
 
     /**
      * Gets the settings CyberAPI is using to determine the developer's preferences
@@ -333,6 +339,28 @@ public class CyberAPI extends Plugin implements CommonManager {
     }
 
     /**
+     * Gets the Protocolize support. This method assumes the best of the developer as if they have marked Protocolize support as {@link FeatureSupport#SUPPORTED}, it will allow use of it.
+     * @return the {@link FeatureSupport} enum of the value
+     * @since 3.5
+     */
+    public FeatureSupport getProtocolizeSupport() {
+        if(protocolizeSupport == null) {
+            protocolizeSupport = settings.supportsProtocolize();
+
+            if(protocolizeSupport.equals(FeatureSupport.AUTO)) {
+                try {
+                    Class.forName("dev.simplix.protocolize");
+                    this.protocolizeSupport = FeatureSupport.SUPPORTED;
+                } catch (Exception exception) {
+                    this.protocolizeSupport = FeatureSupport.UNSUPPORTED;
+                }
+                log.verbose("Protocolize support was set to auto, detected: " + protocolizeSupport.name());
+            }
+        }
+        return this.protocolizeSupport;
+    }
+
+    /**
      * Sends a title to a player with specified settings
      * @param player the player to send the title to
      * @param title the title to send
@@ -389,6 +417,15 @@ public class CyberAPI extends Plugin implements CommonManager {
      */
     public void performCommand(CommandSender sender, String command) {
         ProxyServer.getInstance().getPluginManager().dispatchCommand(sender, command.substring(1));
+    }
+
+    /**
+     * Returns an instance of {@link ServerListInfo}, which allows you to change things like the MOTD, player count, icon, etc.
+     * @return the {@link ServerListInfo} instance
+     * @since 3.5
+     */
+    public ServerListInfo getServerListInfo() {
+        return ServerListInfo.serverListInfo();
     }
 
     /**
@@ -465,7 +502,7 @@ public class CyberAPI extends Plugin implements CommonManager {
         public void verbose(String message) { verbose(StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass().getCanonicalName(), message); }
         public void verbose(String canonical, String message) {
             if(getSettings().isVerbose())
-                log(Level.INFO, ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + "VERBOSE/" + canonical + ChatColor.DARK_GRAY + " ] " + ChatColor.RESET + message);
+                log(Level.INFO, ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + "VERBOSE/" + canonical + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message);
         }
 
         public void verboseException(Throwable throwable) {

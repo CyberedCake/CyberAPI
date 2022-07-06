@@ -20,7 +20,7 @@ public class Settings {
      */
     public static class Builder {
         private boolean verbose, silenced, checkForUpdates, showPrefixInLogs, muteStartMessage;
-        private FeatureSupport adventureSupport, miniMessageSupport, luckPermsSupport, protocolLibSupport;
+        private FeatureSupport adventureSupport, miniMessageSupport, luckPermsSupport, protocolLibSupport, protocolizeSupport;
         private String name, prefix, commandsPath;
 
         /**
@@ -39,6 +39,7 @@ public class Settings {
             this.miniMessageSupport = FeatureSupport.AUTO;
             this.luckPermsSupport = FeatureSupport.AUTO;
             this.protocolLibSupport = FeatureSupport.AUTO;
+            this.protocolizeSupport = FeatureSupport.AUTO;
             this.name = null;
             this.prefix = null;
             this.commandsPath = null;
@@ -93,6 +94,7 @@ public class Settings {
          * <br> <br>
          * <em>Default Value:</em> {@link FeatureSupport#AUTO}
          * @param adventureSupport set this to whether or not Adventure API will be supported
+         * @apiNote This is only available for **SPIGOT**
          */
         public Builder adventureSupport(FeatureSupport adventureSupport) { this.adventureSupport.setFeature("ADVENTURE_API"); this.adventureSupport = adventureSupport; return this; }
 
@@ -104,6 +106,7 @@ public class Settings {
          * <br> <br>
          * <em>Default Value:</em> {@link FeatureSupport#AUTO}
          * @param miniMessageSupport set this to whether or not MiniMessage will be supported
+         * @apiNote This is only available for **SPIGOT**
          */
         public Builder miniMessageSupport(FeatureSupport miniMessageSupport) { this.miniMessageSupport.setFeature("MINI_MESSAGE"); this.miniMessageSupport = miniMessageSupport; return this; }
 
@@ -114,18 +117,31 @@ public class Settings {
          * <br> <br>
          * <em>Default Value:</em> {@link FeatureSupport#AUTO}
          * @param luckPermsSupport set this to whether or not LuckPerms will be supported
+         * @apiNote This is only available for SPIGOT and BUNGEECORD
          */
         public Builder luckPermsSupport(FeatureSupport luckPermsSupport) { this.luckPermsSupport.setFeature("LUCKPERMS"); this.luckPermsSupport = luckPermsSupport; return this; }
 
         /**
-         * Should CyberAPI attempt and allow the use of LuckPerms data? {@link net.luckperms.api.LuckPerms}
+         * Should CyberAPI attempt and allow the use of ProtocolLib data?
          * <br> <br>
          * If you have ProtocolLib installed on your server (check via <em>/plugins</em>), this should be fine to set to {@link FeatureSupport#SUPPORTED}
          * <br> <br>
          * <em>Default Value:</em> {@link FeatureSupport#AUTO}
          * @param protocolLibSupport set this to whether or not ProtocolLib will be supported
+         * @apiNote This is only available for **SPIGOT**
          */
         public Builder protocolLibSupport(FeatureSupport protocolLibSupport) { this.protocolLibSupport.setFeature("PROTOCOLLIB"); this.protocolLibSupport = protocolLibSupport; return this; }
+
+        /**
+         * Should CyberAPI attempt and allow the use of Protocolize data?
+         * <br> <br>
+         * If you have Protocolize installed on your server (check via <em>/gplugins</em>), this should be fine to set to {@link FeatureSupport#SUPPORTED}
+         * <br> <br>
+         * <em>Default Value:</em> {@link FeatureSupport#AUTO}
+         * @param protocolizeSupport set this to whether or not Protocolize will be supported
+         * @apiNote This is only available for **BUNGEECORD**
+         */
+        public Builder protocolizeSupport(FeatureSupport protocolizeSupport) { this.protocolizeSupport.setFeature("PROTOCOLIZE"); this.protocolizeSupport = protocolizeSupport; return this; }
 
         /**
          * Sets the name of the plugin CyberAPI uses
@@ -232,6 +248,13 @@ public class Settings {
      * @since 3.4
      */
     public FeatureSupport supportsProtocolLib() { return builder.protocolLibSupport; }
+
+    /**
+     * Gets whether CyberAPI supports Protocolize or not
+     * @return supports Protocolize
+     * @since 3.5
+     */
+    public FeatureSupport supportsProtocolize() { return builder.protocolizeSupport; }
 
     /**
      * Gets the name of the plugin
