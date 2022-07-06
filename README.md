@@ -5,8 +5,6 @@ The new and improved CyberAPI, version 3, is here! This is a library used for mo
 <br> <br>
 You can view the to-do list and future plans [by clicking here](https://github.com/CyberedCake/CyberAPI/projects/1)
 
-## As of now, only \*\*SPIGOT\*\* and Spigot forks are supported! Bungeecord support coming soon!
-
 # How to install and use
 
 <details>
