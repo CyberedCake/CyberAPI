@@ -796,7 +796,7 @@ public class CyberAPI extends Plugin implements CommonManager {
         /**
          * Gets a list of string's of the pretty build information, usually used by {@link CyberAPISpecific#printBuildInformation()}, but you can use it to print it to a player as well!
          * @return the pretty build information in string with \n form
-         * @since 3.0.0
+         * @since 3.3
          * @see CyberAPISpecific#getPrettyBuildInformation(boolean)
          */
         public String getPrettyBuildInformation() {
@@ -807,7 +807,7 @@ public class CyberAPI extends Plugin implements CommonManager {
          * Gets a list of string's of the pretty build information, usually used by {@link CyberAPISpecific#printBuildInformation()}, but you can use it to print it to a player as well!
          * @param separators whether separators should be present at the start and end of the message
          * @return the pretty build information in string with \n form
-         * @since 3.0.0
+         * @since 3.3
          * @see CyberAPISpecific#printBuildInformation()
          */
         public String getPrettyBuildInformation(boolean separators) {
