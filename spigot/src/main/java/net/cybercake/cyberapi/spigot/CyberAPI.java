@@ -459,7 +459,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 3.0.0
      */
     public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+        player.sendTitle(UChat.chat(title), UChat.chat(subtitle), fadeIn, stay, fadeOut);
     }
 
     /**
