@@ -1,5 +1,5 @@
 # CyberAPI
-[![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI)
+[![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Version)](https://jitpack.io/p/CyberedCake/CyberAPI)
 <br> <br>
 The new and improved CyberAPI, version 3, is here! This is a library used for most of [CyberedCake's](https://github.com/CyberedCake) plugins and can be used by you for free! It adds additional features that Spigot and Bungeecord (bungee coming soon) do not have and makes existing stuff easier.
 <br> <br>
@@ -26,7 +26,7 @@ Step 1) Include the below code in your build.gradle "repositories" section.
 	}
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI) <br>
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Version)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
 Step 2) <b>NOTE: You must keep the "v" at the beginning of the version number!</b>
 ```gradle
 	dependencies {
@@ -53,7 +53,7 @@ Step 1) Include the below code in your pom.xml "repositories" section.
     </repositories>
 ```
 
-Step 2) Include the below code in your pom.xml as a "dependency" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg)](https://jitpack.io/#CyberedCake/CyberAPI) <br>
+Step 2) Include the below code in your pom.xml as a "dependency" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Version)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
 Step 2) <b>NOTE: You must keep the "v" at the beginning of the version number!</b>
 ```xml
     <dependencies>
