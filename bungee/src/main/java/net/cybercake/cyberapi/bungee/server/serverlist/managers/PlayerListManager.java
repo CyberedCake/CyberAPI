@@ -2,6 +2,7 @@ package net.cybercake.cyberapi.bungee.server.serverlist.managers;
 
 import net.cybercake.cyberapi.bungee.CyberAPI;
 import net.cybercake.cyberapi.bungee.chat.UChat;
+import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.bungee.server.serverlist.players.NewPlayerCountType;
 import net.cybercake.cyberapi.common.basic.NumberUtils;
 import net.md_5.bungee.api.ProxyServer;

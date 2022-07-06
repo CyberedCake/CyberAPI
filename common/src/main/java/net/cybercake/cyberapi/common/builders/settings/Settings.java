@@ -87,7 +87,7 @@ public class Settings {
 
 
         /**
-         * Should CyberAPI attempt and allow the use of Adventure components? {@link net.kyori.adventure.text.Component}
+         * Should CyberAPI attempt and allow the use of Adventure components?
          * <br> <br>
          * If you are using a PAPER or above server (paper, purpur, pufferfish, etc.), you *should* keep this enabled
          * If you are using a SPIGOT or below server (spigot, bukkit, etc.), you *should* keep this disabled
@@ -99,7 +99,7 @@ public class Settings {
         public Builder adventureSupport(FeatureSupport adventureSupport) { this.adventureSupport.setFeature("ADVENTURE_API"); this.adventureSupport = adventureSupport; return this; }
 
         /**
-         * Should CyberAPI attempt and allow the use of Adventure's MiniMessage? {@link net.kyori.adventure.text.minimessage.MiniMessage}
+         * Should CyberAPI attempt and allow the use of Adventure's MiniMessage?
          * <br> <br>
          * If you are using a PAPER or above server (paper, purpur, pufferfish, etc.), you *should* keep both of these enabled
          * If you are using a SPIGOT or below server (spigot, bukkit, etc.), you *should* keep both of these disabled
@@ -111,7 +111,7 @@ public class Settings {
         public Builder miniMessageSupport(FeatureSupport miniMessageSupport) { this.miniMessageSupport.setFeature("MINI_MESSAGE"); this.miniMessageSupport = miniMessageSupport; return this; }
 
         /**
-         * Should CyberAPI attempt and allow the use of LuckPerms data? {@link net.luckperms.api.LuckPerms}
+         * Should CyberAPI attempt and allow the use of LuckPerms data?
          * <br> <br>
          * If you have LuckPerms installed on your server (check via <em>/plugins</em>), this should be fine to set to {@link FeatureSupport#SUPPORTED}
          * <br> <br>
@@ -181,7 +181,7 @@ public class Settings {
 
     /**
      * The {@link Settings} instance, created by the {@link Builder} intsance
-     * @param builder the builder that can then be transformed into {@link Settings} and read by {@link CyberAPI}
+     * @param builder the builder that can then be transformed into {@link Settings} and read by {@code CyberAPI}
      * @since 3.3
      */
     public Settings(Builder builder) { this.builder = builder; }
@@ -208,7 +208,7 @@ public class Settings {
     public boolean shouldCheckForUpdates() { return builder.checkForUpdates; }
 
     /**
-     * Gets whether CyberAPI should print the plugin's prefix in console every time they use a {@link Log} feature
+     * Gets whether CyberAPI should print the plugin's prefix in console every time they use a {@code CyberAPI Log Class} feature
      * @return should show prefix in logs/console
      * @since 3.3
      */

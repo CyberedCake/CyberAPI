@@ -96,8 +96,8 @@ public class PingSettings {
         }
 
         /**
-         * Whether the {@link CyberPlayer.OnlineActions#getColoredPing(PingSettings)} should show the 'ms' at the end, or just return the color and ping
-         * @param showMS should {@link CyberPlayer.OnlineActions#getColoredPing(PingSettings)} show 'ms' at the end
+         * Whether the {@code CyberPlayer#getOnlineActions().getColoredPing(PingSettings)} should show the 'ms' at the end, or just return the color and ping
+         * @param showMS should {@code CyberPlayer#getOnlineActions().getColoredPing(PingSettings)} show 'ms' at the end
          */
         public Builder showMS(boolean showMS) {
             this.showMS = showMS; return this;
@@ -177,7 +177,7 @@ public class PingSettings {
     public int getDarkRedMinimum() { return builder.darkRedMin; }
 
     /**
-     * Gets whether {@link CyberPlayer.OnlineActions#getColoredPing()} should show 'ms' at the end of the {@link String} of colored ping
+     * Gets whether {@code CyberPlayer#getOnlineActions().getColoredPing()} should show 'ms' at the end of the {@link String} of colored ping
      * @return should show 'ms' trailing {@link String}
      * @since 3.3
      */
