@@ -63,6 +63,10 @@ subprojects { Project subProject ->
     group = getGroup()
     version = this.version
 
+    dependencies {
+        if(!subProject.getName().contains("common")) implementation project(':common')
+    }
+
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
         options.release = getTargetJavaVersion()
@@ -157,19 +161,6 @@ subprojects { Project subProject ->
         }
     }
 
-    jar {
-        tasks.withType(Javadoc) {
-            options.addStringOption("Xdoclint:none", '-quiet')
-        }
-        sourcesJar.archiveName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
-        javadocJar.archiveName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
-
-        from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
-        manifest {
-            attributes 'buildNumber': "#" + String.valueOf(this.build)
-        }
-    }
-
     classes {
         dependsOn createProperties
     }
@@ -201,7 +192,7 @@ subprojects { Project subProject ->
 
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
-            attributes 'build': "#" + String.valueOf(this.build)
+            attributes 'buildNumber': "#" + this.build.toString()
         }
     }
 }

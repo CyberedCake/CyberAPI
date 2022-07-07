@@ -16,9 +16,6 @@ repositories {
 }
 
 dependencies {
-    // cyberapi
-    implementation project(':common')
-
     // adventure API (https://docs.adventure.kyori.net/)
     compileOnly "net.kyori:adventure-api:4.11.0"
     compileOnly "net.kyori:adventure-text-serializer-legacy:4.11.0"
