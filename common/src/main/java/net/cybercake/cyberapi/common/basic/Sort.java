@@ -10,7 +10,7 @@ public class Sort {
      * Sorts a {@link Map} with {@code K} and {@code V}
      * @param map the map to sort
      * @return the sorted map
-     * @since 3.0.0
+     * @since 1
      */
     public static <K, V extends Comparable<V> > Map<K, V> sort(final Map<K, V> map) {
         Comparator<K> valueComparator = (k1, k2) -> {

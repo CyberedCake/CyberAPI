@@ -23,7 +23,7 @@ public class UTabComp {
      * @param currentArg the current argument, what the player is currently typing
      * @param completions what to tab complete
      * @return the purified list for the tab completions, return this to the {@code onTabComplete()} method
-     * @since 3.0.0
+     * @since 1
      * @see org.bukkit.command.TabExecutor#onTabComplete(CommandSender, Command, String, String[])
      * @see TabCompleteType
      * @implNote It is recommended that instead of returning {@code null} for {@code onTabComplete()}, you return {@link UTabComp#emptyList}
@@ -66,7 +66,7 @@ public class UTabComp {
      * @param currentArg the current argument, what the player is currently typing
      * @param completions what to tab complete
      * @return the purified list for the tab completions, return this to the {@code onTabComplete()} method
-     * @since 3.0.0
+     * @since 1
      * @see org.bukkit.command.TabExecutor#onTabComplete(CommandSender, Command, String, String[])
      * @see TabCompleteType
      * @implNote It is recommended that instead of returning {@code null} for {@code onTabComplete()}, you return {@link UTabComp#emptyList}
@@ -87,7 +87,7 @@ public class UTabComp {
      * @param currentArg the current argument, what the player is currently typing
      * @param completions what to tab complete
      * @return the purified list for the tab completions, return this to the {@code onTabComplete()} method
-     * @since 3.0.0
+     * @since 1
      * @see org.bukkit.command.TabExecutor#onTabComplete(CommandSender, Command, String, String[])
      * @see TabCompleteType
      * @implNote It is recommended that instead of returning {@code null} for {@code onTabComplete()}, you return {@link UTabComp#emptyList}
@@ -100,7 +100,7 @@ public class UTabComp {
      * @param lowest the lowest number of the integer list
      * @param highest the biggest number of the integer list
      * @return the list of integers from the {@code lowest} param to {@code highest} param
-     * @since 3.0.0
+     * @since 1
      * @see org.bukkit.command.TabExecutor#onTabComplete(CommandSender, Command, String, String[])
      * @see TabCompleteType
      * @see NumberUtils

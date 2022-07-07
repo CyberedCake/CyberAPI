@@ -38,20 +38,21 @@ jobs:
         id: version
         uses: christian-draeger/read-properties@1.0.1
         with:
-          path: 'build/spigot-build.properties'
+          path: 'build/common-build.properties'
           property: 'version'
       - name: Read Build Number
         id: build
         uses: christian-draeger/read-properties@1.0.1
         with:
-          path: 'build/spigot-build.properties'
+          path: 'build/common-build.properties'
           property: 'buildNumber'
       - name: Release CyberAPI
         uses: ncipollo/release-action@v1.10.0
         with:
           artifacts: "build/artifacts/*.jar"
-          name: Version ${{ steps.version.outputs.value }}
-          tag: v${{ steps.version.outputs.value }}-${{ steps.build.outputs.value }}
+          name: "Build #${{ steps.build.outputs.value }}"
+          tag: ${{ steps.build.outputs.value }}
+          commit: main
           body: |
-            **It is not recommended you download the files from here, please use the [README's download link](https://github.com/CyberedCake/CyberAPI#how-to-install-and-use=)**
+            **It is not recommended you download the files from here, please use the [README Installation Guide](https://github.com/CyberedCake/CyberAPI#cyberapi=)**
           generateReleaseNotes: true

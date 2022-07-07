@@ -4,7 +4,7 @@ import java.io.File;
 
 /**
  * Represents the MOTD icon type
- * @since 3.5
+ * @since 28
  */
 public enum MOTDIconType {
     /**

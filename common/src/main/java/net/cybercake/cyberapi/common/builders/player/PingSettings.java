@@ -3,7 +3,7 @@ package net.cybercake.cyberapi.common.builders.player;
 import net.md_5.bungee.api.ChatColor;
 
 /**
- * @since 3.3
+ * @since 15
  */
 @SuppressWarnings({"all"})
 public class PingSettings {
@@ -11,12 +11,12 @@ public class PingSettings {
     /**
      * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link PingSettings} instance
      * @return the Builder instance
-     * @since 3.3
+     * @since 15
      */
     public static Builder builder() { return new Builder(); }
 
     /**
-     * @since 3.3
+     * @since 15
      */
     public static class Builder {
         private int loading;
@@ -31,7 +31,7 @@ public class PingSettings {
 
         /**
          * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link PingSettings} instance
-         * @since 3.3
+         * @since 15
          * @deprecated use {@link PingSettings#builder()} instead
          */
         @Deprecated
@@ -106,7 +106,7 @@ public class PingSettings {
         /**
          * Builds the builder into a {@link PingSettings} instance
          * @return the {@link PingSettings} instance
-         * @since 3.3
+         * @since 15
          */
         public PingSettings build() { return new PingSettings(this); }
     }
@@ -116,70 +116,70 @@ public class PingSettings {
     /**
      * The {@link PingSettings} instance, created by the {@link Builder} instance
      * @param builder the builder that can then be transformed into {@link PingSettings} and read by CyberAPI
-     * @since 3.3
+     * @since 15
      */
     public PingSettings(Builder builder) { this.builder = builder; }
 
     /**
      * Gets the loading maximum that is the highest value when it says 'Loading...' instead of a number (usually 0ms)
      * @return the loading maximum
-     * @since 3.3
+     * @since 15
      */
     public int getLoadingMaximum() { return builder.loading; }
 
     /**
      * Gets the minimum amount for the ping to display as {@link ChatColor#GREEN}
      * @return the green minimum
-     * @since 3.3
+     * @since 15
      */
     public int getGreenMinimum() { return builder.greenMin; }
 
     /**
      * Gets the maximum amount for the ping to display as {@link ChatColor#GREEN}
      * @return the green maximum
-     * @since 3.3
+     * @since 15
      */
     public int getGreenMaximum() { return builder.greenMax; }
 
     /**
      * Gets the minimum amount for the ping to display as {@link ChatColor#YELLOW}
      * @return the yellow minimum
-     * @since 3.3
+     * @since 15
      */
     public int getYellowMinimum() { return builder.yellowMin; }
 
     /**
      * Gets the maximum amount for the ping to display as {@link ChatColor#YELLOW}
      * @return the yellow maximum
-     * @since 3.3
+     * @since 15
      */
     public int getYellowMaximum() { return builder.yellowMax; }
 
     /**
      * Gets the minimum amount for the ping to display as {@link ChatColor#RED}
      * @return the red minimum
-     * @since 3.3
+     * @since 15
      */
     public int getRedMinimum() { return builder.redMin; }
 
     /**
      * Gets the maximum amount for the ping to display as {@link ChatColor#RED}
      * @return the red maximum
-     * @since 3.3
+     * @since 15
      */
     public int getRedMaximum() { return builder.redMax; }
 
     /**
      * Gets the minimum amount for the ping to display as {@link ChatColor#DARK_RED}
      * @return the dark red minimum
-     * @since 3.3
+     * @since 15
      */
     public int getDarkRedMinimum() { return builder.darkRedMin; }
 
     /**
      * Gets whether {@code CyberPlayer#getOnlineActions().getColoredPing()} should show 'ms' at the end of the {@link String} of colored ping
      * @return should show 'ms' trailing {@link String}
-     * @since 3.3
+     * @since 15
      */
     public boolean shouldShowMS() { return builder.showMS; }
 

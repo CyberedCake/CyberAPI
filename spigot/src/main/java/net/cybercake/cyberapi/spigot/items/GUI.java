@@ -25,7 +25,7 @@ public class GUI {
      * @param name the name of the item in the fill
      * @param lore the lore of the item in the fill
      * @see GUI#item(Material, int, boolean, boolean, String, String...)
-     * @since 3.0.0
+     * @since 1
      */
     public static void fillGUI(Inventory inventory, Material material, int amount, boolean shiny, String name, String... lore) {
         ItemStack items = item(material, amount, shiny, name, lore);
@@ -43,7 +43,7 @@ public class GUI {
      * @param name the name of the item
      * @param lore the lore of the item
      * @return the new {@link ItemStack} with all of your settings
-     * @since 3.0.0
+     * @since 1
      */
     public static ItemStack item(Material material, int amount, boolean hideNbt, boolean shiny, String name, String... lore) {
         try {
@@ -87,7 +87,7 @@ public class GUI {
      * @param name the name of the item
      * @param lore the lore of the item
      * @return the new {@link ItemStack} with all of your settings
-     * @since 3.0.0
+     * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
      */
     public static ItemStack item(Material material, int amount, boolean shiny, String name, ArrayList<String> lore) {
@@ -101,7 +101,7 @@ public class GUI {
      * @param name the name of the item
      * @param lore the lore of the item
      * @return the new {@link ItemStack} with all of your settings
-     * @since 3.0.0
+     * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
      */
     public static ItemStack item(Material material, int amount, String name, ArrayList<String> lore) {
@@ -115,7 +115,7 @@ public class GUI {
      * @param name the name of the item
      * @param lore the lore of the item
      * @return the new {@link ItemStack} with all of your settings
-     * @since 3.0.0
+     * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
      */
     public static ItemStack item(Material material, int amount, String name, String... lore) {
@@ -130,7 +130,7 @@ public class GUI {
      * @param name the name of the item
      * @param lore the lore of the item
      * @return the new {@link ItemStack} with all of your settings
-     * @since 3.0.0
+     * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
      */
     public static ItemStack item(Material material, int amount, boolean hideNbt, String name, String... lore) {
@@ -144,7 +144,7 @@ public class GUI {
      * @param hideNbt whether to hide the NBT (enchantments, potion effects, etc.)
      * @param name the name of the item
      * @return the new {@link ItemStack} with all of your settings
-     * @since 3.0.0
+     * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
      */
     public static ItemStack item(Material material, int amount, boolean hideNbt, String name) {
@@ -157,7 +157,7 @@ public class GUI {
      * @param amount the amount of the item
      * @param name the name of the item
      * @return the new {@link ItemStack} with all of your settings
-     * @since 3.0.0
+     * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
      */
     public static ItemStack item(Material material, int amount, String name) {

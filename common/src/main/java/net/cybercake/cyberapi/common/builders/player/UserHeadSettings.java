@@ -5,12 +5,12 @@ public class UserHeadSettings {
     /**
      * Creates a new {@link Builder} instance, which then the method {@link Builder#build} can build into a {@link UserHeadSettings} instance
      * @return the Builder instance
-     * @since 3.3
+     * @since 15
      */
     public static Builder builder() { return new Builder(); }
 
     /**
-     * @since 3.3
+     * @since 15
      */
     public static class Builder {
         private int imageScale;
@@ -20,7 +20,7 @@ public class UserHeadSettings {
 
         /**
          * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link UserHeadSettings}
-         * @since 3.3
+         * @since 15
          * @deprecated use {@link UserHeadSettings#builder()} instead
          */
         @Deprecated
@@ -74,7 +74,7 @@ public class UserHeadSettings {
         /**
          * Builds the builder into an {@link UserHeadSettings} instance
          * @return the {@link UserHeadSettings} instance
-         * @since 3.3
+         * @since 15
          */
         public UserHeadSettings build() { return new UserHeadSettings(this); }
     }
@@ -84,7 +84,7 @@ public class UserHeadSettings {
     /**
      * The {@link UserHeadSettings} instance, created by the {@link Builder} intsance
      * @param builder the builder that can then be transformed into {@link UserHeadSettings} and read by CyberAPI
-     * @since 3.3
+     * @since 15
      */
     public UserHeadSettings(Builder builder) {
         this.builder = builder;
@@ -93,28 +93,28 @@ public class UserHeadSettings {
     /**
      * Gets the scale of the image to be placed in the URL when getting the data
      * @return the image scale
-     * @since 3.3
+     * @since 15
      */
     public int getImageScale() { return builder.imageScale; }
 
     /**
      * Gets whether UserHead should show the outer layer of the player's skin
      * @return should show helmet
-     * @since 3.3
+     * @since 15
      */
     public boolean shouldShowHelmet() { return builder.showHelmet; }
 
     /**
      * Gets the character that will be used to fill the player head in the chat
      * @return the character
-     * @since 3.3
+     * @since 15
      */
     public Character getCharacter() { return builder.character; }
 
     /**
      * Gets the lines that will be to the side of the player head in chat
      * @return the lines
-     * @since 3.3
+     * @since 15
      */
     public String[] getLines() { return builder.lines; }
 

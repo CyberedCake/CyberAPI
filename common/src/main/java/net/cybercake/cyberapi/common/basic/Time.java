@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * The {@link Time} class manages anything to do with time
- * @since 3.3
+ * @since 15
  */
 public class Time {
 
@@ -20,7 +20,7 @@ public class Time {
      * What is Unix time? How does it work? <a href="https://en.wikipedia.org/wiki/Unix_time">View more info by clicking here!</a>
      * @param unit what {@link TimeUnit} to convert the unix time into
      * @return the current unix time in the specified {@code unit}
-     * @since 3.3
+     * @since 15
      */
     public static long getUnix(TimeUnit unit) {
         return (unit.convert(Duration.ofMillis(System.currentTimeMillis())));
@@ -31,7 +31,7 @@ public class Time {
      * <br>
      * What is Unix time? How does it work? <a href="https://en.wikipedia.org/wiki/Unix_time">View more info by clicking here!</a>
      * @return the current unix time, in seconds, not milliseconds
-     * @since 3.3
+     * @since 15
      */
     public static long getUnix() {
         return getUnix(TimeUnit.SECONDS);
@@ -70,7 +70,7 @@ public class Time {
      * Gets a better duration display, assumes "showAll" is true
      * @param duration the duration to display, must be a positive number
      * @return the better time display, looks like {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"}
-     * @since 3.3
+     * @since 15
      */
     public static String getBetterTimeDisplay(long duration) {
         return getBetterTimeDisplay(duration, true);
@@ -81,7 +81,7 @@ public class Time {
      * @param biggerDuration the duration to display, must be bigger than {@code smallerNumber}
      * @param smallerDuration the duration to display, must be smaller than {@code biggerNumber}
      * @return the better time display, looks like {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"}
-     * @since 3.3
+     * @since 15
      */
     public static String getBetterTimeDisplay(long biggerDuration, long smallerDuration) {
         return getBetterTimeDisplay(biggerDuration, smallerDuration, true);
@@ -93,7 +93,7 @@ public class Time {
      * @param smallerDuration the duration to display, must be smaller than {@code biggerNumber}
      * @param showAll whether to show all values or just the ones that aren't zero
      * @return the better time display, looks like {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"} <br> or if '<b>showAll</b>' is false {@code "1 week"} (just shows the biggest time value)
-     * @since 3.3
+     * @since 15
      */
     public static String getBetterTimeDisplay(long biggerDuration, long smallerDuration, boolean showAll) {
         return getBetterTimeDisplay(biggerDuration-smallerDuration, showAll);
@@ -104,7 +104,7 @@ public class Time {
      * @param duration the duration to display, must be a positive number
      * @param showAll whether to show all values or just the ones that aren't zero
      * @return the better time display, looks like {@code "1 week, 2 days, 3 hours, 4 minutes, 5 seconds"} <br> or if '<b>showAll</b>' is false {@code "1 week"} (just shows the biggest time value)
-     * @since 3.3
+     * @since 15
      */
     public static String getBetterTimeDisplay(long duration, boolean showAll) {
         StringBuilder durationBuilder = new StringBuilder();
@@ -178,7 +178,7 @@ public class Time {
      * @param biggerDate the bigger date, closer to the most recent time
      * @param smallerDate the smaller date, furthest away from the most recent time
      * @return the {@link Map} of {@link TimeUnit}'s and their distance from the {@link Date}
-     * @since 3.3
+     * @since 15
      */
     public static Map<TimeUnit,Long> getDateDifference(Date biggerDate, Date smallerDate) {
         long diffInSeconds = biggerDate.getTime()-smallerDate.getTime();
@@ -211,7 +211,7 @@ public class Time {
      * @return the formatted date
      * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
      * @see SimpleDateFormat
-     * @since 3.3
+     * @since 15
      */
     public static String getFormattedDate(String pattern) {
         Date dNow = new Date();
@@ -227,7 +227,7 @@ public class Time {
      * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
      * @see SimpleDateFormat
      * @see ZoneOffset#of(String)
-     * @since 3.3
+     * @since 15
      */
     public static String getFormattedDate(String pattern, String timeOffset) {
         ZoneOffset zoneOffset = ZoneOffset.of(timeOffset);
@@ -244,7 +244,7 @@ public class Time {
      * @return the formatted date
      * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
      * @see SimpleDateFormat
-     * @since 3.3
+     * @since 15
      */
     public static String getFormattedDate(String pattern, int timeOffset) {
         String date;
@@ -263,7 +263,7 @@ public class Time {
      * @return the formatted date with a set unix time
      * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
      * @see SimpleDateFormat
-     * @since 3.3
+     * @since 15
      */
     public static String getFormattedDateUnix(long unix, String pattern) {
         return getFormattedDateUnix(unix, pattern, 0);
@@ -277,7 +277,7 @@ public class Time {
      * @return the formatted date with a set unix time
      * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
      * @see SimpleDateFormat
-     * @since 3.3
+     * @since 15
      */
     public static String getFormattedDateUnix(long unix, String pattern, int timeOffset) {
         Date time = new Date((unix*1000L)+(timeOffset*3600L*1000L));
@@ -290,7 +290,7 @@ public class Time {
      * Formats the basic time
      * @param number the amount of seconds to format
      * @return the basic time
-     * @since 3.3
+     * @since 15
      */
     public static String formatBasicSeconds(long number) {
 
@@ -309,7 +309,7 @@ public class Time {
      * Formats the basic time but with colons instead
      * @param number the amount of seconds to format
      * @return the basic time with colons
-     * @since 3.3
+     * @since 15
      */
     public static String formatBasicSecondsColons(long number) {
 
@@ -328,7 +328,7 @@ public class Time {
      * Formats the basic millisecond time with colons. Assumes '{@code minuteLeadingZero}' is true
      * @param number the amount of milliseconds to format
      * @return the basic time with milliseconds
-     * @since 3.3
+     * @since 15
      */
     public static String formatBasicMs(long number) {
         return formatBasicMs(number, true);
@@ -339,7 +339,7 @@ public class Time {
      * @param number the amount of milliseconds to format
      * @param minuteLeadingZero whether there should be "0" before "09", {@code 'true'} if you want "09" and {@code 'false'} if you want "9"
      * @return the basic time with milliseconds
-     * @since 3.3
+     * @since 15
      */
     public static String formatBasicMs(long number, boolean minuteLeadingZero) {
 

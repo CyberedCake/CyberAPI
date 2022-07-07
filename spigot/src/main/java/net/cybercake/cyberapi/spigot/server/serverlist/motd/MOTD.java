@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @since 3.1.0
+ * @since 9
  */
 public class MOTD {
 
@@ -21,12 +21,12 @@ public class MOTD {
      * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link MOTD}
      * @param id the ID of the new {@link MOTD}
      * @return the Builder instance
-     * @since 3.1.1
+     * @since 10
      */
     public static Builder builder(String id) { return new Builder(id); }
 
     /**
-     * @since 3.1.1
+     * @since 10
      */
     public static class Builder {
         private final String id;
@@ -41,7 +41,7 @@ public class MOTD {
         /**
          * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link MOTD}
          * @param id the ID of the new {@link MOTD}
-         * @since 3.1.1
+         * @since 10
          */
         public Builder(String id) {
             if(!net.cybercake.cyberapi.common.basic.StringUtils.isAlphanumericSpace(id.replace("_", "").replace("-", "")))
@@ -67,7 +67,7 @@ public class MOTD {
          * Creates a parse exception, usually used internally in the {@link Builder} for {@link MOTD}
          * @param message the message to include after 'Failed to set the MOTD ID:'
          * @return the {@link IllegalArgumentException} instance
-         * @since 3.5
+         * @since 28
          */
         private IllegalArgumentException parseError(String message) {
             return new IllegalArgumentException("Failed to set the MOTD ID: " + message);
@@ -133,7 +133,7 @@ public class MOTD {
         /**
          * Builds the builder into an {@link MOTD} instance
          * @return the {@link MOTD} instance
-         * @since 3.1.1
+         * @since 10
          */
         public MOTD build() {
             return new MOTD(this);
@@ -145,7 +145,7 @@ public class MOTD {
     /**
      * The {@link MOTD} instance, created by the {@link Builder} instance
      * @param builder the builder that can then be transformed into a {@link MOTD}
-     * @since 3.1.1
+     * @since 10
      */
     public MOTD(Builder builder) {
         this.builder = builder;
@@ -154,7 +154,7 @@ public class MOTD {
     /**
      * Gets the {@link String} ID of the MOTD
      * @return the MOTD ID
-     * @since 3.1.1
+     * @since 10
      */
     public String getID() {
         return builder.id;
@@ -163,7 +163,7 @@ public class MOTD {
     /**
      * Gets the {@link String} form of the {@link MOTD}, a.k.a. what is shown on the server list
      * @return the MOTD
-     * @since 3.1.1
+     * @since 10
      */
     public String getStringMOTD() {
         return builder.motd;
@@ -172,7 +172,7 @@ public class MOTD {
     /**
      * Gets whether the {@link MOTD} should be centered or not. {@link MOTD#isUsingMiniMessage()} overrides this.
      * @return whether the {@link MOTD} should be centered or not
-     * @since 3.1.1
+     * @since 10
      */
     public boolean isCentered() {
         return builder.centered;
@@ -181,7 +181,7 @@ public class MOTD {
     /**
      * Gets whether the {@link MOTD} should be using MiniMessage parsing or not. This overrides {@link MOTD#isCentered()}.
      * @return whether the {@link MOTD} should be using MiniMessage
-     * @since 3.1.1
+     * @since 10
      */
     public boolean isUsingMiniMessage() {
         return builder.useMiniMessage;
@@ -190,7 +190,7 @@ public class MOTD {
     /**
      * Gets the icon type of the MOTD
      * @return the icon type of MOTD
-     * @since 3.1.1
+     * @since 10
      */
     public MOTDIconType getMOTDIconType() {
         return builder.iconType;
@@ -199,7 +199,7 @@ public class MOTD {
     /**
      * Gets the {@link File} of the icon
      * @return the icon in {@link File} form, {@code null} if {@link MOTDIconType} is {@link MOTDIconType#UNSET} or not {@link MOTDIconType#FILE}
-     * @since 3.1.1
+     * @since 10
      */
     public File getFileIcon() {
         if(builder.iconFile != null && getMOTDIconType().equals(MOTDIconType.FILE)) {
@@ -211,7 +211,7 @@ public class MOTD {
     /**
      * Gets the {@link URL} of the icon
      * @return the icon in {@link URL} form, {@code null} if {@link MOTDIconType} is {@link MOTDIconType#UNSET} or not {@link MOTDIconType#URL}
-     * @since 3.1.1
+     * @since 10
      */
     public URL getURLIcon() {
         if(builder.iconURL != null && getMOTDIconType().equals(MOTDIconType.URL)) {
@@ -223,7 +223,7 @@ public class MOTD {
     /**
      * Gets the formatted MOTD with MiniMessage and proper centering
      * @return the formatted {@link String} MOTD
-     * @since 3.1.1
+     * @since 10
      */
     public String getFormattedMOTD() {
         boolean centered = isCentered();

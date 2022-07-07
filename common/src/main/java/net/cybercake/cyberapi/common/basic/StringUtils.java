@@ -17,7 +17,7 @@ public class StringUtils {
      * Make the first character of a {@link String} uppercase
      * @param string the {@link String} to capitalize
      * @return the capitalized {@link String}
-     * @since 3.3
+     * @since 15
      * @author LukeIThink
      */
     public static String capitalize(String string) {
@@ -30,7 +30,7 @@ public class StringUtils {
      * Converts an array of {@link String[]} to a {@link List} of {@link String}s
      * @param strings the strings to convert
      * @return a list of strings
-     * @since 3.0.0
+     * @since 1
      */
     public static List<String> arrayToList(String... strings) {
         return new ArrayList<>(Arrays.asList(strings));
@@ -40,7 +40,7 @@ public class StringUtils {
      * Converts a {@link List} of {@link String}s to a {@link String[]}
      * @param list the list to convert
      * @return the array of strings
-     * @since 3.0.0
+     * @since 1
      */
     public static String[] listToArray(List<String> list) {
         StringBuilder builder = new StringBuilder();
@@ -56,7 +56,7 @@ public class StringUtils {
      * @param endCharacter the index of the second character
      * @param string the string to manipulate
      * @return the modified string
-     * @since 3.0.0
+     * @since 1
      */
     public static String getCharacters(int beginCharacter, int endCharacter, String string) {
         if(beginCharacter < 0) {
@@ -72,7 +72,7 @@ public class StringUtils {
 
     /**
      * The type used for {@link StringUtils#checkStrings(CheckType, String, String...)}
-     * @since 3.0.0
+     * @since 1
      */
     public enum CheckType {
         equals, equalsIgnoreCase, contains, startsWith
@@ -84,7 +84,7 @@ public class StringUtils {
      * @param checkAgainst the individual string to check
      * @param strings the strings to check with
      * @return if {@code checkAgainst} and {@code strings} match
-     * @since 3.0.0
+     * @since 1
      */
     public static boolean checkStrings(CheckType checkType, String checkAgainst, String... strings) {
         for(String str : strings) {
@@ -119,7 +119,7 @@ public class StringUtils {
      * @param startFrom what indexes to start from in the arguments
      * @param args the arguments to check against
      * @return the arguments combined
-     * @since 3.0.0
+     * @since 1
      */
     public static String getStringFromArguments(int startFrom, String... args) {
         StringBuilder sm = new StringBuilder();
@@ -134,7 +134,7 @@ public class StringUtils {
      * Removes duplicates from an {@link ArrayList}
      * @param list the list to remove duplicates from
      * @return the list without duplicates
-     * @since 3.0.0
+     * @since 1
      */
     public static ArrayList<String> removeDuplicates(ArrayList<String> list) {
         ArrayList<String> alreadyOver = new ArrayList<>();
@@ -147,7 +147,7 @@ public class StringUtils {
     }
 
     /**
-     * @since 3.0.0
+     * @since 1
      */
     public static String readUrl(String urlString) throws Exception {
         BufferedReader reader = null;
@@ -172,7 +172,7 @@ public class StringUtils {
      * @param message the message to pluralize
      * @param value the amount to check
      * @return the pluralized or not message
-     * @since 3.0.0
+     * @since 1
      */
     public static String pluralize(String message, int value) {
         String ret = message.replaceAll("!#", String.valueOf(value));
@@ -195,7 +195,7 @@ public class StringUtils {
      * Checks if a char sequence is alphanumeric (contains only letters and numbers)
      * @param sequence the sequence to check
      * @return whether the sequence is alphanumeric
-     * @since 3.1.0
+     * @since 9
      */
     public static boolean isAlphanumeric(final CharSequence sequence) {
         if(sequence == null) return false;
@@ -212,7 +212,7 @@ public class StringUtils {
      * Checks if a char sequence is alphanumeric space (contains only letters, numbers, and spaces)
      * @param sequence the sequence to check
      * @return whether the sequence is alphanumeric space
-     * @since 3.1.0
+     * @since 9
      */
     public static boolean isAlphanumericSpace(final CharSequence sequence) {
         if(sequence == null) return false;

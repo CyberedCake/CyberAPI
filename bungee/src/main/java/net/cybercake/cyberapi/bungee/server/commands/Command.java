@@ -20,7 +20,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
         /**
          * Creates an instance of {@link CommandInformation}, allowing you to customize the stored information on the command.
          * @param name the name of the command, without the slash
-         * @since 3.2
+         * @since 12
          * @deprecated there is no reason to make a {@link CommandInformation} this way, please use {@link Command#newCommand(String)}
          */
         @Deprecated
@@ -32,7 +32,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
         /**
          * Sets the permission required to run the command
          * @param permission the required permission
-         * @since 3.3
+         * @since 15
          */
         public CommandInformation setPermission(String permission) {
             this.permission = permission; return this;
@@ -41,7 +41,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
         /**
          * Sets the correct usage of the command
          * @param usage the command's correct usage
-         * @since 3.3
+         * @since 15
          */
         public CommandInformation setUsage(String usage) {
             this.usage = usage; return this;
@@ -50,7 +50,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
         /**
          * Sets the aliases of the command, a.k.a. new commands that do the same thing as this command
          * @param aliases the aliases of the command
-         * @since 3.3
+         * @since 15
          */
         public CommandInformation setAliases(String... aliases) {
             this.aliases = aliases; return this;
@@ -59,7 +59,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
         /**
          * Sets the aliases of the command, a.k.a. new commands that do the same thing as this command
          * @param aliases the aliases of the command, in {@link List} form
-         * @since 3.3
+         * @since 15
          */
         public CommandInformation setAliases(List<String> aliases) {
             this.aliases = aliases.toArray(new String[0]); return this;
@@ -68,7 +68,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
         /**
          * Sets the types of tab completions for {@link Command#tab(CommandSender, String[])}
          * @param tabCompleteType the type of tab completions
-         * @since 3.3
+         * @since 15
          * @see UTabComp#tabCompletions(TabCompleteType, String, List)
          */
         public CommandInformation setTabCompleteType(TabCompleteType tabCompleteType) {
@@ -80,7 +80,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
      * Creates an instance of {@link CommandInformation}, allowing you to customize the stored information on the command.
      * @param name the name of the command, without the slash
      * @return a new {@link CommandInformation} instance
-     * @since 3.3
+     * @since 15
      */
     protected static CommandInformation newCommand(String name) { return new CommandInformation(name); }
 
@@ -102,31 +102,31 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
 
     /**
      * @return the name of the command with the slash omitted
-     * @since 3.3
+     * @since 15
      */
     public String getName() { return information.name; }
 
     /**
      * @return the permission required to execute the command
-     * @since 3.3
+     * @since 15
      */
     public String getPermission() { return information.permission; }
 
     /**
      * @return the correct usage of the command
-     * @since 3.3
+     * @since 15
      */
     public String getUsage() { return information.usage; }
 
     /**
      * @return the aliases (other ways to execute the main command)
-     * @since 3.3
+     * @since 15
      */
     public String[] getAliases() { return information.aliases; }
 
     /**
      * @return the tab complete type
-     * @since 3.3
+     * @since 15
      * @see UTabComp#tabCompletions(TabCompleteType, String, List)
      */
     public TabCompleteType getTabCompleteType() { return information.tabCompleteType; }
@@ -136,7 +136,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
      * @param sender the sender that executes the command
      * @param args the command arguments {@code sender} inputted
      * @return whether the command was successful or not
-     * @since 3.3
+     * @since 15
      */
     public abstract boolean perform(CommandSender sender, String[] args);
 
@@ -145,7 +145,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
      * @param sender the sender that is tab completing a command
      * @param args the command arguments {@code sender} has inputted so far
      * @return what to tab complete
-     * @since 3.3
+     * @since 15
      */
     public abstract List<String> tab(CommandSender sender, String[] args);
 

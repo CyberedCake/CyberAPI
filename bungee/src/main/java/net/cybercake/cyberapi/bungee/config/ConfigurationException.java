@@ -2,7 +2,7 @@ package net.cybercake.cyberapi.bungee.config;
 
 /**
  * Errors relating to the {@link Config} class for CyberAPI!
- * @since 3.3
+ * @since 15
  */
 public class ConfigurationException extends IllegalStateException {
 

@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 /**
  * Allows the user to create, edit, and get configurations
- * @since 3.3
+ * @since 15
  */
 public class Config {
 
@@ -22,7 +22,7 @@ public class Config {
 
     /**
      * Creates a configuration from the default 'config.yml'
-     * @since 3.3
+     * @since 15
      */
     public Config() {
         if(!CyberAPI.getInstance().getDataFolder().exists())
@@ -36,7 +36,7 @@ public class Config {
     /**
      * Creates a configuration from a specified file name
      * @param fileName the file name, do not include the extension at the end, automatically assumes '.yml'
-     * @since 3.3
+     * @since 15
      */
     public Config(String fileName) {
         if(!CyberAPI.getInstance().getDataFolder().exists())
@@ -49,7 +49,7 @@ public class Config {
 
     /**
      * Saves the configuration
-     * @since 3.3
+     * @since 15
      * @throws ConfigurationException when an error occurs with saving the config
      */
     public void save() {
@@ -62,7 +62,7 @@ public class Config {
 
     /**
      * Saves the defaults to the config from the "resources/" folder
-     * @since 3.3
+     * @since 15
      * @throws ConfigurationException when an error occurs with saving the defaults for the config
      */
     public void saveDefaults() {
@@ -83,7 +83,7 @@ public class Config {
 
     /**
      * Reloads the config and allows for the new values the user had to be obtained
-     * @since 3.3
+     * @since 15
      * @throws ConfigurationException when an error occurrs with reloading the config
      */
     public void reload() {
@@ -97,21 +97,21 @@ public class Config {
     /**
      * Gets the name of the configuration file
      * @return the config file name
-     * @since 3.3
+     * @since 15
      */
     public String getName() { return name; }
 
     /**
      * Gets the {@link File} of the configuration that is located in the plugin's data folder
      * @return the file in the "*\plugins\*your plugin*\file.example"
-     * @since 3.3
+     * @since 15
      */
     public File getFile() { return file; }
 
     /**
      * Gets the {@link Configuration} for the configuration
      * @return the {@link Configuration}, allows developers to get keys and values from the config
-     * @since 3.3
+     * @since 15
      */
     public Configuration values() {
         return config;

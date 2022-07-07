@@ -25,7 +25,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
         /**
          * Creates an instance of {@link CommandInformation}, allowing you to customize the stored information on the command.
          * @param name the name of the command, without the slash
-         * @since 3.2
+         * @since 12
          * @deprecated there is no reason to make a {@link CommandInformation} this way, please use {@link Command#newCommand(String)}
          */
         @Deprecated
@@ -37,7 +37,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
         /**
          * Sets the permission required to run the command
          * @param permission the required permission
-         * @since 3.2
+         * @since 12
          */
         public CommandInformation setPermission(String permission) {
             this.permission = permission; return this;
@@ -47,7 +47,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
          * Sets the permission required to run the command and the message that sends if that permission is not met
          * @param permission the required permission
          * @param permissionMessage what to send if {@code permission} is not met
-         * @since 3.2
+         * @since 12
          */
         public CommandInformation setPermission(String permission, String permissionMessage) {
             this.permission = permission; this.permissionMessage = permissionMessage; return this;
@@ -56,7 +56,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
         /**
          * Sets the description of the command
          * @param description the command's description
-         * @since 3.2
+         * @since 12
          */
         public CommandInformation setDescription(String description) {
             this.description = description; return this;
@@ -65,7 +65,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
         /**
          * Sets the correct usage of the command
          * @param usage the command's correct usage
-         * @since 3.2
+         * @since 12
          */
         public CommandInformation setUsage(String usage) {
             this.usage = usage; return this;
@@ -74,7 +74,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
         /**
          * Sets the aliases of the command, a.k.a. new commands that do the same thing as this command
          * @param aliases the aliases of the command
-         * @since 3.2
+         * @since 12
          */
         public CommandInformation setAliases(String... aliases) {
             this.aliases = aliases; return this;
@@ -83,7 +83,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
         /**
          * Sets the aliases of the command, a.k.a. new commands that do the same thing as this command
          * @param aliases the aliases of the command, in {@link List} form
-         * @since 3.2
+         * @since 12
          */
         public CommandInformation setAliases(List<String> aliases) {
             this.aliases = aliases.toArray(new String[0]); return this;
@@ -92,7 +92,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
         /**
          * Sets the types of tab completions for {@link Command#tab(CommandSender, org.bukkit.command.Command, String, String[])}
          * @param tabCompleteType the type of tab completions
-         * @since 3.2
+         * @since 12
          * @see UTabComp#tabCompletions(TabCompleteType, String, List)
          */
         public CommandInformation setTabCompleteType(TabCompleteType tabCompleteType) {
@@ -104,7 +104,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
      * Creates an instance of {@link CommandInformation}, allowing you to customize the stored information on the command.
      * @param name the name of the command, without the slash
      * @return a new {@link CommandInformation} instance
-     * @since 3.2
+     * @since 12
      */
     protected static CommandInformation newCommand(String name) {
         return new CommandInformation(name);
@@ -123,43 +123,43 @@ public abstract class Command implements CommandExecutor, TabCompleter {
 
     /**
      * @return the name of the command with the slash omitted
-     * @since 3.2
+     * @since 12
      */
     public String getName() { return information.name; }
 
     /**
      * @return the permission required to execute the command
-     * @since 3.2
+     * @since 12
      */
     public String getPermission() { return information.permission; }
 
     /**
      * @return the permission message that is sent when the sender doesn't have the correct permission
-     * @since 3.2
+     * @since 12
      */
     public String getPermissionMessage() { return information.permissionMessage; }
 
     /**
      * @return the description of the command
-     * @since 3.2
+     * @since 12
      */
     public String getDescription() { return information.description; }
 
     /**
      * @return the correct usage of the command
-     * @since 3.2
+     * @since 12
      */
     public String getUsage() { return information.usage; }
 
     /**
      * @return the aliases (other ways to execute the main command)
-     * @since 3.2
+     * @since 12
      */
     public String[] getAliases() { return information.aliases; }
 
     /**
      * @return the tab complete type
-     * @since 3.2
+     * @since 12
      * @see UTabComp#tabCompletions(TabCompleteType, String, List)
      */
     public TabCompleteType getTabCompleteType() { return information.tabCompleteType; }
@@ -170,7 +170,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
      * @param label the command name {@code sender} ran
      * @param args the command arguments {@code sender} inputted
      * @return whether the command was successful or not
-     * @since 3.2
+     * @since 12
      */
     public abstract boolean perform(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args);
 
@@ -180,7 +180,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
      * @param label the command name {@code sender} is attempting to run
      * @param args the command arguments {@code sender} has inputted so far
      * @return what to tab complete
-     * @since 3.2
+     * @since 12
      */
     public abstract List<String> tab(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args);
 

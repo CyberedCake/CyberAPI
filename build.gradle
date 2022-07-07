@@ -13,32 +13,15 @@ static String getDescription() { return "The new and improved CyberAPI!"; }
 static String[] getAuthors() { return new String[]{"CyberedCake"}; }
 static int getTargetJavaVersion() { return 17; }
 
-// version info
-def major = '3'
-def minor = '5'
-
 
 
 
 
 
 def getLatestTag = new JsonSlurper().parse(new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest")).tag_name
-def differentMinorVersions = false
-
-def currentPatch = {
-    String tagSplit = getLatestTag.split("\\.")[2].split("-")[0]
-    try {
-        if(getLatestTag.split("\\.")[1].split("-")[0] != minor) {
-            logger.quiet "> Found different minor versions, settings patch to '0'..."
-            differentMinorVersions = true
-            return 0
-        }
-        return Integer.parseInt(tagSplit)
-    } catch (NumberFormatException ignored) { return 0 }
-}
 
 def currentBuild = {
-    String tagSplit = getLatestTag.split("-")[1]
+    String tagSplit = getLatestTag
     try {
         return Integer.parseInt(tagSplit)
     } catch (NumberFormatException ignored) {
@@ -48,17 +31,14 @@ def currentBuild = {
 
 // runner or jitpack should add 1
 
-def patch = 0
 def build = 0
 def setBasic = {
     try {
-        patch = currentPatch()
         build = currentBuild()
         String username = System.getProperty("user.name")
         if(username == "runner") { // check if github is building the plugin
-            if(!differentMinorVersions) patch = patch+1
-            build = build+1
-            println '> Found using GitHub Runner, going to increment patch (' + String.valueOf(patch-1) + ' -> ' + String.valueOf(patch) + ') and build (' + String.valueOf(build-1) + ' -> ' + String.valueOf(patch) + ')'
+            build = 33
+            println '> Found using GitHub Runner, going to increment build (' + String.valueOf(build-1) + ' -> ' + String.valueOf(build) + ')'
         }
     } catch (Exception exception) {
         logger.error '> Exception, an error occurred: ' + exception.toString()
@@ -66,14 +46,8 @@ def setBasic = {
 }
 setBasic()
 
-def basicVersion = major + "." + minor
-
 group = getGroup()
-version = basicVersion + "." + patch
-
-ext {
-    fullVersion = version.toString()
-}
+version = "v3"
 
 def javaVersion = JavaVersion.toVersion(getTargetJavaVersion())
 sourceCompatibility = javaVersion
@@ -87,9 +61,7 @@ subprojects { Project subProject ->
     apply plugin: 'com.github.johnrengelman.shadow'
 
     group = getGroup()
-    version = basicVersion.toString() + "." + patch
-
-    def fullVersion = version.toString()
+    version = this.version
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
@@ -102,7 +74,9 @@ subprojects { Project subProject ->
             def SRC_DIR = "${buildDir}/libs"
 
             ant.copy(todir: NEW_DIR) {
-                fileset(dir: SRC_DIR)
+                fileset(dir: SRC_DIR,
+                        includes:"**/cyberapi-*.jar"
+                )
             }
         }
     }
@@ -140,7 +114,7 @@ subprojects { Project subProject ->
                 properties['targetJavaVersion'] = String.valueOf(getTargetJavaVersion())
                 properties['built'] = new Date().toInstant().toEpochMilli().toString()
                 properties['buildNumber'] = String.valueOf(build)
-                properties['version'] = getVersion()
+                properties['version'] = String.valueOf(version)
                 properties['description'] = this.getDescription()
                 properties.store writer, "CyberAPI Build Information {project: " + getProject().getName() + "}\n(all information from the computer that built CyberAPI)"
             }
@@ -187,9 +161,12 @@ subprojects { Project subProject ->
         tasks.withType(Javadoc) {
             options.addStringOption("Xdoclint:none", '-quiet')
         }
+        sourcesJar.archiveName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
+        javadocJar.archiveName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
+
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
-            attributes 'fullVersion': fullVersion.toString()
+            attributes 'buildNumber': "#" + String.valueOf(this.build)
         }
     }
 
@@ -213,7 +190,7 @@ subprojects { Project subProject ->
     if(!subProject.getName().contains("common")) shadowJar.finalizedBy copyArtifacts
 
     shadowJar {
-        archiveFileName = getProject().getName() + "-" + fullVersion.toString() + ".jar"
+        archiveFileName = "cyberapi-" + getProject().getName() + "-b" + build.toString() + ".jar"
 
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
@@ -224,7 +201,7 @@ subprojects { Project subProject ->
 
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
-            attributes 'fullVersion': fullVersion.toString()
+            attributes 'build': "#" + String.valueOf(this.build)
         }
     }
 }

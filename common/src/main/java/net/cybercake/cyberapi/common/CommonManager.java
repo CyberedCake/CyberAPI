@@ -32,7 +32,7 @@ public interface CommonManager {
      * <b>Note: This is obtaining the {@link UUID} from a URL, meaning you should cache this or use asynchronous events</b>
      * @param name the name to retrieve the UUID from
      * @return the UUID associated with the name
-     * @since 3.0.0
+     * @since 1
      */
     default UUID getUUID(String name) {
         try {
@@ -52,7 +52,7 @@ public interface CommonManager {
      * <b>Note: This is obtaining the {@link UUID} from a URL, meaning you should cache this or use asynchronous events</b>
      * @param uuid the uuid to retrieve the name from
      * @return the name associated with the UUID
-     * @since 3.0.0
+     * @since 1
      */
     default String getName(UUID uuid) {
         try {

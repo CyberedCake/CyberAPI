@@ -76,14 +76,14 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Gets the instance of your {@link JavaPlugin} and {@link CyberAPI}
      * @return the {@link CyberAPI} instance, a.k.a. your main class
-     * @since 3.0.0
+     * @since 1
      */
     public static CyberAPI getInstance() { return api; }
 
     /**
      * Gets the main configuration file values, using {@link Config#values()} and {@link CyberAPI#getMainConfig()}.
      * @return the main configuration file
-     * @since 3.1.1
+     * @since 10
      */
     public static FileConfiguration getConf() {
         return getInstance().getMainConfig().values();
@@ -107,7 +107,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * <br>
      * {@link Settings} can be null! That just means all the settings will be their defaults.
      * @param settings the settings object as described in the method description
-     * @since 3.0.0
+     * @since 1
      */
     protected CyberAPI startCyberAPI(@Nullable Settings settings) {
         long mss = System.currentTimeMillis();
@@ -165,7 +165,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Gets the finalized settings CyberAPI is using to determine the developer's preferences
      * @return the finalized settings
-     * @since 3.0.0
+     * @since 1
      */
     public Settings getSettings() { return settings; }
 
@@ -174,7 +174,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * <br> <br>
      * The name of the plugin that is different from the plugin.yml
      * @return {@code getSettings().getString("name")}
-     * @since 3.0.0
+     * @since 1
      */
     public String getPluginName() { return (getSettings().getName() == null ? getDescription().getName() : getSettings().getName()); }
 
@@ -183,14 +183,14 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * <br> <br>
      * The prefix of the plugin that is different from the plugin.yml
      * @return {@code getSettings().getString("prefix")}
-     * @since 3.0.0
+     * @since 1
      */
     public String getPrefix() { return (getSettings().getPrefix() == null ? getDescription().getPrefix() : getSettings().getPrefix()); }
 
     /**
      * Gets the name of the server implementation being used
      * @return the server type, usually looks like 'Spigot' or 'Paper'
-     * @since 3.0.0
+     * @since 1
      */
     public String getServerType() {
         return Bukkit.getServer().getName();
@@ -199,7 +199,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * The server type of the server along with the version
      * @return the server version string, my server shows 'git-Purpur-1668 (MC: 1.19)' (as of June 17th, 2022)
-     * @since 3.0.0
+     * @since 1
      */
     public String getServerTypeVersion() {
         return Bukkit.getServer().getVersion();
@@ -208,14 +208,14 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Gets the Bukkit version string that the server is using
      * @return the Bukkit version string, for example, my server shows '1.19-R0.1-SNAPSHOT' (as of June 17th, 2022)
-     * @since 3.0.0
+     * @since 1
      */
     public String getBukkitVersionString() { return Bukkit.getServer().getBukkitVersion(); }
 
     /**
      * Gets the version of the Minecraft server
      * @return the Minecraft server version, looks something like '1.19'
-     * @since 3.0.0
+     * @since 1
      * @apiNote if you are using the PaperSpigot API, a more conventional way of doing this would be {@code Bukkit.getServer().getMinecraftVersion()} (as that would return a more standard '1.19')
      */
     public String getMinecraftVersion() {
@@ -228,7 +228,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @see CyberAPI#getMainConfig()
      * @see CyberAPI#getConfig(String)
      * @deprecated method disabled!
-     * @since 3.0.0
+     * @since 1
      */
     @Override
     @Deprecated(forRemoval = true)
@@ -239,7 +239,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Gets the main config of the server. If no config exists, create one and save.
      * @return the main {@link Config} (main config is always 'config.yml')
-     * @since 3.0.0
+     * @since 1
      */
     public Config getMainConfig() {
          if(mainConfig == null) mainConfig = new Config();
@@ -250,7 +250,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Gets a config of the server. If no config exists, create one and save.
      * @param fileName the name of the config file, usually from the "resources/" folder
      * @return the {@link Config}
-     * @since 3.0.0
+     * @since 1
      */
     public Config getConfig(String fileName) {
         if(!configs.containsKey(fileName)) configs.put(fileName, new Config(fileName));
@@ -259,7 +259,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
     /**
      * Reloads the main configuration file ('config.yml')
-     * @since 3.0.0
+     * @since 1
      */
     @Override
     public void reloadConfig() {
@@ -268,7 +268,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
     /**
      * Saves the main configuration file ('config.yml')
-     * @since 3.0.0
+     * @since 1
      */
     @Override
     public void saveConfig() {
@@ -281,7 +281,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
     /**
      * Saves the defaults for the main configuration file ('config.yml')
-     * @since 3.3
+     * @since 15
      */
     @Override
     public void saveDefaultConfig() {
@@ -291,7 +291,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Returns when the server started in Unix time.
      * @return the server start date, in unix time with milliseconds
-     * @since 3.0.7
+     * @since 7
      */
     public long getServerStartedUnix() { return serverStarted; }
 
@@ -299,7 +299,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Returns when the server started with a specific time unit.
      * @param unit the {@link TimeUnit} to convert the unix time to
      * @return the unix time with the applied {@link TimeUnit}
-     * @since 3.0.7
+     * @since 7
      */
     public long getServerStartedUnix(TimeUnit unit) { return (unit.convert(Duration.ofMillis(serverStarted))); }
 
@@ -308,7 +308,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param pattern the pattern to format with {@link java.text.SimpleDateFormat}
      * @param timeOffset the timezone offset
      * @return the human-readable server start-date with timezone offset
-     * @since 3.0.7
+     * @since 7
      */
     public String getServerStartedDate(String pattern, int timeOffset) { return Time.getFormattedDateUnix(getServerStartedUnix(TimeUnit.SECONDS), pattern, timeOffset); }
 
@@ -316,7 +316,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Returns when the server started as formatted with {@link java.text.SimpleDateFormat}'s formats
      * @param pattern the pattern to format with {@link java.text.SimpleDateFormat}
      * @return the human-readable server start-date
-     * @since 3.0.7
+     * @since 7
      */
     public String getServerStartedDate(String pattern) { return getServerStartedDate(pattern, 0); }
 
@@ -324,7 +324,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Returns how long the server has been online
      * @param showAll whether to show all units, see description of {@link Time#getBetterTimeDisplay(long, long, boolean)}
      * @return the time since the server has started
-     * @since 3.0.7
+     * @since 7
      * @see Time#getBetterTimeDisplay(long, long, boolean)
      */
     public String getServerUptime(boolean showAll) { return Time.getBetterTimeDisplay(Time.getUnix(), getServerStartedUnix(TimeUnit.SECONDS), showAll); }
@@ -332,7 +332,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Returns how long the server has been online
      * @return the time since the server started
-     * @since 3.0.7
+     * @since 7
      * @see CyberAPI#getServerUptime(boolean)
      */
     public String getServerUptime() { return getServerUptime(true); }
@@ -342,7 +342,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param uuid the unique ID
      * @return the {@link CyberPlayer}
      * @deprecated It's better to use {@link CyberPlayer} constructors or static methods instead of this method.
-     * @since 3.0.0
+     * @since 1
      */
     @Deprecated
     public CyberPlayer getCyberPlayer(UUID uuid) {
@@ -352,7 +352,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Gets the Adventure API support. This method assumes the best of the developer as if they marked Adventure Support as {@link FeatureSupport#SUPPORTED}, it will try to use Adventure API.
      * @return the {@link FeatureSupport} enum of the value
-     * @since 3.0.0
+     * @since 1
      */
     public FeatureSupport getAdventureAPISupport() {
         if(adventureAPISupport == null) {
@@ -374,7 +374,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Gets the MiniMessage support. This method assumes the best of the developer as if they marked MiniMessage as {@link FeatureSupport#SUPPORTED}, it will allow the use of MiniMessage methods.
      * @return the {@link FeatureSupport} enum of the value
-     * @since 3.0.0
+     * @since 1
      */
     public FeatureSupport getMiniMessageSupport() {
         if(miniMessageSupport == null) {
@@ -396,7 +396,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Gets the LuckPerms support. This method assumes the best of the developer as if they marked LuckPerms Support as {@link FeatureSupport#SUPPORTED}, it will allow the use of LuckPerms.
      * @return the {@link FeatureSupport} enum of the value
-     * @since 3.0.0
+     * @since 1
      */
     public FeatureSupport getLuckPermsSupport() {
         if(luckPermsSupport == null) {
@@ -418,7 +418,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Gets the ProtocolLib support. This method assumes the best of the developer as if they marked ProtocolLib Support as {@link FeatureSupport#SUPPORTED}, it will allow the use of ProtocolLib.
      * @return the {@link FeatureSupport} enum of the value
-     * @since 3.1.0
+     * @since 9
      */
     public FeatureSupport getProtocolLibSupport() {
         if(protocolLibSupport == null) {
@@ -442,7 +442,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param player the player to send the title to
      * @param title the title to send
      * @param subtitle the subtitle to send
-     * @since 3.0.0
+     * @since 1
      */
     public void sendTitle(Player player, String title, String subtitle) {
         sendTitle(player, title, subtitle, 20, 100, 20);
@@ -456,7 +456,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param fadeIn the amount of ticks to fadein
      * @param stay the amount of ticks to stay
      * @param fadeOut the amount of ticks to fadeout
-     * @since 3.0.0
+     * @since 1
      */
     public void sendTitle(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
         player.sendTitle(UChat.chat(title), UChat.chat(subtitle), fadeIn, stay, fadeOut);
@@ -465,7 +465,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Broadcast a message to all online players and logs to console
      * @param message the message to send
-     * @since 3.0.0
+     * @since 1
      * @see CyberAPI#broadcast(String, String) 
      */
     public void broadcast(String message) {
@@ -476,7 +476,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Broadcast a message to all online players if they have a specified permission and logs to console
      * @param message the message to send
      * @param permission the permission required to see the message
-     * @since 3.0.0
+     * @since 1
      * @see UChat#broadcast(String)
      * @see UChat#broadcast(String, String)
      */
@@ -488,7 +488,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Performs a command as a {@link Player} if {@link CommandSender} is not a player. Please include a '/' in your command when typing it here
      * @param sender the {@link CommandSender} to execute the command
      * @param command the command to execute, including a '/' in the beginning
-     * @since 3.0.0
+     * @since 1
      */
     public void performCommand(CommandSender sender, String command) {
         if(!(sender instanceof Player player)) {
@@ -500,7 +500,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Returns an instance of {@link ServerListInfo}, which allows you to change things like the MOTD, player count, icon, etc.
      * @return the {@link ServerListInfo} instance
-     * @since 3.1.0
+     * @since 9
      * @apiNote requires ProtocolLib support
      */
     public ServerListInfo getServerListInfo() {
@@ -510,7 +510,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Returns a list of online players in forms of {@link Player} objects
      * @return the online players in {@link Player} objects
-     * @since 3.0.0
+     * @since 1
      */
     public List<Player> getOnlinePlayers() {
         return new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
@@ -519,7 +519,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Returns a list of online players in form of their usernames
      * @return the online players' usernames, a {@link List} of {@link String}s
-     * @since 3.0.0
+     * @since 1
      */
     public List<String> getOnlinePlayersUsernames() {
         List<String> usernames = new ArrayList<>();
@@ -532,7 +532,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Gets the main world of the current spigot server
      * @return the main world of the spigot server
-     * @since 3.0.0
+     * @since 1
      */
     public @Nullable World getMainWorld() {
         Properties properties = new Properties();
@@ -552,7 +552,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param sound the sound to play
      * @param volume the volume to play the sound at
      * @param pitch the pitch to play the sound at
-     * @since 3.0.0
+     * @since 1
      */
     public void playSound(CommandSender sender, Sound sound, float volume, float pitch) {
         if(!(sender instanceof Player player)) return;
@@ -567,7 +567,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @return the distance between {@code location1} and {@code location2}
      * @throws IllegalArgumentException when the two locations are not in the same world
      * @see CyberAPI#getDistance(Location, Location)
-     * @since 3.0.0
+     * @since 1
      */
     public double get2DDistance(Location location1, Location location2) {
         if(!location1.getWorld().getName().equals(location2.getWorld().getName())) throw new IllegalArgumentException("The two locations, location1 and location2, must be in the same world!");
@@ -581,7 +581,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @return the distance between {@code location1} and {@code location2}
      * @throws IllegalArgumentException when the two locations are not in the same world
      * @see CyberAPI#get2DDistance(Location, Location)
-     * @since 3.0.0
+     * @since 1
      */
     public double getDistance(Location location1, Location location2) {
         if(!location1.getWorld().getName().equals(location2.getWorld().getName())) throw new IllegalArgumentException("The two locations, location1 and location2, must be in the same world!");
@@ -592,7 +592,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Gets the top-most block that isn't 'empty' (using {@link Block#isEmpty()}) {@literal <}-- this method assumes 'yStartChecking' is the max height of the world
      * @param location the location to check, will start at y=*world height*
      * @return the new location that would be the highest block that isn't {@link Block#isEmpty()}
-     * @since 3.0.0
+     * @since 1
      */
     public Location getTopBlock(@NotNull Location location) {
         return getTopBlock(location, location.getWorld().getMaxHeight());
@@ -603,7 +603,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param location the location to check, will start at y=*world height*
      * @param yStartChecking where the method should start checking
      * @return the new location that would be the highest block that isn't {@link Block#isEmpty()}
-     * @since 3.0.0
+     * @since 1
      */
     public Location getTopBlock(@NotNull Location location, long yStartChecking) {
         location = location.clone();
@@ -626,7 +626,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * <br> <br>
      * This code was originally from <a href="https://www.spigotmc.org/threads/learn-all-recipes.450378/#post-3871579/">Husky on SpigotMC Forums</a>, so thank you to them {@literal <3}
      * @return list of namespace keys that contain all recipes
-     * @since 3.0.0
+     * @since 1
      */
     public List<NamespacedKey> getAllRegisteredRecipes() {
         List<NamespacedKey> keys = new ArrayList<>();
@@ -645,7 +645,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param name the name of the command, without a slash
      * @param commandExecutor the executor to parse with the command
      * @see CyberAPI#registerTabCompleter(String, TabCompleter)
-     * @since 3.0.0
+     * @since 1
      */
     public void registerCommand(String name, CommandExecutor commandExecutor) {
         this.getCommand(name).setExecutor(commandExecutor);
@@ -656,7 +656,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param name the name of the command, without a slash
      * @param tabCompleter the tab completer to parse with the command
      * @see CyberAPI#registerCommand(String, CommandExecutor)
-     * @since 3.0.0
+     * @since 1
      */
     public void registerTabCompleter(String name, TabCompleter tabCompleter) {
         this.getCommand(name).setTabCompleter(tabCompleter);
@@ -665,7 +665,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Registers a {@link Listener} with the server
      * @param listener the listener to register
-     * @since 3.0.0
+     * @since 1
      */
     public void registerListener(Listener listener) {
         getServer().getPluginManager().registerEvents(listener, this);
@@ -675,7 +675,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Registers a {@link Runnable} with the server, essentially a task
      * @param runnable the runnable to register
      * @param period the amount of ticks in between each execution
-     * @since 3.0.0
+     * @since 1
      */
     public void registerRunnable(Runnable runnable, long period) {
         Bukkit.getScheduler().runTaskTimer(this, runnable, 20L, period);
@@ -694,7 +694,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * <br> <br>
      *
      * Not documented because it's only for this class and not for anything else
-     * @since 3.0.0
+     * @since 1
      */
     public class APILog {
         protected APILog() {}
@@ -721,7 +721,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Returns an instance of {@link CyberAPISpecific}, which is things that are relating to CyberAPI only, not your plugin, CyberAPI
      * @return the {@link CyberAPISpecific} instance
-     * @since 3.0.0
+     * @since 1
      */
     public CyberAPISpecific getCyberAPISpecific() { return new CyberAPISpecific(); }
     public class CyberAPISpecific {
@@ -737,7 +737,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         /**
          * Gets the gradle project's properties
          * @return the {@link Properties} of the Gradle project
-         * @since 3.0.0
+         * @since 1
          */
         public Properties getBuildProperties() {
             InputStream in = getClassLoader().getResourceAsStream("spigot-build.properties");
@@ -754,7 +754,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         /**
          * Gets the current version of {@link CyberAPI}
          * @return the version of {@link CyberAPI}
-         * @since 3.0.0
+         * @since 1
          */
         public String getVersion() {
             return "v" + getBuildProperties().getProperty("version");
@@ -763,7 +763,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         /**
          * Gets the current build number of {@link CyberAPI}
          * @return the build number of {@link CyberAPI}
-         * @since 3.0.0
+         * @since 1
          */
         public int getBuild() {
             return Integer.parseInt(getBuildProperties().getProperty("buildNumber"));
@@ -772,36 +772,36 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         /**
          * Gets the latest version of {@link CyberAPI}
          * @return the latest version of {@link CyberAPI}
-         * @since 3.0.0
+         * @since 1
          */
         public String getLatestVersion() { return latestVersion; }
 
         /**
          * Gets the latest build number of {@link CyberAPI}
          * @return the latest build number of {@link CyberAPI}
-         * @since 3.0.0
+         * @since 1
          */
         public int getLatestBuild() { return latestBuild; }
 
         /**
          * Gets the website associated with {@link CyberAPI}
          * @return the website of {@link CyberAPI}
-         * @since 3.0.0
+         * @since 1
          */
         public String getWebsite() { return getBuildProperties().getProperty("website"); }
 
         /**
          * Gets the version string that is shown to the user on startup
          * @return the version string from server startup
-         * @since 3.0.0
+         * @since 1
          */
         public String getVersionString() {
-            return "&fThe plugin &a" + getPluginName() + " &fis using CyberAPI &6SPIGOT &fversion &e" + getVersion() + " &6(" + getBuild() + ")&f!";
+            return "&fThe plugin &a" + getPluginName() + " &fis using CyberAPI &6SPIGOT &fbuild &e#" + getVersion() + "&f!";
         }
 
         /**
          * Checks for updates, prints output to the console
-         * @since 3.0.0
+         * @since 1
          */
         public void checkForUpdates() {
             if(!getSettings().shouldCheckForUpdates()) return;
@@ -816,30 +816,30 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                 JsonElement element = JsonParser.parseReader(new InputStreamReader((InputStream)connection.getContent()));
                 try {
                     String tag = element.getAsJsonObject().get("tag_name").getAsString();
-                    latestVersion = tag.split("-")[0];
-                    latestBuild = Integer.parseInt(tag.split("-")[1]);
+                    latestVersion = getVersion();
+                    latestBuild = Integer.parseInt(tag);
                 } catch (Exception exception) {
                     log.error("An error occurred fetching the latest version for GitHub repo 'CyberAPI', tag=" + element.getAsJsonObject().get("tag_name").getAsString() + ": " + ChatColor.DARK_GRAY + exception.toString());
                 }
             } catch (Exception exception) {
-                log.error("Failed version checking for CyberAPI version " + getVersion() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException(exception);return;
+                log.error("Failed version checking for CyberAPI build #" + getBuild() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException(exception);return;
             }
 
             net.md_5.bungee.api.ChatColor DEFAULT_WARN_LOG = net.md_5.bungee.api.ChatColor.of(new java.awt.Color(249, 241, 165));
             if(getBuild() != latestBuild) {
                 if(latestBuild - getBuild() > 0) {
-                    log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest version is " + ChatColor.GREEN + latestVersion + DEFAULT_WARN_LOG + ", using " + ChatColor.RED + getVersion() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
+                    log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest build is #" + ChatColor.GREEN + latestBuild + DEFAULT_WARN_LOG + ", using #" + ChatColor.RED + getBuild() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
                     log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
                 }
             }
 
-            log.verbose("Checked for updates! (version=" + getCyberAPISpecific().getVersion() + ", latest=" + getCyberAPISpecific().getLatestVersion() + ")");
+            log.verbose("Checked for updates! (build=" + getCyberAPISpecific().getBuild() + ", latest=" + getCyberAPISpecific().getLatestBuild() + ")");
         }
 
         /**
          * Gets the build information from the inner-class {@link BuildInformation}
          * @return the build information
-         * @since 3.0.0
+         * @since 1
          * @apiNote All of this build information relates to **CYBERAPI**, not your project
          */
         public BuildInformation getBuildInformation() { return new BuildInformation(); }
@@ -849,7 +849,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the name of the build file that was used to build CyberAPI
              * @return the build file name
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getBuildFile() { return getBuildProperties().getProperty("buildFile"); }
@@ -857,7 +857,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the arch that was used to compile CyberAPI
              * @return the builder's arch
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getBuilderArch() { return getBuildProperties().getProperty("builderArch"); }
@@ -865,7 +865,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the OS that was used to compile CyberAPI
              * @return the builder's OS
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getBuilderOS() { return getBuildProperties().getProperty("builderOS"); }
@@ -873,7 +873,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the OS's version that was used to compile CyberAPI
              * @return the OS's version
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public double getBuilderVersion() { return Double.parseDouble(getBuildProperties().getProperty("builderVersion")); }
@@ -881,7 +881,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the unix time that CyberAPI was last built, in MILLISECONDS (not SECONDS)
              * @return the unix time of CyberAPI compile
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public long getBuildUnix() { return Long.parseLong(getBuildProperties().getProperty("built")); }
@@ -889,7 +889,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the {@link Date} that CyberAPI was built
              * @return the {@link Date} time of when CyberAPI was compiled
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public Date getBuildDate() { return new Date(getBuildUnix()); }
@@ -898,7 +898,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
              * Gets the human-readable date of when CyberAPI was built (please specify a {@link java.text.SimpleDateFormat} pattern)
              * @param pattern the {@link java.text.SimpleDateFormat} pattern that should be applied to the human-readable date
              * @return the date at which CyberAPI was compiled, in human-readable time
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getBuildDate(String pattern) { return getBuildDate(pattern, 0); }
@@ -908,7 +908,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
              * @param pattern the {@link java.text.SimpleDateFormat} pattern that should be applied to the human-readable date
              * @param timeOffset the time offset of the date
              * @return the date at which CyberAPI was compiled, in human-readable time
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getBuildDate(String pattern, int timeOffset) { return Time.getFormattedDateUnix(getBuildUnix()/1000L, pattern, timeOffset); }
@@ -917,7 +917,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the builder's Java vendor (where they got Java from) for CyberAPI
              * @return the builder's Java vendor
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getBuilderJavaVendor() { return getBuildProperties().getProperty("currentJavaVendor"); }
@@ -925,7 +925,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the builder's Java version (what their java version was when they built CyberAPI) for CyberAPI
              * @return the builder's Java version
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getBuilderJavaVersion() { return getBuildProperties().getProperty("currentJavaVersion"); }
@@ -933,7 +933,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the group ID used by CyberAPI
              * @return the group ID used when compiling CyberAPI
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getGroup() { return getBuildProperties().getProperty("group"); }
@@ -941,7 +941,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the name of the CyberAPI project being used
              * @return the name of the CyberAPI project
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getName() { return getBuildProperties().getProperty("name"); }
@@ -949,7 +949,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the targeted java version for CyberAPI's compilation
              * @return the targeted java version
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public int getTargetJavaVersion() { return Integer.parseInt(getBuildProperties().getProperty("targetJavaVersion")); }
@@ -957,7 +957,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Gets the user of the computer that was used to build CyberAPI
              * @return the user that built CyberAPI
-             * @since 3.0.0
+             * @since 1
              * @apiNote All of this build information relates to **CYBERAPI**, not your project
              */
             public String getBuildUser() { return getBuildProperties().getProperty("user"); }
@@ -966,7 +966,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
              * Converts all properties to a {@link String} that looks like this:
              * <p>"property1=value1, property2=value2"</p>
              * @return all properties to a string
-             * @since 3.0.0
+             * @since 1
              */
             public String toString() {
                 List<String> items = new ArrayList<>();
@@ -979,7 +979,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             /**
              * Converts all properties to a {@link HashMap} that can be used by the user
              * @return the {@link HashMap} of all properties
-             * @since 3.0.0
+             * @since 1
              */
             public HashMap<String, Object> getMappedProperties() {
                 HashMap<String, Object> map = new HashMap<>();
@@ -994,7 +994,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
          * Prints the CyberAPI's compile information and debug information to console!
          * @see CyberAPISpecific#getPrettyBuildInformation()
          * @see CyberAPISpecific#getPrettyBuildInformation(boolean)
-         * @since 3.0.0
+         * @since 1
          */
         public void printBuildInformation() {
             for(String line : getPrettyBuildInformation().split("\\n")) {
@@ -1005,7 +1005,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         /**
          * Gets a list of string's of the pretty build information, usually used by {@link CyberAPISpecific#printBuildInformation()}, but you can use it to print it to a player as well!
          * @return the pretty build information in string with \n form
-         * @since 3.0.0
+         * @since 1
          * @see CyberAPISpecific#getPrettyBuildInformation(boolean)
          */
         public String getPrettyBuildInformation() {
@@ -1016,7 +1016,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
          * Gets a list of string's of the pretty build information, usually used by {@link CyberAPISpecific#printBuildInformation()}, but you can use it to print it to a player as well!
          * @param separators whether separators should be present at the start and end of the message
          * @return the pretty build information in string with \n form
-         * @since 3.0.0
+         * @since 1
          * @see CyberAPISpecific#printBuildInformation()
          */
         public String getPrettyBuildInformation(boolean separators) {
@@ -1056,7 +1056,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
          * A tribute to one of the best Minecraft content creators in existence! <br> <br>
          * <em>"If I had another hundred lives, I think I would choose to be Technoblade again every single time."</em> <br>
          * - Alexander "Technoblade" (1999 - 2022)
-         * @since 3.1.2
+         * @since 11
          */
         public void technoblade() {
             Log.info("&f&oTechnoblade's Tribute, called by: " + StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass().getCanonicalName());

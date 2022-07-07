@@ -12,7 +12,7 @@ public class BetterStackTraces {
      * Gets a list of the {@link String}s
      * @param exception the {@link Throwable} to get the stacktrace from
      * @return the stacktrace in a {@link List} of {@link String}s form
-     * @since 3.3
+     * @since 15
      */
     public static List<String> get(Throwable exception) {
         List<String> exceptionList = new ArrayList<>();
@@ -29,7 +29,7 @@ public class BetterStackTraces {
      * Prints the exception to the console with a specific log level
      * @param level the level to log the exception
      * @param exception the exception to print
-     * @since 3.3
+     * @since 15
      */
     public static void print(Level level, Throwable exception) {
         for(String element : get(exception)) {
@@ -40,7 +40,7 @@ public class BetterStackTraces {
     /**
      * Prints the exception to the console as {@link java.util.logging.Logger#severe(String)}
      * @param exception the exception to print
-     * @since 3.3
+     * @since 15
      */
     public static void print(Throwable exception) {
         print(Level.SEVERE, exception);

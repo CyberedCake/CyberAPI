@@ -8,7 +8,7 @@ import net.md_5.bungee.protocol.DefinedPacket;
 
 /**
  * Represents the bungee title packet manager, thanks <a href="https://www.javatips.net/api/BungeeCord-master/proxy/src/main/java/net/md_5/bungee/BungeeTitle.java">to this website for most of this code</a>
- * @since 3.3
+ * @since 15
  */
 public class BungeeTitle implements Title {
 
@@ -20,7 +20,7 @@ public class BungeeTitle implements Title {
      * Usually you would not want to use this, and instead leave this up to {@link BungeeTitle this class}
      * @param action the {@link net.md_5.bungee.protocol.packet.Title.Action} that packet is performing
      * @return the {@link net.md_5.bungee.protocol.packet.Title} packet
-     * @since 3.3
+     * @since 15
      */
     public static net.md_5.bungee.protocol.packet.Title createPacket(net.md_5.bungee.protocol.packet.Title.Action action) {
         net.md_5.bungee.protocol.packet.Title title = new net.md_5.bungee.protocol.packet.Title();
@@ -37,7 +37,7 @@ public class BungeeTitle implements Title {
      * Sets the title for the {@link BungeeTitle}
      * @param text The text to use as the title.
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      */
     @Override
     public Title title(BaseComponent text) {
@@ -51,7 +51,7 @@ public class BungeeTitle implements Title {
      * Sets the title for the {@link BungeeTitle}
      * @param text The text to use as the title.
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      * @deprecated this <b>will</b> thorw a {@link UnsupportedOperationException}
      * @throws UnsupportedOperationException this method is <b>not</b> supported by CyberAPI
      */
@@ -65,7 +65,7 @@ public class BungeeTitle implements Title {
      * Sets the subtitle for the {@link BungeeTitle}
      * @param text The text to use as the subtitle.
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      */
     @Override
     public Title subTitle(BaseComponent text) {
@@ -79,7 +79,7 @@ public class BungeeTitle implements Title {
      * Sets the subtitle for the {@link BungeeTitle}
      * @param text The text to use as the subtitle.
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      * @deprecated this <b>will</b> thorw a {@link UnsupportedOperationException}
      * @throws UnsupportedOperationException this method is <b>not</b> supported by CyberAPI
      */
@@ -93,7 +93,7 @@ public class BungeeTitle implements Title {
      * Sets the fade-in time for the {@link BungeeTitle}
      * @param ticks The amount of ticks (1/20 second) for the fade in effect.
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      */
     @Override
     public Title fadeIn(int ticks) {
@@ -107,7 +107,7 @@ public class BungeeTitle implements Title {
      * Sets the stay time for the {@link BungeeTitle}
      * @param ticks The amount of ticks (1/20 second) for the stay effect.
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      */
     @Override
     public Title stay(int ticks) {
@@ -121,7 +121,7 @@ public class BungeeTitle implements Title {
      * Sets the fade-out time for the {@link BungeeTitle}
      * @param ticks The amount of ticks (1/20 second) for the fade out effect
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      */
     @Override
     public Title fadeOut(int ticks) {
@@ -134,7 +134,7 @@ public class BungeeTitle implements Title {
     /**
      * Clears the player's title and subtitle
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      */
     @Override
     public Title clear() {
@@ -148,7 +148,7 @@ public class BungeeTitle implements Title {
     /**
      * Resets the player's title, subtitle, and times
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      */
     @Override
     public Title reset() {
@@ -165,7 +165,7 @@ public class BungeeTitle implements Title {
      * Sends packets to a {@link ProxiedPlayer}
      * @param player the player to send the packets to
      * @param packets the packets to send
-     * @since 3.3
+     * @since 15
      */
     public void sendPacket(ProxiedPlayer player, DefinedPacket... packets) {
         for(DefinedPacket packet : packets) {
@@ -178,7 +178,7 @@ public class BungeeTitle implements Title {
      * Sends the title to a {@link ProxiedPlayer}
      * @param player The player to send the title to.
      * @return the {@link BungeeTitle} object
-     * @since 3.3
+     * @since 15
      */
     @Override
     public Title send(ProxiedPlayer player) {

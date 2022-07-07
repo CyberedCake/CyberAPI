@@ -31,7 +31,7 @@ public class ProtocolManager {
     /**
      * Sets the name of the version to show when the client is outdated or {@link ProtocolManager#setAlwaysShowVersion(boolean)} is true
      * @param versionName the name to set the version to
-     * @since 3.1.0
+     * @since 9
      */
     public void setVersionName(String versionName) {
         this.versionName = versionName;
@@ -40,7 +40,7 @@ public class ProtocolManager {
     /**
      * Gets the name of the version that is shown when the client is outdated or {@link ProtocolManager#setAlwaysShowVersion(boolean)} is true
      * @return the {@link String} version name
-     * @since 3.1.0
+     * @since 9
      */
     public String getVersionName() {
         return this.versionName;
@@ -48,7 +48,7 @@ public class ProtocolManager {
 
     /**
      * Resets the version name back to what it should be ({@link Bukkit#getName()} and {@link CyberAPI#getMinecraftVersion()} - 'Purpur 1.19')
-     * @since 3.1.0
+     * @since 9
      */
     public void resetVersionName() {
         this.versionName = Bukkit.getName() + " " + CyberAPI.getInstance().getMinecraftVersion();
@@ -57,7 +57,7 @@ public class ProtocolManager {
     /**
      * Sets the protocol to a specified number, you can see all version protocols here: <a href="https://wiki.vg/Protocol_version_numbers">https://wiki.vg/Protocol_version_numbers</a>
      * @param protocol what to set the fake protocol number to
-     * @since 3.1.0
+     * @since 9
      */
     public void setProtocolNumber(int protocol) {
         this.protocol = protocol;
@@ -66,7 +66,7 @@ public class ProtocolManager {
     /**
      * Gets the protocol, either set by the server or a custom protocol number, you can see all version protocols here: <a href="https://wiki.vg/Protocol_version_numbers">https://wiki.vg/Protocol_version_numbers</a>
      * @return the custom or server protocol number
-     * @since 3.1.0
+     * @since 9
      */
     public int getProtocolNumber() {
         return this.protocol;
@@ -74,14 +74,14 @@ public class ProtocolManager {
 
     /**
      * Resets the protocol number to its default value (aka what the server's protocol version number is)
-     * @since 3.1.0
+     * @since 9
      */
     public void resetProtocolNumber() { this.protocol = Integer.MIN_VALUE; }
 
     /**
      * Sets whether the server should always show an outdated client, which would mean the version name is constantly shown
      * @param alwaysShowVersion whether to always display outdated client
-     * @since 3.1.0
+     * @since 9
      */
     public void setAlwaysShowVersion(boolean alwaysShowVersion) {
         this.alwaysShowVersion = alwaysShowVersion;
@@ -90,7 +90,7 @@ public class ProtocolManager {
     /**
      * Should the server always show the version from {@link ProtocolManager#setVersionName(String)}
      * @return whether the server should always show the version
-     * @since 3.1.0
+     * @since 9
      */
     public boolean shouldAlwaysShowVersion() {
         return this.alwaysShowVersion;

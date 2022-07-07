@@ -18,7 +18,7 @@ public class ServerListInfo {
     /**
      * Gets an instance of {@link ServerListInfo}
      * @return the {@link ServerListInfo} instance
-     * @since 3.5
+     * @since 28
      */
     public static ServerListInfo serverListInfo() {
         if(serverListInfo == null) serverListInfo = new ServerListInfo();
@@ -30,7 +30,7 @@ public class ServerListInfo {
      * <br>
      * This class if for managing the MOTD, allowing you to modify it to what you please
      * @return the {@link MOTDManager} instance
-     * @since 3.5
+     * @since 28
      */
     public MOTDManager getMOTDManager() {
         return MOTDManager.motdManager();
@@ -41,7 +41,7 @@ public class ServerListInfo {
      * <br>
      * This class is for managing the player list, including player count, max player count, and players online hover
      * @return the {@link PlayerListManager} instance
-     * @since 3.5
+     * @since 28
      */
     public PlayerListManager getPlayerListManager() {
         return PlayerListManager.playerListManager();
@@ -52,7 +52,7 @@ public class ServerListInfo {
      * <br>
      * This class is for managing the protocol number and version name, for example, if a server is outdated, it'll show "Paper 1.18" or something, and you can change that by using this class
      * @return the {@link ProtocolManager} instance
-     * @since 3.5
+     * @since 28
      */
     public ProtocolManager getProtocolManager() { return ProtocolManager.protocolManager(); }
 

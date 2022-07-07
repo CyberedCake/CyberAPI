@@ -14,7 +14,7 @@ public class Item {
      * Checks for any item stacks (actually {@link Material}s) that are similar by name to strings
      * @param strings the strings to check for {@literal <}- MUST ALL BE LOWERCASE
      * @return the {@link List} of {@link ItemStack}s that have similar {@link Material} names
-     * @since 3.0.0
+     * @since 1
      */
     public static List<ItemStack> getSimilarItemStacks(String... strings) {
         List<ItemStack> returned = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Item {
      * Get all items that are similar with a certain category
      * @param similarItem a {@link SimilarItem}, what category to check against
      * @return get similar items
-     * @since 3.0.0
+     * @since 1
      */
     public static List<ItemStack> getAll(SimilarItem similarItem) {
         return switch (similarItem) {
@@ -47,7 +47,7 @@ public class Item {
     /**
      * Gets all MC items in namespaced form
      * @return an {@link ArrayList} of MC items
-     * @since 3.0.0
+     * @since 1
      */
     public static ArrayList<String> getMCItemsNamespace() {
         ArrayList<String> mcItems = new ArrayList<>();
@@ -64,7 +64,7 @@ public class Item {
      * @param item1 the first item to compare
      * @param item2 the second item to compare
      * @return whether the items are the same/similar, disregarding the amount
-     * @since 3.0.0
+     * @since 1
      */
     public static boolean compare(ItemStack item1, ItemStack item2) {
         item1 = item1.clone();

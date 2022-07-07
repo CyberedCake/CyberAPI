@@ -3,7 +3,7 @@ package net.cybercake.cyberapi.common.builders.settings;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @since 3.3
+ * @since 15
  */
 @SuppressWarnings({"all"})
 public class Settings {
@@ -11,12 +11,12 @@ public class Settings {
     /**
      * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link Settings} instance
      * @return the Builder instance
-     * @since 3.3
+     * @since 15
      */
     public static Builder builder() { return new Builder(); }
 
     /**
-     * @since 3.3
+     * @since 15
      */
     public static class Builder {
         private boolean verbose, silenced, checkForUpdates, showPrefixInLogs, muteStartMessage;
@@ -25,7 +25,7 @@ public class Settings {
 
         /**
          * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link Settings}
-         * @since 3.3
+         * @since 15
          * @deprecated use {@link Settings#builder()} instead
          */
         @Deprecated
@@ -170,7 +170,7 @@ public class Settings {
         /**
          * Builds the builder into an {@link Settings} instance
          * @return the {@link Settings} instance
-         * @since 3.3
+         * @since 15
          */
         public Settings build() {
             return new Settings(this);
@@ -182,98 +182,98 @@ public class Settings {
     /**
      * The {@link Settings} instance, created by the {@link Builder} intsance
      * @param builder the builder that can then be transformed into {@link Settings} and read by {@code CyberAPI}
-     * @since 3.3
+     * @since 15
      */
     public Settings(Builder builder) { this.builder = builder; }
 
     /**
      * Gets whether CyberAPI should print verbose information
      * @return should print verbose
-     * @since 3.3
+     * @since 15
      */
     public boolean isVerbose() { return builder.verbose; }
 
     /**
      * Gets whether CyberAPI should silence all logging (except for exceptions)
      * @return should be silenced
-     * @since 3.3
+     * @since 15
      */
     public boolean isSilenced() { return builder.silenced; }
 
     /**
      * Gets whether CyberAPI should check for updates
      * @return should check for updates
-     * @since 3.3
+     * @since 15
      */
     public boolean shouldCheckForUpdates() { return builder.checkForUpdates; }
 
     /**
      * Gets whether CyberAPI should print the plugin's prefix in console every time they use a {@code CyberAPI Log Class} feature
      * @return should show prefix in logs/console
-     * @since 3.3
+     * @since 15
      */
     public boolean shouldShowPrefixInLogs() { return builder.showPrefixInLogs; }
 
     /**
      * Gets whether CyberAPI should mute the start message
      * @return should mute start message
-     * @since 3.3.2
+     * @since 17
      */
     public boolean shouldMuteStartMessage() { return builder.muteStartMessage; }
 
     /**
      * Gets whether CyberAPI supports Adventure API or not
      * @return supports Adventure API
-     * @since 3.4
+     * @since 24
      */
     public FeatureSupport supportsAdventureAPI() { return builder.adventureSupport; }
 
     /**
      * Gets whether CyberAPI supports MiniMessage or not
      * @return supports MiniMessage
-     * @since 3.4
+     * @since 24
      */
     public FeatureSupport supportsMiniMessage() { return builder.miniMessageSupport; }
 
     /**
      * Gets whether CyberAPI supports LuckPerms or not
      * @return supports LuckPerms
-     * @since 3.3
+     * @since 15
      */
     public FeatureSupport supportsLuckPerms() { return builder.luckPermsSupport; }
 
     /**
      * Gets whether CyberAPI supports ProtocolLib or not
      * @return supports ProtocolLib
-     * @since 3.4
+     * @since 24
      */
     public FeatureSupport supportsProtocolLib() { return builder.protocolLibSupport; }
 
     /**
      * Gets whether CyberAPI supports Protocolize or not
      * @return supports Protocolize
-     * @since 3.5
+     * @since 28
      */
     public FeatureSupport supportsProtocolize() { return builder.protocolizeSupport; }
 
     /**
      * Gets the name of the plugin
      * @return the plugin name
-     * @since 3.3
+     * @since 15
      */
     public @Nullable String getName() { return builder.name; }
 
     /**
      * Gets the prefix of the plugin that will show up before logging messages
      * @return the plugin prefix
-     * @since 3.3
+     * @since 15
      */
     public @Nullable String getPrefix() { return builder.prefix; }
 
     /**
      * Gets the package name where all the developer's commands are stored
      * @return the commands' path
-     * @since 3.3
+     * @since 15
      */
     public @Nullable String getCommandsPath() { return builder.commandsPath; }
 

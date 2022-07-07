@@ -42,7 +42,7 @@ public class PlayerListManager {
      * <br>
      * This method resets the hover event when hovering over the player count and sets the players to the parameter.
      * @param players the players to show when hovering over the player count
-     * @since 3.5
+     * @since 28
      */
     public void setOnlinePlayers(String... players) {
         clearOnlinePlayers();
@@ -52,7 +52,7 @@ public class PlayerListManager {
     /**
      * Adds a player to the players online without resetting it first. <b>Note: This has no effect on the current player count/max player count!</b>
      * @param player the player to add to the hover event
-     * @since 3.5
+     * @since 28
      */
     public void addOnlinePlayer(String player) {
         this.players.add(UChat.chat(player));
@@ -61,7 +61,7 @@ public class PlayerListManager {
     /**
      * Removes a player from the players online using the exact {@link String} match. <b>Note: This has no effect on the current player count/max player count!</b>
      * @param player the player to remove from the hover event, must be an exact match to a currently online player to remove (alternatively, you could use {@link PlayerListManager#removeOnlinePlayer(int)})
-     * @since 3.5
+     * @since 28
      */
     public void removeOnlinePlayer(String player) {
         this.players.remove(player);
@@ -70,7 +70,7 @@ public class PlayerListManager {
     /**
      * Removes a player from the players online using an index number. <b>Note: This has no effect on the current player count/max player count!</b>
      * @param index the index of the player to remove, 0 being the first item on the list (alternatively, you could use {@link PlayerListManager#removeOnlinePlayer(String)})
-     * @since 3.5
+     * @since 28
      * @throws IndexOutOfBoundsException if the index is out of bounds ({@code index < 0 || index >= size()})
      */
     public void removeOnlinePlayer(int index) {
@@ -80,7 +80,7 @@ public class PlayerListManager {
     /**
      * Get a list of the fake online players provided by the user in {@link PlayerListManager#addOnlinePlayer(String)}} or {@link PlayerListManager#setOnlinePlayers(String...)}.
      * @return the fake online players (that show up in the hover event when hovering over the player count in the multiplayer menu)
-     * @since 3.5
+     * @since 28
      */
     public List<String> getCustomOnlinePlayers() {
         return this.players;
@@ -88,7 +88,7 @@ public class PlayerListManager {
 
     /**
      * Clears the fake online players that show when hovering over the player count in the multiplayer menu.
-     * @since 3.5
+     * @since 28
      */
     public void clearOnlinePlayers() {
         this.players.clear();
@@ -97,7 +97,7 @@ public class PlayerListManager {
     /**
      * The fake players online, that show up when you hover over the player count in the multiplayer menu, current size.
      * @return the amount of fake online players
-     * @since 3.5
+     * @since 28
      */
     public int getCustomOnlinePlayersSize() {
         return this.players.size();
@@ -106,7 +106,7 @@ public class PlayerListManager {
     /**
      * Sets the maximum player count displayed on the server list. <b>Note: This has no effect on the actual max player count! Players can still join after it hits the maximum, it's just for show.</b>
      * @param maxPlayers the fake max player count
-     * @since 3.5
+     * @since 28
      */
     public void setMaxPlayers(int maxPlayers) {
         this.maxPlayers = maxPlayers;
@@ -115,7 +115,7 @@ public class PlayerListManager {
     /**
      * Gets the current maximum player count displayed on the server list.
      * @return the amount of fake max players
-     * @since 3.5
+     * @since 28
      */
     public int getMaxPlayers() {
         return this.maxPlayers;
@@ -123,7 +123,7 @@ public class PlayerListManager {
 
     /**
      * Resets the fake maximum player count to it's value from the server.properties
-     * @since 3.5
+     * @since 28
      */
     public void resetMaxPlayers() {
         this.maxPlayers = ProxyServer.getInstance().getConfig().getListeners().stream().toList().get(0).getMaxPlayers();
@@ -133,7 +133,7 @@ public class PlayerListManager {
      * Sets the current player count for the players when viewing the server in the multiplayer menu
      * @param newPlayerCountType what effect {@code newCurrentPlayers} should have on the server
      * @param newCurrentPlayers the new current players that show up on the multiplayer menu
-     * @since 3.5
+     * @since 28
      */
     public void setOnlinePlayerCount(NewPlayerCountType newPlayerCountType, Object newCurrentPlayers) {
         validateSetCurrentPlayerCountArgs(newPlayerCountType, newCurrentPlayers);
@@ -148,7 +148,7 @@ public class PlayerListManager {
     /**
      * Gets the raw version that was entered into {@link PlayerListManager#setOnlinePlayerCount(NewPlayerCountType, Object)}
      * @return the raw new current players value
-     * @since 3.5
+     * @since 28
      */
     public Object getOnlinePlayersRaw() {
         return newCurrentPlayers;
@@ -157,7 +157,7 @@ public class PlayerListManager {
     /**
      * Gets the new player count type that is used in the calculation for {@link PlayerListManager#getOnlinePlayers()}
      * @return the {@link NewPlayerCountType}
-     * @since 3.5
+     * @since 28
      */
     public NewPlayerCountType getOnlinePlayersType() {
         return newPlayerCountType;
@@ -166,7 +166,7 @@ public class PlayerListManager {
     /**
      * Gets the online players list according to the settings set using {@link PlayerListManager#setOnlinePlayerCount(NewPlayerCountType, Object)}
      * @return the custom player count
-     * @since 3.5
+     * @since 28
      */
     public int getOnlinePlayers() {
         int onlinePlayers = CyberAPI.getInstance().getOnlinePlayers().size();
@@ -183,7 +183,7 @@ public class PlayerListManager {
 
     /**
      * Resets the current player count for the players viewing the server in the multiplayer menu
-     * @since 3.5
+     * @since 28
      */
     public void resetOnlinePlayerCount() {
         this.newPlayerCountType = null;
@@ -193,7 +193,7 @@ public class PlayerListManager {
     /**
      * Should the server show the players online or the player count. This will make your custom player hover clear and set the player count to '???'
      * @param showPlayers should the plugin show the online players
-     * @since 3.5
+     * @since 28
      */
     public void setShowPlayers(boolean showPlayers) {
         this.showPlayers = showPlayers;
@@ -201,7 +201,7 @@ public class PlayerListManager {
 
     /**
      * Resets the showPlayers boolean to the server.properties value
-     * @since 3.5
+     * @since 28
      */
     public void resetShowPlayers() {
         this.showPlayers = true;
@@ -212,7 +212,7 @@ public class PlayerListManager {
      * <br>
      * <b>Note: Will override your custom player count and the hoverable player list!</b>
      * @return should the server send a player count and player hover packet to the client
-     * @since 3.5
+     * @since 28
      */
     public boolean shouldShowPlayers() {
         return this.showPlayers;
@@ -223,7 +223,7 @@ public class PlayerListManager {
 
     /**
      * Private method used in {@link PlayerListManager#setOnlinePlayerCount(NewPlayerCountType, Object)}
-     * @since 3.5
+     * @since 28
      */
     private void validateSetCurrentPlayerCountArgs(NewPlayerCountType newPlayerCountType, Object newCurrentPlayers) {
         if(newPlayerCountType.getType() != null && !(newCurrentPlayers.getClass() == newPlayerCountType.getType()))
@@ -253,7 +253,7 @@ public class PlayerListManager {
 
     /**
      * Private method used in {@link PlayerListManager#validateSetCurrentPlayerCountArgs(NewPlayerCountType, Object)}
-     * @since 3.5
+     * @since 28
      */
     private IllegalArgumentException validateSetCurrentPlayerCountArgsIllegalArgument(String why, Throwable cause) {
         String reason = "Failed to parse newCurrentPlayers: " + why;

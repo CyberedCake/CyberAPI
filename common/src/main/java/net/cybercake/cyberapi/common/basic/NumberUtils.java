@@ -14,7 +14,7 @@ public class NumberUtils {
      * Checks if the {@link String} provided contains a primitive-type 'byte'
      * @param string the {@link String} to check
      * @return whether the {@link String} contains a primitive-type 'byte'
-     * @since 3.3
+     * @since 15
      */
     public static boolean isByte(String string) {
         try {
@@ -30,7 +30,7 @@ public class NumberUtils {
      * Checks if the {@link String} provided contains a primitive-type 'short'
      * @param string the {@link String} to check
      * @return whether the {@link String} contains a primitive-type 'short'
-     * @since 3.3
+     * @since 15
      */
     public static boolean isShort(String string) {
         try {
@@ -46,7 +46,7 @@ public class NumberUtils {
      * Checks if the {@link String} provided contains a primitive-type 'int'
      * @param string the {@link String} to check
      * @return whether the {@link String} contains a primitive-type 'int'
-     * @since 3.3
+     * @since 15
      */
     public static boolean isInteger(String string) {
         try {
@@ -62,7 +62,7 @@ public class NumberUtils {
      * Checks if the {@link String} provided contains a primitive-type 'long'
      * @param string the {@link String} to check
      * @return whether the {@link String} contains a primitive-type 'long'
-     * @since 3.3
+     * @since 15
      */
     public static boolean isLong(String string) {
         try {
@@ -78,7 +78,7 @@ public class NumberUtils {
      * Checks if the {@link String} provided contains a primitive-type 'float'
      * @param string the {@link String} to check
      * @return whether the {@link String} contains a primitive-type 'float'
-     * @since 3.3
+     * @since 15
      */
     public static boolean isFloat(String string) {
         try {
@@ -94,7 +94,7 @@ public class NumberUtils {
      * Checks if the {@link String} provided contains a primitive-type 'double'
      * @param string the {@link String} to check
      * @return whether the {@link String} contains a primitive-type 'double'
-     * @since 3.3
+     * @since 15
      */
     public static boolean isDouble(String string) {
         try {
@@ -112,7 +112,7 @@ public class NumberUtils {
      * @param integer1 the smaller integer
      * @param integer2 the larger integer
      * @return a boolean on whether the integer you provided is between or equal two the two other integers provided
-     * @since 3.3
+     * @since 15
      */
     public static boolean isBetweenEquals(int yourInteger, int integer1, int integer2) {
         return yourInteger >= integer1 && yourInteger <= integer2;
@@ -124,7 +124,7 @@ public class NumberUtils {
      * @param long1 the smaller long
      * @param long2 the larger long
      * @return a boolean on whether the long you provided is between or equal two the two other longs provided
-     * @since 3.3
+     * @since 15
      */
     public static boolean isBetweenEquals(long yourLong, long long1, long long2) {
         return yourLong >= long1 && yourLong <= long2;
@@ -136,7 +136,7 @@ public class NumberUtils {
      * @param short1 the smaller short
      * @param short2 the larger short
      * @return a boolean on whether the long you provided is between or equal two the two other shorts provided
-     * @since 3.3
+     * @since 15
      */
     public static boolean isBetweenEquals(short yourShort, short short1, short short2) {
         return yourShort >= short1 && yourShort <= short2;
@@ -148,7 +148,7 @@ public class NumberUtils {
      * @param float1 the smaller float
      * @param float2 the larger float
      * @return a boolean on whether the float you provided is between or equal two the two other floats provided
-     * @since 3.3
+     * @since 15
      */
     public static boolean isBetweenEquals(float yourFloat, float float1, float float2) {
         return yourFloat >= float1 && yourFloat <= float2;
@@ -160,7 +160,7 @@ public class NumberUtils {
      * @param double1 the smaller double
      * @param double2 the larger double
      * @return a boolean on whether the double you provided is between or equal two the two other doubles provided
-     * @since 3.3
+     * @since 15
      */
     public static boolean isBetweenEquals(double yourDouble, double double1, double double2) {
         return yourDouble >= double1 && yourDouble <= double2;
@@ -172,7 +172,7 @@ public class NumberUtils {
      * @param byte1 the smaller byte
      * @param byte2 the larger byte
      * @return a boolean on whether the byte you provided is between or equal two the two other bytes provided
-     * @since 3.3
+     * @since 15
      */
     public static boolean isBetweenEquals(byte yourByte, byte byte1, byte byte2) {
         return yourByte >= byte1 && yourByte <= byte2;
@@ -184,7 +184,7 @@ public class NumberUtils {
      * @param places the amount of places to show. for example, "3" would be "3.141" and "5" would be "3.14159"
      * @param roundingMode the {@link RoundingMode} to use for the {@link DecimalFormat}
      * @return the decimal format in {@link String} form
-     * @since 3.3
+     * @since 15
      */
     public static String formatDecimal(double value, int places, RoundingMode roundingMode) {
         DecimalFormat decimalFormat = new DecimalFormat("0." + "#".repeat(Math.max(0, places)));
@@ -197,7 +197,7 @@ public class NumberUtils {
      * @param value the value to format
      * @param places the amount of places to show. for example, "3" would be "3.141" and "5" would be "3.14159"
      * @return the decimal format in {@link String} form
-     * @since 3.3
+     * @since 15
      */
     public static String formatDecimal(double value, int places) {
         return formatDecimal(value, places, RoundingMode.HALF_EVEN);
@@ -207,7 +207,7 @@ public class NumberUtils {
      * Formats a long number to have commas in between (for example, "321,123")
      * @param number the number to format
      * @return the formatted long
-     * @since 3.3
+     * @since 15
      */
     public static String formatLong(long number) {
         NumberFormat format = NumberFormat.getInstance();
@@ -221,7 +221,7 @@ public class NumberUtils {
      * @param min the minimum number, should be smaller than and not equal to maximum
      * @param max the maximum number, should be bigger than and not equal to minimum
      * @return the random integer
-     * @since 3.3
+     * @since 15
      */
     public static int randomInt(int min, int max) {
         if(min > max) throw new IllegalArgumentException("Minimum (" + min + ") cannot be greater than maximum (" + max + ")!");
