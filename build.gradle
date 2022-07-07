@@ -63,10 +63,6 @@ subprojects { Project subProject ->
     group = getGroup()
     version = this.version
 
-    dependencies {
-        if(!subProject.getName().contains("common")) implementation project(':common')
-    }
-
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
         options.release = getTargetJavaVersion()
@@ -82,6 +78,10 @@ subprojects { Project subProject ->
                         includes:"**/cyberapi-*.jar"
                 )
             }
+
+            project.delete(
+                    files("${project.buildDir}/libs/.tempJarFile")
+            )
         }
     }
 
@@ -135,9 +135,11 @@ subprojects { Project subProject ->
     }
 
     artifacts {
-        archives sourcesJar
-        archives javadocJar
-        archives shadowJar
+        if(!subProject.getName().contains("common")) {
+            archives sourcesJar
+            archives javadocJar
+            archives shadowJar
+        }
     }
 
     javadoc {
@@ -160,7 +162,7 @@ subprojects { Project subProject ->
     }
 
     jar {
-        archiveName = "cyberapi-" + getProject().getName() + "-b" + build + ".jar"
+        archiveName = ".tempJarFile"
         sourcesJar.archiveName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
         javadocJar.archiveName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
 
