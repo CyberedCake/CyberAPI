@@ -162,6 +162,7 @@ subprojects { Project subProject ->
     }
 
     jar {
+        archiveName = "cyberapi-" + getProject().getName() + "-b" + build + ".jar"
         sourcesJar.archiveName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
         javadocJar.archiveName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
 
