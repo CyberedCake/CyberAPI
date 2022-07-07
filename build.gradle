@@ -161,6 +161,16 @@ subprojects { Project subProject ->
         }
     }
 
+    jar {
+        sourcesJar.archiveName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
+        javadocJar.archiveName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
+
+        from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
+//        manifest {
+//            attributes 'buildNumber': "#" + this.build.toString()
+//        }
+    }
+
     classes {
         dependsOn createProperties
     }
