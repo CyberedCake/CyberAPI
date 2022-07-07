@@ -1,5 +1,5 @@
 # CyberAPI
-[![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Version)](https://jitpack.io/p/CyberedCake/CyberAPI)
+[![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI)
 <br> <br>
 The new and improved CyberAPI, version 3, is here! This is a library used for most of [CyberedCake's](https://github.com/CyberedCake) plugins and can be used by you for free! It adds additional features that Spigot and Bungeecord (bungee coming soon) do not have and makes existing stuff easier.
 <br> <br>
@@ -24,11 +24,10 @@ Step 1) Include the below code in your build.gradle "repositories" section.
 	}
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Version)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
-Step 2) <b>NOTE: You must keep the "v" at the beginning of the version number!</b>
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
 ```gradle
 	dependencies {
-	        implementation 'com.github.CyberedCake.CyberAPI:spigot:vLATEST'
+	        implementation 'com.github.CyberedCake.CyberAPI:spigot:LATEST BUILD'
 	}
 ```
 
@@ -51,14 +50,13 @@ Step 1) Include the below code in your pom.xml "repositories" section.
     </repositories>
 ```
 
-Step 2) Include the below code in your pom.xml as a "dependency" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Version)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
-Step 2) <b>NOTE: You must keep the "v" at the beginning of the version number!</b>
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
 ```xml
     <dependencies>
     	<dependency>
             <groupId>com.github.CyberedCake.CyberAPI</groupId>
             <artifactId>spigot</artifactId>
-            <version>vLATEST</version>
+            <version>LATEST BUILD</version>
 	 </dependency>
     </dependencies>
 ```
@@ -116,11 +114,10 @@ Step 1) Include the below code in your build.gradle "repositories" section.
 	}
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Version)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
-Step 2) <b>NOTE: You must keep the "v" at the beginning of the version number!</b>
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
 ```gradle
 	dependencies {
-	        implementation 'com.github.CyberedCake.CyberAPI:bungee:vLATEST'
+	        implementation 'com.github.CyberedCake.CyberAPI:bungee:LATEST BUILD'
 	}
 ```
 
@@ -143,14 +140,13 @@ Step 1) Include the below code in your pom.xml "repositories" section.
     </repositories>
 ```
 
-Step 2) Include the below code in your pom.xml as a "dependency" and replace "LATEST" with the latest version that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Version)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
-Step 2) <b>NOTE: You must keep the "v" at the beginning of the version number!</b>
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
 ```xml
     <dependencies>
     	<dependency>
             <groupId>com.github.CyberedCake.CyberAPI</groupId>
             <artifactId>bungee</artifactId>
-            <version>vLATEST</version>
+            <version>LATEST BUILD</version>
 	 </dependency>
     </dependencies>
 ```
