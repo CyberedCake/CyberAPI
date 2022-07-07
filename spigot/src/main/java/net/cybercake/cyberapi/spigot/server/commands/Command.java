@@ -186,13 +186,13 @@ public abstract class Command implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
-        return perform(commandSender, command, command.getLabel(), strings);
+        return perform(commandSender, command, s, strings);
     }
 
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
-        List<String> tab = tab(commandSender, command, command.getLabel(), strings);
+        List<String> tab = tab(commandSender, command, s, strings);
         if(tab == null) return UTabComp.emptyList;
         return UTabComp.tabCompletions(getTabCompleteType(), List.of(strings).get(strings.length-1), tab);
     }
