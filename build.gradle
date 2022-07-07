@@ -135,11 +135,9 @@ subprojects { Project subProject ->
     }
 
     artifacts {
-        if(!subProject.getName().contains("common")) {
-            archives sourcesJar
-            archives javadocJar
-            archives shadowJar
-        }
+        archives sourcesJar
+        archives javadocJar
+        archives shadowJar
     }
 
     javadoc {
