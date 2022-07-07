@@ -806,34 +806,36 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         public void checkForUpdates() {
             if(!getSettings().shouldCheckForUpdates()) return;
 
-            log.verbose("Checking for updates...");
-            try {
-                // thanks stack overflow (https://stackoverflow.com/a/21964051/15519255)
-                URL url = new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest");
-                URLConnection connection = url.openConnection();
-                connection.connect();
-
-                JsonElement element = JsonParser.parseReader(new InputStreamReader((InputStream)connection.getContent()));
+            Bukkit.getScheduler().runTaskAsynchronously(CyberAPI.getInstance(), () -> {
+                log.verbose("Checking for updates...");
                 try {
-                    String tag = element.getAsJsonObject().get("tag_name").getAsString();
-                    latestVersion = getVersion();
-                    latestBuild = Integer.parseInt(tag);
+                    // thanks stack overflow (https://stackoverflow.com/a/21964051/15519255)
+                    URL url = new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest");
+                    URLConnection connection = url.openConnection();
+                    connection.connect();
+
+                    JsonElement element = JsonParser.parseReader(new InputStreamReader((InputStream)connection.getContent()));
+                    try {
+                        String tag = element.getAsJsonObject().get("tag_name").getAsString();
+                        latestVersion = getVersion();
+                        latestBuild = Integer.parseInt(tag);
+                    } catch (Exception exception) {
+                        log.error("An error occurred fetching the latest version for GitHub repo 'CyberAPI', tag=" + element.getAsJsonObject().get("tag_name").getAsString() + ": " + ChatColor.DARK_GRAY + exception.toString());
+                    }
                 } catch (Exception exception) {
-                    log.error("An error occurred fetching the latest version for GitHub repo 'CyberAPI', tag=" + element.getAsJsonObject().get("tag_name").getAsString() + ": " + ChatColor.DARK_GRAY + exception.toString());
+                    log.error("Failed version checking for CyberAPI build #" + getBuild() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException(exception);return;
                 }
-            } catch (Exception exception) {
-                log.error("Failed version checking for CyberAPI build #" + getBuild() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException(exception);return;
-            }
 
-            net.md_5.bungee.api.ChatColor DEFAULT_WARN_LOG = net.md_5.bungee.api.ChatColor.of(new java.awt.Color(249, 241, 165));
-            if(getBuild() != latestBuild) {
-                if(latestBuild - getBuild() > 0) {
-                    log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest build is #" + ChatColor.GREEN + latestBuild + DEFAULT_WARN_LOG + ", using #" + ChatColor.RED + getBuild() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
-                    log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
+                net.md_5.bungee.api.ChatColor DEFAULT_WARN_LOG = net.md_5.bungee.api.ChatColor.of(new java.awt.Color(249, 241, 165));
+                if(getBuild() != latestBuild) {
+                    if(latestBuild - getBuild() > 0) {
+                        log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest build is #" + ChatColor.GREEN + latestBuild + DEFAULT_WARN_LOG + ", using #" + ChatColor.RED + getBuild() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
+                        log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
+                    }
                 }
-            }
 
-            log.verbose("Checked for updates! (build=" + getCyberAPISpecific().getBuild() + ", latest=" + getCyberAPISpecific().getLatestBuild() + ")");
+                log.verbose("Checked for updates! (build=" + getCyberAPISpecific().getBuild() + ", latest=" + getCyberAPISpecific().getLatestBuild() + ")");
+            });
         }
 
         /**
