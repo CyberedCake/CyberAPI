@@ -81,6 +81,9 @@ subprojects { Project subProject ->
         }
     }
 
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
