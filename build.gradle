@@ -79,8 +79,9 @@ subprojects { Project subProject ->
                 )
             }
 
-            project.delete(
-                    files("${project.buildDir}/libs/.tempJarFile")
+            assert file("${subProject.buildDir}/libs/.tempJarFile")
+            subProject.delete(
+                    files("${subProject.buildDir}/libs/.tempJarFile")
             )
         }
     }
