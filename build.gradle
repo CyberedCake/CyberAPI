@@ -78,11 +78,6 @@ subprojects { Project subProject ->
                         includes:"**/cyberapi-*.jar"
                 )
             }
-
-            assert file("${subProject.buildDir}/libs/.tempJarFile")
-            subProject.delete(
-                    files("${subProject.buildDir}/libs/.tempJarFile")
-            )
         }
     }
 
