@@ -146,17 +146,8 @@ subprojects { Project subProject ->
         }
     }
 
-    java {
-        withSourcesJar()
-        withJavadocJar()
-
-        if(JavaVersion.current() < javaVersion) {
-            toolchain.languageVersion = JavaLanguageVersion.of(getTargetJavaVersion())
-        }
-    }
-
     jar {
-        archiveName = ".tempJarFile"
+        archiveName = "cyberapi-" + getProject().getName() + "-b" + build + ".jar"
         sourcesJar.archiveName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
         javadocJar.archiveName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
 
