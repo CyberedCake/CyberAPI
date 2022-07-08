@@ -65,7 +65,6 @@ subprojects { Project subProject ->
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
-        options.release = getTargetJavaVersion()
     }
 
     task copyArtifacts {
