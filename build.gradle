@@ -155,9 +155,9 @@ subprojects { Project subProject ->
         javadocJar.archiveName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
 
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
-//        manifest {
-//            attributes 'buildNumber': "#" + this.build.toString()
-//        }
+        manifest {
+            attributes 'build': "#" + this.build.toString()
+        }
     }
 
     classes {
