@@ -194,6 +194,8 @@ subprojects { Project subProject ->
         manifest {
             attributes 'buildNumber': "#" + this.build.toString()
         }
+
+        mergeServiceFiles()
     }
 }
 
