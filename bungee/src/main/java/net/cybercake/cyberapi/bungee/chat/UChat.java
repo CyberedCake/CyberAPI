@@ -59,6 +59,50 @@ public class UChat {
     }
 
     /**
+     * Get a {@link net.md_5.bungee.api.ChatColor} from an RGB value
+     * @param rgb the RGB value
+     * @return the {@link net.md_5.bungee.api.ChatColor}
+     * @since 42
+     */
+    public static net.md_5.bungee.api.ChatColor getColorFromRGB(int rgb) {
+        return net.md_5.bungee.api.ChatColor.of(new java.awt.Color(rgb));
+    }
+
+    /**
+     * Gets a {@link net.md_5.bungee.api.ChatColor} from a separated red, green, blue value
+     * @param red the red value
+     * @param green the green value
+     * @param blue the blue value
+     * @return the {@link net.md_5.bungee.api.ChatColor}
+     * @since 42
+     */
+    public static net.md_5.bungee.api.ChatColor getColorFromRGB(int red, int green, int blue) {
+        return net.md_5.bungee.api.ChatColor.of(new java.awt.Color(red, green, blue));
+    }
+
+    /**
+     * Gets a {@link net.md_5.bungee.api.ChatColor} from a separated red, green, blue values as floats
+     * @param red the red value
+     * @param green the green value
+     * @param blue the blue value
+     * @return the {@link net.md_5.bungee.api.ChatColor}
+     * @since 42
+     */
+    public static net.md_5.bungee.api.ChatColor getColorFromRGB(float red, float green, float blue) {
+        return net.md_5.bungee.api.ChatColor.of(new java.awt.Color(red, green, blue));
+    }
+
+    /**
+     * Gets a {@link net.md_5.bungee.api.ChatColor} from a hex value
+     * @param hex the hex value
+     * @return the {@link net.md_5.bungee.api.ChatColor}
+     * @since 42
+     */
+    public net.md_5.bungee.api.ChatColor getColorFromHex(String hex) {
+        return net.md_5.bungee.api.ChatColor.of(hex);
+    }
+
+    /**
      * A short-form way of creating a new {@link net.md_5.bungee.api.chat.BaseComponent} with {@link ChatColor#translateAlternateColorCodes(char, String)}.
      * The name simply means '<b>b</b>ase<b>Component</b>'
      * @param character the alternate color code to replace
