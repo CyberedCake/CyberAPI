@@ -22,6 +22,14 @@ public class BetterStackTraces {
         for (StackTraceElement traceElement : trace)
             exceptionList.add("\tat " + traceElement);
 
+        Throwable cause = exception.getCause();
+        if(cause != null) {
+            exceptionList.add("Caused by: " + cause.getMessage());
+            List<String> causedBy = get(cause);
+            causedBy.remove(0);
+            exceptionList.addAll(causedBy);
+        }
+
         return exceptionList;
     }
 
