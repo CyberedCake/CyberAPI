@@ -181,7 +181,7 @@ subprojects { Project subProject ->
     if(!subProject.getName().contains("common")) shadowJar.finalizedBy copyArtifacts
 
     shadowJar {
-        archiveFileName = "cyberapi-" + getProject().getName() + "-b" + build.toString() + ".jar"
+        archiveName = "cyberapi-" + getProject().getName() + "-b" + build.toString() + ".jar"
 
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
