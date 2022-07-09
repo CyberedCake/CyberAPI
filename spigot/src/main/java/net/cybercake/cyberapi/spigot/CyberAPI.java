@@ -796,7 +796,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
          * @since 1
          */
         public String getVersionString() {
-            return "&fThe plugin &a" + getPluginName() + " &fis using CyberAPI &6SPIGOT &fbuild &e#" + getVersion() + "&f!";
+            return "&fThe plugin &a" + getPluginName() + " &fis using CyberAPI &6SPIGOT &fbuild &e#" + getBuild() + "&f!";
         }
 
         /**

@@ -49,6 +49,8 @@ setBasic()
 group = getGroup()
 version = "v3"
 
+def actualVersion = version
+
 def javaVersion = JavaVersion.toVersion(getTargetJavaVersion())
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
@@ -116,8 +118,9 @@ subprojects { Project subProject ->
                 properties['targetJavaVersion'] = String.valueOf(getTargetJavaVersion())
                 properties['built'] = new Date().toInstant().toEpochMilli().toString()
                 properties['buildNumber'] = String.valueOf(build)
-                properties['version'] = String.valueOf(version)
+                properties['version'] = String.valueOf(actualVersion)
                 properties['description'] = this.getDescription()
+                properties['testingEnvironment'] = Boolean.FALSE.toString()
                 properties.store writer, "CyberAPI Build Information {project: " + getProject().getName() + "}\n(all information from the computer that built CyberAPI)"
             }
         }
