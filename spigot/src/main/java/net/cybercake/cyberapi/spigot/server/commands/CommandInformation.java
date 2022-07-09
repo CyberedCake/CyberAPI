@@ -97,7 +97,7 @@ public class CommandInformation {
         }
 
         /**
-         * Sets the types of tab completions for {@link Command#tab(CommandSender, String, String[])}
+         * Sets the types of tab completions for {@link Command#tab(CommandSender, String, CommandInformation, String[])}
          * @param tabCompleteType the type of tab completions
          * @since 12
          * @see UTabComp#tabCompletions(TabCompleteType, String, List)
