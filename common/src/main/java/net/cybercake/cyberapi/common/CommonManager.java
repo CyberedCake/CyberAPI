@@ -2,11 +2,13 @@ package net.cybercake.cyberapi.common;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.cybercake.cyberapi.common.basic.logs.Logs;
 import net.cybercake.cyberapi.common.server.ReflectionsConsoleFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -24,6 +26,29 @@ public interface CommonManager {
     @SuppressWarnings({"all"})
     default void reflectionsConsoleFilter() {
         ((Logger) LogManager.getRootLogger()).addFilter(new ReflectionsConsoleFilter());
+    }
+
+    /**
+     * Creates a log file that you can then add logs to
+     * @param id the ID of the {@link Logs} instance
+     * @param fileNameWithoutExtension the name of the file without the extension
+     * @return the {@link Logs} instance
+     * @since 43
+     */
+    default Logs createOrGetLogs(String id, String fileNameWithoutExtension) {
+        throw new UnsupportedOperationException("createLogs(String, String) is not currently supported with your server type!");
+    }
+
+    /**
+     * Creates a log file that you can then add logs to
+     * @param id the ID of the {@link Logs} instance
+     * @param file the {@link File} where the logs are housed
+     * @return the {@link Logs} instance
+     * @since 43
+     */
+    @SuppressWarnings({"deprecation"})
+    default Logs createOrGetLogs(String id, File file) {
+        return (Logs.getFromID(id) != null ? new Logs(id, file) : Logs.getFromID(id));
     }
 
     /**

@@ -13,6 +13,7 @@ import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfoListener;
 import net.cybercake.cyberapi.common.CommonManager;
 import net.cybercake.cyberapi.common.basic.Time;
+import net.cybercake.cyberapi.common.basic.logs.Logs;
 import net.cybercake.cyberapi.common.builders.player.UserHeadSettings;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import net.cybercake.cyberapi.common.builders.settings.Settings;
@@ -26,6 +27,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 
 import javax.annotation.Nullable;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -129,6 +131,37 @@ public class CyberAPI extends Plugin implements CommonManager {
     private FeatureSupport luckPermsSupport = null;
     private FeatureSupport protocolLibSupport = null;
     private FeatureSupport protocolizeSupport = null;
+
+    // override methods from CommonManager
+
+    /**
+     * Creates a log file that you can then add logs to
+     * @param id the ID of the {@link Logs} instance
+     * @param fileNameWithoutExtension the name of the file without the extension
+     * @return the {@link Logs} instance
+     * @since 43
+     */
+    @Override
+    public Logs createOrGetLogs(String id, String fileNameWithoutExtension) {
+        File logs = new File(getDataFolder(), "logs");
+        if(!logs.exists()) logs.mkdirs();
+        return createOrGetLogs(id, new File(logs, fileNameWithoutExtension + ".log"));
+    }
+
+    /**
+     * Creates a log file that you can then add logs to
+     * @param id the ID of the {@link Logs} instance
+     * @param file the {@link File} where the logs are housed
+     * @return the {@link Logs} instance
+     * @since 43
+     */
+    @SuppressWarnings({"deprecation"})
+    @Override
+    public Logs createOrGetLogs(String id, File file) {
+        return (Logs.getFromID(id) == null ? new Logs(id, file) : Logs.getFromID(id));
+    }
+
+    
 
     /**
      * Gets the settings CyberAPI is using to determine the developer's preferences
