@@ -1,6 +1,5 @@
 package net.cybercake.cyberapi.bungee.server.commands;
 
-import net.cybercake.cyberapi.bungee.chat.TabCompleteType;
 import net.cybercake.cyberapi.bungee.chat.UChat;
 import net.cybercake.cyberapi.bungee.chat.UTabComp;
 import net.md_5.bungee.api.CommandSender;
@@ -10,126 +9,46 @@ import java.util.List;
 
 public abstract class Command extends net.md_5.bungee.api.plugin.Command implements TabExecutor {
 
-    public static class CommandInformation {
-        private final String name;
-        private String permission = "";
-        private String usage = "";
-        private String[] aliases = new String[]{};
-        private TabCompleteType tabCompleteType = TabCompleteType.NONE;
-
-        /**
-         * Creates an instance of {@link CommandInformation}, allowing you to customize the stored information on the command.
-         * @param name the name of the command, without the slash
-         * @since 12
-         * @deprecated there is no reason to make a {@link CommandInformation} this way, please use {@link Command#newCommand(String)}
-         */
-        @Deprecated
-        @SuppressWarnings({"all"})
-        public CommandInformation(String name) {
-            this.name = name;
-        }
-
-        /**
-         * Sets the permission required to run the command
-         * @param permission the required permission
-         * @since 15
-         */
-        public CommandInformation setPermission(String permission) {
-            this.permission = permission; return this;
-        }
-
-        /**
-         * Sets the correct usage of the command
-         * @param usage the command's correct usage
-         * @since 15
-         */
-        public CommandInformation setUsage(String usage) {
-            this.usage = usage; return this;
-        }
-
-        /**
-         * Sets the aliases of the command, a.k.a. new commands that do the same thing as this command
-         * @param aliases the aliases of the command
-         * @since 15
-         */
-        public CommandInformation setAliases(String... aliases) {
-            this.aliases = aliases; return this;
-        }
-
-        /**
-         * Sets the aliases of the command, a.k.a. new commands that do the same thing as this command
-         * @param aliases the aliases of the command, in {@link List} form
-         * @since 15
-         */
-        public CommandInformation setAliases(List<String> aliases) {
-            this.aliases = aliases.toArray(new String[0]); return this;
-        }
-
-        /**
-         * Sets the types of tab completions for {@link Command#tab(CommandSender, String[])}
-         * @param tabCompleteType the type of tab completions
-         * @since 15
-         * @see UTabComp#tabCompletions(TabCompleteType, String, List)
-         */
-        public CommandInformation setTabCompleteType(TabCompleteType tabCompleteType) {
-            this.tabCompleteType = tabCompleteType; return this;
-        }
-    }
-
     /**
-     * Creates an instance of {@link CommandInformation}, allowing you to customize the stored information on the command.
+     * Creates an instance of {@link CommandInformation.Builder}, allowing you to customize the stored information on the command.
      * @param name the name of the command, without the slash
-     * @return a new {@link CommandInformation} instance
+     * @return a new {@link CommandInformation.Builder} instance
      * @since 15
      */
-    protected static CommandInformation newCommand(String name) { return new CommandInformation(name); }
+    protected static CommandInformation.Builder newCommand(String name) { return CommandInformation.builder(name); }
 
     private final CommandInformation information;
 
     private Command() {
         super("", "", "");
-        this.information = newCommand("");
+        this.information = newCommand("").build();
     }
 
     /**
      * Creates a new {@link Command} for the server. This command automatically registers itself and doesn't require a plugin.yml entry.
      * @param information the {@link CommandInformation} that allows the customization of the stored information of the command, use {@link Command#newCommand(String)} to create a {@link CommandInformation} instance
+     * @since 41
      */
     public Command(CommandInformation information) {
-        super(information.name, information.permission, information.aliases);
+        super(information.getName(), information.getPermission(), information.getAliases());
         this.information = information;
+        if(!information.getPermissionMessage().isEmpty()) setPermissionMessage(information.getPermissionMessage());
     }
 
     /**
-     * @return the name of the command with the slash omitted
-     * @since 15
+     * Creates a new {@link Command} for the server. This command automatically registers itself and doesn't require a plugin.yml entry.
+     * @param information the {@link CommandInformation} that allows the customization of the stored information of the command, use {@link Command#newCommand(String)} to create a {@link CommandInformation} instance
+     * @since 41
      */
-    public String getName() { return information.name; }
+    public Command(CommandInformation.Builder information) {
+        this(information.build());
+    }
 
     /**
-     * @return the permission required to execute the command
-     * @since 15
+     * @return the main command attributed to this command
+     * @since 41
      */
-    public String getPermission() { return information.permission; }
-
-    /**
-     * @return the correct usage of the command
-     * @since 15
-     */
-    public String getUsage() { return information.usage; }
-
-    /**
-     * @return the aliases (other ways to execute the main command)
-     * @since 15
-     */
-    public String[] getAliases() { return information.aliases; }
-
-    /**
-     * @return the tab complete type
-     * @since 15
-     * @see UTabComp#tabCompletions(TabCompleteType, String, List)
-     */
-    public TabCompleteType getTabCompleteType() { return information.tabCompleteType; }
+    public CommandInformation getMainCommand() { return information; }
 
     /**
      * The Bungee command's execution
@@ -138,7 +57,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
      * @return whether the command was successful or not
      * @since 15
      */
-    public abstract boolean perform(CommandSender sender, String[] args);
+    public abstract boolean perform(CommandSender sender, CommandInformation information, String[] args);
 
     /**
      * The Bungee command's tab completions
@@ -147,20 +66,20 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
      * @return what to tab complete
      * @since 15
      */
-    public abstract List<String> tab(CommandSender sender, String[] args);
+    public abstract List<String> tab(CommandSender sender, CommandInformation information, String[] args);
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        boolean perform = perform(sender, args);
+        boolean perform = perform(sender, information, args);
         if(!perform) {
-            sender.sendMessage(UChat.bComponent(getUsage()));
+            sender.sendMessage(UChat.bComponent(information.getUsage()));
         }
     }
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-        List<String> tab = tab(sender, args);
+        List<String> tab = tab(sender, information, args);
         if(tab == null) return UTabComp.emptyList;
-        return UTabComp.tabCompletions(getTabCompleteType(), List.of(args).get(args.length-1), tab);
+        return UTabComp.tabCompletions(information.getTabCompleteType(), List.of(args).get(args.length-1), tab);
     }
 }

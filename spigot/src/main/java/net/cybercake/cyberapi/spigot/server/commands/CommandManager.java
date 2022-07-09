@@ -31,17 +31,11 @@ public class CommandManager {
             for(Class<?> clazz : (path == null ? new Reflections() : new Reflections(path)).getSubTypesOf(Command.class)) {
                 Command command = (Command) clazz.getDeclaredConstructor().newInstance();
                 try {
-                    PluginCommand pluginCommand = getCommand(command.getName(), CyberAPI.getInstance());
-                    pluginCommand.setExecutor(command);
-                    pluginCommand.setTabCompleter(command);
-                    if(command.getAliases().length > 0) pluginCommand.setAliases(List.of(command.getAliases()));
-                    if(!command.getDescription().strip().equals("")) pluginCommand.setDescription(UChat.chat(command.getDescription()));
-                    if(!command.getPermission().strip().equals("")) pluginCommand.setPermission(command.getPermission());
-                    if(!command.getPermissionMessage().strip().equals("")) pluginCommand.setPermissionMessage(UChat.chat(command.getPermissionMessage()));
-                    if(!command.getUsage().strip().equals("")) pluginCommand.setUsage(UChat.chat(command.getUsage()));
-                    getCommandMap().register(CyberAPI.getInstance().getDescription().getName(), pluginCommand);
+                    command.getCommands().forEach(information -> {
+                        registerCommand(command, information, getCommand(information.getName(), CyberAPI.getInstance()));
+                    });
                 } catch (Exception exception) {
-                    CyberAPI.getInstance().getAPILogger().error("An error occurred whilst registering command /" + command.getName() + ": " + ChatColor.DARK_GRAY + exception);
+                    CyberAPI.getInstance().getAPILogger().error("An error occurred whilst registering command /" + command.getMainCommand().getName() + " - " + command.getClass().getCanonicalName() + ": " + ChatColor.DARK_GRAY + exception);
                     CyberAPI.getInstance().getAPILogger().verboseException(exception);
                 }
             }
@@ -52,6 +46,18 @@ public class CommandManager {
         } catch (Exception exception) {
             throw new RuntimeException("An error occurred while registering commands!", exception);
         }
+    }
+
+    private void registerCommand(Command command, CommandInformation info, PluginCommand pluginCommand) {
+        pluginCommand.setExecutor(command);
+        pluginCommand.setTabCompleter(command);
+        if(info.getAliases().length > 0) pluginCommand.setAliases(List.of(info.getAliases()));
+        if(!info.getDescription().strip().equals("")) pluginCommand.setDescription(UChat.chat(info.getDescription()));
+        if(!info.getPermission().strip().equals("")) pluginCommand.setPermission(info.getPermission());
+        if(!info.getPermissionMessage().strip().equals("")) pluginCommand.setPermissionMessage(UChat.chat(info.getPermissionMessage()));
+        if(!info.getUsage().strip().equals("")) pluginCommand.setUsage(UChat.chat(info.getUsage()));
+
+        getCommandMap().register(CyberAPI.getInstance().getDescription().getName(), pluginCommand);
     }
 
     public PluginCommand getCommand(String name, Plugin plugin) {
