@@ -1,6 +1,7 @@
 package net.cybercake.cyberapi.bungee.server.serverlist;
 
 import net.cybercake.cyberapi.bungee.CyberAPI;
+import net.cybercake.cyberapi.bungee.chat.UChat;
 import net.cybercake.cyberapi.bungee.server.serverlist.motd.MOTD;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.plugin.Cancellable;
@@ -53,14 +54,19 @@ public class ServerListPingEvent extends Event implements Cancellable {
 
     public PendingConnection getPendingConnection() { return connection; }
 
-    public String getVersionName() { return this.versionName; }
+    public String getVersionName() { return UChat.chat(this.versionName); }
     public int getProtocolVersion() { return this.protocolVersion; }
     public boolean isPlayerListVisible() { return this.playerListVisible; }
     public boolean isVersionNameAlwaysVisible() { return this.versionNameAlwaysVisible; }
     public MOTD getMOTD() { return this.motd; }
     public int getMaxPlayers() { return this.maxPlayers; }
     public int getOnlinePlayerCount() { return this.onlinePlayerCount; }
-    public List<String> getOnlinePlayers() { return onlinePlayers; }
+    public List<String> getOnlinePlayers() {
+        return onlinePlayers
+                .stream()
+                .map(UChat::chat)
+                .toList();
+    }
 
     @Override public boolean isCancelled() { return cancelled; }
     @Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }

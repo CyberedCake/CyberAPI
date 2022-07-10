@@ -1,6 +1,7 @@
 package net.cybercake.cyberapi.spigot.server.serverlist;
 
 import net.cybercake.cyberapi.spigot.CyberAPI;
+import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.server.serverlist.motd.MOTD;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;
@@ -63,14 +64,19 @@ public class ServerListPingEvent extends ServerEvent implements Cancellable {
     public InetAddress getAddress() { return address; }
     @Nullable public OfflinePlayer getUser() { return user; }
 
-    public String getVersionName() { return this.versionName; }
+    public String getVersionName() { return UChat.chat(this.versionName); }
     public int getProtocolVersion() { return this.protocolVersion; }
     public boolean isPlayerListVisible() { return this.playerListVisible; }
     public boolean isVersionNameAlwaysVisible() { return this.versionNameAlwaysVisible; }
     public MOTD getMOTD() { return this.motd; }
     public int getMaxPlayers() { return this.maxPlayers; }
     public int getOnlinePlayerCount() { return this.onlinePlayerCount; }
-    public List<String> getOnlinePlayers() { return onlinePlayers; }
+    public List<String> getOnlinePlayers() {
+        return onlinePlayers
+            .stream()
+            .map(UChat::chat)
+            .toList();
+    }
 
 
     @NotNull
