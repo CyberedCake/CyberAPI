@@ -6,6 +6,7 @@ import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.server.ServerProperties;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.spigot.server.serverlist.players.NewPlayerCountType;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -135,13 +136,14 @@ public class PlayerListManager {
      * @param newCurrentPlayers the new current players that show up on the multiplayer menu
      * @since 9
      */
-    public void setOnlinePlayerCount(NewPlayerCountType newPlayerCountType, Object newCurrentPlayers) {
+    public void setOnlinePlayerCount(NewPlayerCountType newPlayerCountType, @Nullable Object newCurrentPlayers) {
         validateSetCurrentPlayerCountArgs(newPlayerCountType, newCurrentPlayers);
         this.newPlayerCountType = newPlayerCountType;
         this.newCurrentPlayers = switch(newPlayerCountType) {
-            case CONSTANT, KEEP_SAME, STAY_AT -> Integer.parseInt(String.valueOf(newCurrentPlayers));
+            case CONSTANT, STAY_AT -> Integer.parseInt(String.valueOf(newCurrentPlayers));
             case PERCENT -> Double.parseDouble(String.valueOf(newCurrentPlayers));
             case RANDOM_BETWEEN -> String.valueOf(newCurrentPlayers);
+            case KEEP_SAME -> -1;
         };
     }
 
@@ -226,6 +228,8 @@ public class PlayerListManager {
      * @since 9
      */
     private void validateSetCurrentPlayerCountArgs(NewPlayerCountType newPlayerCountType, Object newCurrentPlayers) {
+        if(newPlayerCountType == NewPlayerCountType.KEEP_SAME) return;
+
         if(newPlayerCountType.getType() != null && !(newCurrentPlayers.getClass() == newPlayerCountType.getType()))
             throw new IllegalArgumentException("newCurrentPlayers must be a " + newPlayerCountType.getType().getCanonicalName() + " (currently " + newCurrentPlayers.getClass().getCanonicalName() + ") because newPlayerCountType is set to " + newPlayerCountType.name() + "!");
 

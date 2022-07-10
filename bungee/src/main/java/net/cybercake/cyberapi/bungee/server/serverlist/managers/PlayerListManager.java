@@ -7,6 +7,7 @@ import net.cybercake.cyberapi.bungee.server.serverlist.players.NewPlayerCountTyp
 import net.cybercake.cyberapi.common.basic.NumberUtils;
 import net.md_5.bungee.api.ProxyServer;
 
+import javax.annotation.Nullable;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,13 +136,14 @@ public class PlayerListManager {
      * @param newCurrentPlayers the new current players that show up on the multiplayer menu
      * @since 28
      */
-    public void setOnlinePlayerCount(NewPlayerCountType newPlayerCountType, Object newCurrentPlayers) {
+    public void setOnlinePlayerCount(NewPlayerCountType newPlayerCountType, @Nullable Object newCurrentPlayers) {
         validateSetCurrentPlayerCountArgs(newPlayerCountType, newCurrentPlayers);
         this.newPlayerCountType = newPlayerCountType;
         this.newCurrentPlayers = switch(newPlayerCountType) {
-            case CONSTANT, KEEP_SAME, STAY_AT -> Integer.parseInt(String.valueOf(newCurrentPlayers));
+            case CONSTANT, STAY_AT -> Integer.parseInt(String.valueOf(newCurrentPlayers));
             case PERCENT -> Double.parseDouble(String.valueOf(newCurrentPlayers));
             case RANDOM_BETWEEN -> String.valueOf(newCurrentPlayers);
+            case KEEP_SAME -> -1;
         };
     }
 
@@ -226,6 +228,8 @@ public class PlayerListManager {
      * @since 28
      */
     private void validateSetCurrentPlayerCountArgs(NewPlayerCountType newPlayerCountType, Object newCurrentPlayers) {
+        if(newPlayerCountType == NewPlayerCountType.KEEP_SAME) return;
+
         if(newPlayerCountType.getType() != null && !(newCurrentPlayers.getClass() == newPlayerCountType.getType()))
             throw new IllegalArgumentException("newCurrentPlayers must be a " + newPlayerCountType.getType().getCanonicalName() + " (currently " + newCurrentPlayers.getClass().getCanonicalName() + ") because newPlayerCountType is set to " + newPlayerCountType.name() + "!");
 
