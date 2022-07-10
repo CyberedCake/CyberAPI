@@ -161,7 +161,7 @@ public class CyberAPI extends Plugin implements CommonManager {
         return (Logs.getFromID(id) == null ? new Logs(id, file) : Logs.getFromID(id));
     }
 
-    
+
 
     /**
      * Gets the settings CyberAPI is using to determine the developer's preferences
