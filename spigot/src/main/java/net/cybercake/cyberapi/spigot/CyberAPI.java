@@ -729,6 +729,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     public APILog getAPILogger() {
         return log;
     }
+    public net.md_5.bungee.api.ChatColor DEFAULT_WARN_LOG = net.md_5.bungee.api.ChatColor.of(new java.awt.Color(249, 241, 165));
 
     /**
      * CyberAPI logging methods only
@@ -741,7 +742,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         protected APILog() {}
 
         public void info(String message) { log(Level.INFO, ChatColor.RESET + message); }
-        public void warn(String message) { log(Level.WARNING, message); }
+        public void warn(String message) { log(Level.WARNING, DEFAULT_WARN_LOG + message); }
         public void error(String message) { log(Level.SEVERE, ChatColor.RED + message); }
 
         public void verbose(String message) { verbose(StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass().getCanonicalName(), message);}
@@ -867,7 +868,6 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                     log.error("Failed version checking for CyberAPI build #" + getBuild() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException(exception);return;
                 }
 
-                net.md_5.bungee.api.ChatColor DEFAULT_WARN_LOG = net.md_5.bungee.api.ChatColor.of(new java.awt.Color(249, 241, 165));
                 if(getBuild() != latestBuild) {
                     if(latestBuild - getBuild() > 0) {
                         log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest build is #" + ChatColor.GREEN + latestBuild + DEFAULT_WARN_LOG + ", using #" + ChatColor.RED + getBuild() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
