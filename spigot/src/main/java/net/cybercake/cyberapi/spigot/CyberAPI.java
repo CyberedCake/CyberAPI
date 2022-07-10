@@ -159,6 +159,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     private FeatureSupport miniMessageSupport = null;
     private FeatureSupport luckPermsSupport = null;
     private FeatureSupport protocolLibSupport = null;
+    private FeatureSupport protocolizeSupport = null;
 
 
     // override methods from CommonManager
@@ -465,6 +466,16 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             }
         }
         return this.protocolLibSupport;
+    }
+
+    /**
+     * Gets the Protocolize support. This method will always return {@link FeatureSupport#UNSUPPORTED} because this CyberAPI server type does not support it!
+     * @return the {@link FeatureSupport} enum of the value, always {@link FeatureSupport#UNSUPPORTED}
+     * @since 46
+     */
+    public FeatureSupport getProtocolizeSupport() {
+        if(this.protocolizeSupport == null) this.protocolizeSupport = FeatureSupport.UNSUPPORTED;
+        return this.protocolizeSupport;
     }
 
     /**
