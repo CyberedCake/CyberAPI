@@ -53,6 +53,7 @@ public class ServerListInfoListener implements Listener {
 
             // MOTD
             MOTD motd = (serverListPingEvent.getMOTD() == null ? MOTD.builder("default_temp").build() : serverListPingEvent.getMOTD());
+            if(motd == null) motd = MOTD.builder("_default").build();
             ping.setDescriptionComponent(UChat.bComponent(motd.getFormattedMOTD()));
             try {
                 Favicon image = null;

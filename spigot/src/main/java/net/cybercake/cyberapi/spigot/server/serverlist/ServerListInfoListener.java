@@ -55,6 +55,7 @@ public class ServerListInfoListener {
 
             // MOTD
             MOTD motd = serverListPingEvent.getMOTD();
+            if(motd == null) motd = MOTD.builder("_default").build();
             ping.setMotD(motd.getFormattedMOTD());
             WrappedServerPing.CompressedImage image = null;
             switch(motd.getMOTDIconType()) {
