@@ -18,6 +18,7 @@ import net.cybercake.cyberapi.spigot.config.Config;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.cybercake.cyberapi.spigot.server.CyberAPIListeners;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
+import net.cybercake.cyberapi.spigot.server.placeholderapi.Placeholders;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfoListener;
 import org.bukkit.*;
@@ -123,6 +124,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         getMiniMessageSupport();
         getLuckPermsSupport();
         getProtocolLibSupport();
+        getPlaceholderAPISupport();
 
         registerListener(new CyberAPIListeners());
 
@@ -159,6 +161,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     private FeatureSupport miniMessageSupport = null;
     private FeatureSupport luckPermsSupport = null;
     private FeatureSupport protocolLibSupport = null;
+    private FeatureSupport placeholderAPISupport = null;
     private FeatureSupport protocolizeSupport = null;
 
 
@@ -469,6 +472,28 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     }
 
     /**
+     * Gets the PlaceholderAPI support. This method assumes the best of the developer as if they marked PlaceholderAPI Support as {@link FeatureSupport#SUPPORTED}, it will allow the use of PlaceholderAPI.
+     * @return the {@link FeatureSupport} enum of the value
+     * @since 52
+     */
+    public FeatureSupport getPlaceholderAPISupport() {
+        if(placeholderAPISupport == null) {
+            placeholderAPISupport = settings.supportsPlaceholderAPI();
+
+            if(placeholderAPISupport.equals(FeatureSupport.AUTO)) {
+                try {
+                    Class.forName("me.clip.placeholderapi.PlaceholderAPI");
+                    this.placeholderAPISupport = FeatureSupport.SUPPORTED;
+                } catch (Exception exception) {
+                    this.placeholderAPISupport = FeatureSupport.UNSUPPORTED;
+                }
+                log.verbose("PlaceholderAPI support was set to auto, detected: " + placeholderAPISupport.name());
+            }
+        }
+        return this.placeholderAPISupport;
+    }
+
+    /**
      * Gets the Protocolize support. This method will always return {@link FeatureSupport#UNSUPPORTED} because this CyberAPI server type does not support it!
      * @return the {@link FeatureSupport} enum of the value, always {@link FeatureSupport#UNSUPPORTED}
      * @since 46
@@ -546,6 +571,16 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      */
     public ServerListInfo getServerListInfo() {
         return ServerListInfo.serverListInfo();
+    }
+
+    /**
+     * Returns an instance of {@link Placeholders}, which allows you to add PlaceholderAPI placeholders easily
+     * @return the {@link Placeholders} instance
+     * @since 9
+     * @apiNote requires PlaceholderAPI support
+     */
+    public Placeholders getPlaceholders() {
+        return Placeholders.placeholders();
     }
 
     /**

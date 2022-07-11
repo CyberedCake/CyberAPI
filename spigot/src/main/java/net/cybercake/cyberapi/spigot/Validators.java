@@ -62,4 +62,14 @@ public class Validators {
         if(!CyberAPI.getInstance().getProtocolLibSupport().equals(FeatureSupport.SUPPORTED)) throw serverHook("ProtocolLib");
     }
 
+    /**
+     * --{@literal >} <b>MAINLY FOR USE INSIDE CYBERAPI ONLY</b> {@literal <}--
+     * <br><br>
+     * Validates that PlaceholderAPI is supported and working
+     */
+    public static void validatePlaceholderAPIHook() {
+        validateIsNotAuto(CyberAPI.getInstance().getPlaceholderAPISupport());
+        if(!CyberAPI.getInstance().getPlaceholderAPISupport().equals(FeatureSupport.SUPPORTED)) throw serverHook("PlaceholderAPI");
+    }
+
 }

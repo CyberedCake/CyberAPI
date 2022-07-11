@@ -20,7 +20,7 @@ public class Settings {
      */
     public static class Builder {
         private boolean verbose, silenced, checkForUpdates, showPrefixInLogs, muteStartMessage;
-        private FeatureSupport adventureSupport, miniMessageSupport, luckPermsSupport, protocolLibSupport, protocolizeSupport;
+        private FeatureSupport adventureSupport, miniMessageSupport, luckPermsSupport, protocolLibSupport, placeholderAPISupport, protocolizeSupport;
         private String name, prefix, commandsPath;
 
         /**
@@ -39,6 +39,7 @@ public class Settings {
             this.miniMessageSupport = FeatureSupport.AUTO;
             this.luckPermsSupport = FeatureSupport.AUTO;
             this.protocolLibSupport = FeatureSupport.AUTO;
+            this.placeholderAPISupport = FeatureSupport.AUTO;
             this.protocolizeSupport = FeatureSupport.AUTO;
             this.name = null;
             this.prefix = null;
@@ -131,6 +132,17 @@ public class Settings {
          * @apiNote This is only available for **SPIGOT**
          */
         public Builder protocolLibSupport(FeatureSupport protocolLibSupport) { this.protocolLibSupport.setFeature("PROTOCOLLIB"); this.protocolLibSupport = protocolLibSupport; return this; }
+
+        /**
+         * Should CyberAPI attempt and allow the use of PlaceholderAPI data?
+         * <br> <br>
+         * If you have PlaceholderAPI installed on your server (check via <em>/plugins</em>), this should be fine to set to {@link FeatureSupport#SUPPORTED}
+         * <br> <br>
+         * <em>Default Value:</em> {@link FeatureSupport#AUTO}
+         * @param placeholderAPISupport set this to whether or not PlaceholderAPI will be supported
+         * @apiNote This is only available for **SPIGOT**
+         */
+        public Builder placeholderAPISupport(FeatureSupport placeholderAPISupport) { this.placeholderAPISupport.setFeature("PLACEHOLDERAPI"); this.placeholderAPISupport = placeholderAPISupport; return this; }
 
         /**
          * Should CyberAPI attempt and allow the use of Protocolize data?
@@ -248,6 +260,13 @@ public class Settings {
      * @since 24
      */
     public FeatureSupport supportsProtocolLib() { return builder.protocolLibSupport; }
+
+    /**
+     * Gets whether CyberAPI supports PlaceholderAPI or not
+     * @return supports PlaceholderAPI
+     * @since 52
+     */
+    public FeatureSupport supportsPlaceholderAPI() { return builder.placeholderAPISupport; }
 
     /**
      * Gets whether CyberAPI supports Protocolize or not
