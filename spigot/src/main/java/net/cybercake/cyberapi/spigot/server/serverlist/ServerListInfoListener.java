@@ -13,12 +13,24 @@ import net.cybercake.cyberapi.spigot.server.serverlist.motd.MOTD;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.util.*;
 
 public class ServerListInfoListener {
+
+    public static class JoinListener implements Listener {
+
+        @EventHandler
+        public void onJoin(PlayerJoinEvent event) {
+            ServerListInfoListener.users.put(event.getPlayer().getAddress().getAddress(), event.getPlayer());
+        }
+
+    }
 
     public static HashMap<InetAddress, OfflinePlayer> users = new HashMap<>();
 

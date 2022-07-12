@@ -1,7 +1,5 @@
 package net.cybercake.cyberapi.spigot;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import net.cybercake.cyberapi.common.CommonManager;
@@ -132,8 +130,8 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         CommandManager.commandManager().init(settings.getCommandsPath());
 
         if(getProtocolLibSupport().equals(FeatureSupport.SUPPORTED)) {
-            ProtocolManager manager = ProtocolLibrary.getProtocolManager();
             new ServerListInfoListener().init();
+            registerListener(new ServerListInfoListener.JoinListener());
         }
 
         CyberAPISpecific specific = getCyberAPISpecific();
@@ -570,6 +568,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @apiNote requires ProtocolLib support
      */
     public ServerListInfo getServerListInfo() {
+        Validators.validateProtocolLibHook();
         return ServerListInfo.serverListInfo();
     }
 
@@ -580,6 +579,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @apiNote requires PlaceholderAPI support
      */
     public Placeholders getPlaceholders() {
+        Validators.validatePlaceholderAPIHook();
         return Placeholders.placeholders();
     }
 
