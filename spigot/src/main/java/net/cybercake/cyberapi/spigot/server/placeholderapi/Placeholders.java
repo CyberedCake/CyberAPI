@@ -17,7 +17,7 @@ import java.util.Locale;
 public class Placeholders extends PlaceholderExpansion {
 
     /**
-     * @deprecated Please use {@link ServerListInfo#serverListInfo()} or
+     * @deprecated Please use {@link ServerListInfo#serverListInfo()} or {@link CyberAPI#getPlaceholders()}
      */
     @SuppressWarnings({"all"})
     @Deprecated
@@ -33,7 +33,7 @@ public class Placeholders extends PlaceholderExpansion {
     public static Placeholders placeholders() {
         Validators.validatePlaceholderAPIHook();
         if(placeholders == null) placeholders = new Placeholders();
-        return new Placeholders();
+        return placeholders;
     }
 
     private String identifier = CyberAPI.getInstance().getPluginName().toLowerCase(Locale.ROOT);
@@ -49,7 +49,7 @@ public class Placeholders extends PlaceholderExpansion {
      */
     @Override
     public @NotNull String getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     /**
