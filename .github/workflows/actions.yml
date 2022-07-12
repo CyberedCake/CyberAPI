@@ -54,8 +54,8 @@ jobs:
           tag: ${{ steps.build.outputs.value }}
           commit: main
           body: |
-            Commit:
-            ${{ github.event.head_commit.message }}
+            **Related Commit:**
+            `${{ github.event.head_commit.message }}` [click here to view!](https://github.com/${{ github.event.repository.full_name }}/commit/${{ github.event.head_commit.id }})
             
-            **It is not recommended you download the files from here, please use the [README Installation Guide](https://github.com/CyberedCake/CyberAPI#cyberapi=)**
+            **It is not recommended you download the files from here, please use the [README Installation Guide](https://github.com/${{ github.event.repository.full_name }})**
           generateReleaseNotes: true
