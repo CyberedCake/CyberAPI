@@ -1,7 +1,5 @@
 package net.cybercake.cyberapi.spigot.server;
 
-import net.cybercake.cyberapi.spigot.chat.Log;
-import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -12,8 +10,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerCommandSendEvent;
 import org.bukkit.event.server.TabCompleteEvent;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CyberAPIListeners implements Listener {
 

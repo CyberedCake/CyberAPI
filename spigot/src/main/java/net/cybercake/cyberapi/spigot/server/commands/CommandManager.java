@@ -15,12 +15,10 @@ import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.regex.Pattern;
 
 // and no, this isn't documented because, for the most part, it isn't used by non-CyberAPI classes
 public class CommandManager {
