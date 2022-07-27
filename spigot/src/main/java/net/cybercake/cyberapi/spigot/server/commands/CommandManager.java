@@ -15,10 +15,12 @@ import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Pattern;
 
 // and no, this isn't documented because, for the most part, it isn't used by non-CyberAPI classes
 public class CommandManager {
@@ -29,6 +31,9 @@ public class CommandManager {
         return commandManager;
     }
 
+    private static final HashMap<String, String> fakeCommandsList = new HashMap<>();
+    public static HashMap<String, String> getFakeCommands() { return fakeCommandsList; }
+
     public void init(String path) {
         try {
             long mss = System.currentTimeMillis();
@@ -36,6 +41,34 @@ public class CommandManager {
                 Command command = (Command) clazz.getDeclaredConstructor().newInstance();
                 try {
                     command.getCommands().forEach(information -> {
+                        if(information.getName().chars().anyMatch(Character::isUpperCase)) { // (for name) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
+                            String upperCaseInclusiveString = information.getName();
+
+                            try { // reflection methods
+                                Field nameField = information.getCommandInformationBuilder().getClass().getDeclaredField("name");
+                                nameField.setAccessible(true);
+                                nameField.set(information.getCommandInformationBuilder(), upperCaseInclusiveString.toLowerCase(Locale.ROOT));
+
+                                // add to aliases
+                                List<String> aliases = new ArrayList<>(Arrays.asList(information.getAliases()));
+                                aliases.add(upperCaseInclusiveString);
+                                Field aliasesField = information.getCommandInformationBuilder().getClass().getDeclaredField("aliases");
+                                aliasesField.setAccessible(true);
+                                aliasesField.set(information.getCommandInformationBuilder(), aliases.toArray(String[]::new));
+
+                                fakeCommandsList.put(upperCaseInclusiveString, "remove:" + upperCaseInclusiveString.toLowerCase(Locale.ROOT));
+                            } catch (NoSuchFieldException | IllegalAccessException reflectionException) {
+                                CyberAPI.getInstance().getAPILogger().error("Failed to automatically fix uppercase-containing command: " + information.getName() + " (maybe try removing any uppercase letters in it's name?)");
+                                CyberAPI.getInstance().getAPILogger().verboseException(reflectionException);
+                            }
+                        }
+                        if(Arrays.stream(information.getAliases()).anyMatch(alias -> alias.chars().anyMatch(Character::isUpperCase))) { // (for aliases) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
+                            for(String alias : information.getAliases()) {
+                                if(alias.equalsIgnoreCase(information.getName())) continue; // don't wanna re-do what we already did for prev
+                                if(alias.chars().noneMatch(Character::isUpperCase)) continue; // no uppercase letters in that alias :(
+                                fakeCommandsList.put(alias, information.getName());
+                            }
+                        }
                         registerCommand(command, information, getCommand(information.getName(), CyberAPI.getInstance()));
                     });
                 } catch (Exception exception) {

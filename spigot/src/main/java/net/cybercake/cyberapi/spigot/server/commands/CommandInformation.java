@@ -4,8 +4,10 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.cybercake.cyberapi.spigot.chat.TabCompleteType;
 import net.cybercake.cyberapi.spigot.chat.UTabComp;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class CommandInformation {
@@ -197,5 +199,7 @@ public class CommandInformation {
      * @since 46
      */
     public boolean shouldUseFolderCommodore() { return builder.useFolderCommodore; }
-    
+
+    protected Builder getCommandInformationBuilder() { return this.builder; }
+
 }
