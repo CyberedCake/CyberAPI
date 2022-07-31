@@ -6,6 +6,7 @@ import com.comphenix.protocol.events.ListenerOptions;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.utility.MinecraftProtocolVersion;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.comphenix.protocol.wrappers.WrappedServerPing;
 import net.cybercake.cyberapi.spigot.CyberAPI;
@@ -13,6 +14,7 @@ import net.cybercake.cyberapi.spigot.server.serverlist.motd.MOTD;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -40,14 +42,15 @@ public class ServerListInfoListener {
                         Collections.singletonList(PacketType.Status.Server.SERVER_INFO), ListenerOptions.ASYNC) {
                     @Override
                     public void onPacketSending(PacketEvent event) {
-                        handlePing(event.getPlayer().getAddress().getAddress(), event.getPacket().getServerPings().read(0));
+                        handlePing(event.getPlayer(), event.getPacket().getServerPings().read(0));
                     }
                 }
         );
     }
 
-    private void handlePing(InetAddress address, WrappedServerPing ping) {
+    private void handlePing(Player player, WrappedServerPing ping) {
         try {
+            InetAddress address = player.getAddress().getAddress();
             ServerListInfo info = CyberAPI.getInstance().getServerListInfo();
             ServerListPingEvent serverListPingEvent =
                     new ServerListPingEvent(
@@ -56,7 +59,7 @@ public class ServerListInfoListener {
                             info.getProtocolManager().getVersionName(),
                             info.getProtocolManager().getProtocolNumber(),
                             info.getPlayerListManager().shouldShowPlayers(),
-                            info.getProtocolManager().shouldAlwaysShowVersion(),
+                            info.getProtocolManager().getVersionVisibility(),
                             info.getMOTDManager().getRandomMOTD(),
                             info.getPlayerListManager().getMaxPlayers(),
                             info.getPlayerListManager().getOnlinePlayers(),
@@ -94,8 +97,17 @@ public class ServerListInfoListener {
             ping.setPlayers(profiles);
 
             ping.setVersionName(serverListPingEvent.getVersionName());
-            if(serverListPingEvent.isVersionNameAlwaysVisible() || serverListPingEvent.getProtocolVersion() != Integer.MIN_VALUE)
-                ping.setVersionProtocol((serverListPingEvent.isVersionNameAlwaysVisible() ? 0 : serverListPingEvent.getProtocolVersion()));
+
+            int protocol = switch(serverListPingEvent.getVersionVisibility()) {
+                case VISIBLE -> 0;
+                case HIDDEN -> ProtocolLibrary.getProtocolManager().getProtocolVersion(player);
+                case IF_OUTDATED -> (
+                        serverListPingEvent.getProtocolVersion() == Integer.MIN_VALUE
+                        ? MinecraftProtocolVersion.getVersion(ProtocolLibrary.getProtocolManager().getMinecraftVersion())
+                                : serverListPingEvent.getProtocolVersion()
+                        );
+            };
+            ping.setVersionProtocol(protocol);
 
             ping.setPlayersVisible(serverListPingEvent.isPlayerListVisible()); // overrides the 'player count' and 'hover over player count' sections
         } catch (Exception exception){

@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class ServerListInfoListener implements Listener {
@@ -33,6 +34,7 @@ public class ServerListInfoListener implements Listener {
         event.setResponse(ping);
     }
 
+    @SuppressWarnings({"deprecation"})
     private ServerPing handlePing(PendingConnection address, ServerPing ping) {
         try {
             ServerListInfo info = CyberAPI.getInstance().getServerListInfo();
@@ -42,7 +44,7 @@ public class ServerListInfoListener implements Listener {
                             info.getProtocolManager().getVersionName(),
                             info.getProtocolManager().getProtocolNumber(),
                             info.getPlayerListManager().shouldShowPlayers(),
-                            info.getProtocolManager().shouldAlwaysShowVersion(),
+                            info.getProtocolManager().getVersionVisibility(),
                             info.getMOTDManager().getRandomMOTD(),
                             info.getPlayerListManager().getMaxPlayers(),
                             info.getPlayerListManager().getOnlinePlayers(),
@@ -91,7 +93,7 @@ public class ServerListInfoListener implements Listener {
             }
 
             // player count
-            ArrayList<ServerPing.PlayerInfo> profiles = new ArrayList<>();
+            List<ServerPing.PlayerInfo> profiles = new ArrayList<>();
             for(String name : serverListPingEvent.getOnlinePlayers()) {
                 profiles.add(new ServerPing.PlayerInfo(name, UUID.randomUUID()));
             }
@@ -99,7 +101,19 @@ public class ServerListInfoListener implements Listener {
             if(serverListPingEvent.isPlayerListVisible()) ping.setPlayers(new ServerPing.Players(serverListPingEvent.getMaxPlayers(), serverListPingEvent.getOnlinePlayerCount(), (serverListPingEvent.isPlayerListVisible() ? profiles.toArray(new ServerPing.PlayerInfo[]{}) : null)));
             else ping.setPlayers(null);
 
-            ping.setVersion(new ServerPing.Protocol(UChat.chat(serverListPingEvent.getVersionName()), (serverListPingEvent.isVersionNameAlwaysVisible() ? 0 : (serverListPingEvent.getProtocolVersion() == Integer.MIN_VALUE ? ProxyServer.getInstance().getProtocolVersion() : serverListPingEvent.getProtocolVersion()))));
+            int protocol = switch(serverListPingEvent.getVersionVisibility()) {
+                case VISIBLE -> 0;
+                case HIDDEN -> address.getVersion();
+                case IF_OUTDATED -> (
+                        serverListPingEvent.getProtocolVersion() == Integer.MIN_VALUE
+                        ? ProxyServer.getInstance().getProtocolVersion()
+                                : serverListPingEvent.getProtocolVersion()
+                        );
+            };
+            ping.setVersion(new ServerPing.Protocol(
+                    UChat.chat(serverListPingEvent.getVersionName()),
+                    protocol
+            ));
 
             return ping;
         } catch (Exception exception){

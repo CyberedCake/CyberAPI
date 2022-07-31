@@ -1,6 +1,7 @@
 package net.cybercake.cyberapi.bungee.server.serverlist.managers;
 
 import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfo;
+import net.cybercake.cyberapi.bungee.server.serverlist.protocol.VersionVisibility;
 import net.md_5.bungee.api.ProxyServer;
 
 public class ProtocolManager {
@@ -14,7 +15,7 @@ public class ProtocolManager {
     public ProtocolManager() {
         resetVersionName();
         resetProtocolNumber();
-        this.alwaysShowVersion = false;
+        resetVersionVisibility();
     }
 
     private static ProtocolManager protocolManager = null;
@@ -23,7 +24,7 @@ public class ProtocolManager {
         return ProtocolManager.protocolManager;
     }
 
-    private boolean alwaysShowVersion;
+    private VersionVisibility versionVisibility;
     private String versionName;
     private int protocol;
 
@@ -79,21 +80,45 @@ public class ProtocolManager {
     public void resetProtocolNumber() { this.protocol = Integer.MIN_VALUE; }
 
     /**
+     * Sets whether the server should always display like a client is outdated, never display like a client is outdated, or use default behavior
+     * @param versionVisibility whether the display an outdated client
+     * @since 59
+     */
+    public void setVersionVisibility(VersionVisibility versionVisibility) { this.versionVisibility = versionVisibility; }
+
+    /**
+     * Gets the version name's visibility, whether to show, not show, or use default behavior for {@link ProtocolManager#setVersionName(String)}
+     * @return whether the server should display the version
+     * @since 59
+     */
+    public VersionVisibility getVersionVisibility() { return this.versionVisibility; }
+
+    /**
+     * Resets the version visibility to it's default value ({@link VersionVisibility#IF_OUTDATED})
+     * @since 59
+     */
+    public void resetVersionVisibility() { this.versionVisibility = VersionVisibility.IF_OUTDATED; }
+
+    /**
      * Sets whether the server should always show an outdated client, which would mean the version name is constantly shown
      * @param alwaysShowVersion whether to always display outdated client
      * @since 28
+     * @deprecated please use {@link ProtocolManager#setVersionVisibility(VersionVisibility)} and set to {@link VersionVisibility#VISIBLE} instead
      */
+    @Deprecated
     public void setAlwaysShowVersion(boolean alwaysShowVersion) {
-        this.alwaysShowVersion = alwaysShowVersion;
+        this.versionVisibility = (alwaysShowVersion ? VersionVisibility.VISIBLE : VersionVisibility.IF_OUTDATED);
     }
 
     /**
      * Should the server always show the version from {@link ProtocolManager#setVersionName(String)}
      * @return whether the server should always show the version
      * @since 28
+     * @deprecated please use {@link ProtocolManager#getVersionVisibility()} instead
      */
+    @Deprecated
     public boolean shouldAlwaysShowVersion() {
-        return this.alwaysShowVersion;
+        return (this.versionVisibility == VersionVisibility.VISIBLE);
     }
 
 }
