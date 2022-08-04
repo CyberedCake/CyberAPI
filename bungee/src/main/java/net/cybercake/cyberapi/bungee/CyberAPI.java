@@ -320,6 +320,29 @@ public class CyberAPI extends Plugin implements CommonManager {
     public CyberPlayer getCyberPlayer(UUID uuid) { return new CyberPlayer(uuid); }
 
     /**
+     * <b>--{@literal >} THIS IS A CYBERAPI <em>ONLY</em> METHOD {@literal <}--</b> <br> <br>
+     * Checks the plugin depends and soft-depends for a certain plugin
+     * @param plugin the plugin to find
+     * @throws UnsupportedOperationException if the plugin is not found
+     * @since 60
+     */
+    private void checkPluginDependsFor(String plugin) {
+        if(this.getDescription().getDepends()
+                .stream()
+                .map(String::toLowerCase)
+                .toList()
+                .contains(plugin.toLowerCase(Locale.ROOT))
+        ) return;
+        if(this.getDescription().getSoftDepends()
+                .stream()
+                .map(String::toLowerCase)
+                .toList()
+                .contains(plugin.toLowerCase(Locale.ROOT))
+        ) return;
+        throw new UnsupportedOperationException("Will not attempt to use " + plugin + " since it's not a depend or soft-depend of " + this.getDescription().getName() + " v" + this.getDescription().getVersion() + "!");
+    }
+
+    /**
      * Gets the Adventure API support. This method will always return {@link FeatureSupport#UNSUPPORTED} because this CyberAPI server type does not support it!
      * @return the {@link FeatureSupport} enum of the value, always {@link FeatureSupport#UNSUPPORTED}
      * @since 25
@@ -350,6 +373,7 @@ public class CyberAPI extends Plugin implements CommonManager {
 
             if(luckPermsSupport.equals(FeatureSupport.AUTO)) {
                 try {
+                    checkPluginDependsFor("LuckPerms");
                     Class.forName("net.luckperms.api.LuckPermsProvider");
                     this.luckPermsSupport = FeatureSupport.SUPPORTED;
                 } catch (Exception exception) {
@@ -382,6 +406,7 @@ public class CyberAPI extends Plugin implements CommonManager {
 
             if(protocolizeSupport.equals(FeatureSupport.AUTO)) {
                 try {
+                    checkPluginDependsFor("Protocolize");
                     Class.forName("dev.simplix.protocolize");
                     this.protocolizeSupport = FeatureSupport.SUPPORTED;
                 } catch (Exception exception) {

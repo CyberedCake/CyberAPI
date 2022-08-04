@@ -382,6 +382,29 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     }
 
     /**
+     * <b>--{@literal >} THIS IS A CYBERAPI <em>ONLY</em> METHOD {@literal <}--</b> <br> <br>
+     * Checks the plugin depends and soft-depends for a certain plugin
+     * @param plugin the plugin to find
+     * @throws UnsupportedOperationException if the plugin is not found
+     * @since 60
+     */
+    private void checkPluginDependsFor(String plugin) {
+        if(this.getDescription().getDepend()
+                .stream()
+                .map(String::toLowerCase)
+                .toList()
+                .contains(plugin.toLowerCase(Locale.ROOT))
+        ) return;
+        if(this.getDescription().getSoftDepend()
+                .stream()
+                .map(String::toLowerCase)
+                .toList()
+                .contains(plugin.toLowerCase(Locale.ROOT))
+        ) return;
+        throw new UnsupportedOperationException("Will not attempt to use " + plugin + " since it's not a depend or soft-depend of " + this.getDescription().getFullName() + "!");
+    }
+
+    /**
      * Gets the Adventure API support. This method assumes the best of the developer as if they marked Adventure Support as {@link FeatureSupport#SUPPORTED}, it will try to use Adventure API.
      * @return the {@link FeatureSupport} enum of the value
      * @since 1
@@ -436,6 +459,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
             if(luckPermsSupport.equals(FeatureSupport.AUTO)) {
                 try {
+                    checkPluginDependsFor("LuckPerms");
                     Class.forName("net.luckperms.api.LuckPermsProvider");
                     this.luckPermsSupport = FeatureSupport.SUPPORTED;
                 } catch (Exception exception) {
@@ -458,6 +482,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
             if(protocolLibSupport.equals(FeatureSupport.AUTO)) {
                 try {
+                    checkPluginDependsFor("ProtocolLib");
                     Class.forName("com.comphenix.protocol.ProtocolManager");
                     this.protocolLibSupport = FeatureSupport.SUPPORTED;
                 } catch (Exception exception) {
@@ -480,6 +505,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
             if(placeholderAPISupport.equals(FeatureSupport.AUTO)) {
                 try {
+                    checkPluginDependsFor("PlaceholderAPI");
                     Class.forName("me.clip.placeholderapi.PlaceholderAPI");
                     this.placeholderAPISupport = FeatureSupport.SUPPORTED;
                 } catch (Exception exception) {
