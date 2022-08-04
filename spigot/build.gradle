@@ -27,7 +27,7 @@ dependencies {
     compileOnly "net.kyori:adventure-text-minimessage:4.11.0"
 
     // spigot libraries
-    implementation 'me.lucko:commodore:2.0'
+    implementation 'me.lucko:commodore:2.2'
 
     // spigot and plugin hooks
     compileOnly "com.comphenix.protocol:ProtocolLib:4.8.0"
