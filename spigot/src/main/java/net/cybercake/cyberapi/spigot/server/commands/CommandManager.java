@@ -114,7 +114,7 @@ public class CommandManager {
         }
     }
 
-    public void registerCommodore(PluginCommand pluginCommand, LiteralArgumentBuilder<?> node) {
+    public void registerCommodore(PluginCommand pluginCommand, LiteralCommandNode<?> node) {
         try {
             me.lucko.commodore.CommodoreProvider.getCommodore(CyberAPI.getInstance()).register(pluginCommand, node);
         } catch (Exception exception) {

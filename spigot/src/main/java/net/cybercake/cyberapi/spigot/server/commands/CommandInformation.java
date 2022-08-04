@@ -1,6 +1,6 @@
 package net.cybercake.cyberapi.spigot.server.commands;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.cybercake.cyberapi.spigot.chat.TabCompleteType;
 import net.cybercake.cyberapi.spigot.chat.UTabComp;
 import org.bukkit.command.CommandSender;
@@ -28,7 +28,7 @@ public class CommandInformation {
         private String usage = "";
         private String[] aliases = new String[]{};
         private TabCompleteType tabCompleteType = TabCompleteType.NONE;
-        private com.mojang.brigadier.builder.LiteralArgumentBuilder<?> node = null;
+        private LiteralCommandNode<?> node = null;
         private boolean useFolderCommodore = false;
 
         /**
@@ -109,20 +109,31 @@ public class CommandInformation {
         }
 
         /**
-         * Sets the commodore {@link com.mojang.brigadier.builder.LiteralArgumentBuilder} for this command
+         * Sets the commodore {@link com.mojang.brigadier.builder.LiteralArgumentBuilder LiteralArgumentBuilder} for this command
          * @param node the node for the command
          * @since 46
-         * @see Builder#setCommodore(boolean) 
+         * @see Builder#setCommodore(boolean)
+         * @deprecated please use {@link Builder#setCommodore(LiteralCommandNode)} and build your {@link com.mojang.brigadier.builder.LiteralArgumentBuilder LiteralArgumentBuilder} instead
          */
-        public Builder setCommodore(LiteralArgumentBuilder<?> node) {
+        @Deprecated public Builder setCommodore(com.mojang.brigadier.builder.LiteralArgumentBuilder<?> node) {
+            this.node = node.build(); return this;
+        }
+
+        /**
+         * Sets the commodore {@link LiteralCommandNode} for this command
+         * @param node the node for the command
+         * @since 62
+         * @see Builder#setCommodore(boolean) setCommodore(useFolder)
+         */
+        public Builder setCommodore(LiteralCommandNode<?> node) {
             this.node = node; return this;
         }
 
         /**
-         * Sets whether commodore should use the folder instead of {@link Builder#setCommodore(LiteralArgumentBuilder)}
+         * Sets whether commodore should use the folder instead of {@link Builder#setCommodore(LiteralCommandNode)}
          * @param useFolder whether to use folder, default is 'false', the "folder" in question will be your 'resources/commodore/' folder of your plugin
          * @since 46
-         * @see Builder#setCommodore(LiteralArgumentBuilder) 
+         * @see Builder#setCommodore(LiteralCommandNode)
          */
         public Builder setCommodore(boolean useFolder) {
             this.useFolderCommodore = useFolder; return this;
@@ -187,10 +198,10 @@ public class CommandInformation {
     public TabCompleteType getTabCompleteType() { return builder.tabCompleteType; }
 
     /**
-     * @return the commodore {@link LiteralArgumentBuilder}
+     * @return the commodore {@link LiteralCommandNode}
      * @since 46
      */
-    public @Nullable LiteralArgumentBuilder<?> getCommodoreNode() { return builder.node; }
+    public @Nullable LiteralCommandNode<?> getCommodoreNode() { return builder.node; }
 
     /**
      * @return should use 'resources/commodore/' folder and commodore file format
