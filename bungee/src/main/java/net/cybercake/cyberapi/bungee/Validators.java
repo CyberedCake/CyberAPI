@@ -26,7 +26,7 @@ public class Validators {
         if(featureSupport.equals(FeatureSupport.AUTO)) throw new IllegalStateException("Feature Support cannot be set to auto in CyberAPI instance. Maybe it hasn't finished loading yet? (" + featureSupport.getFeature() + ")");
     }
 
-    private static @Nullable String getCaller() {
+    public static @Nullable String getCaller() {
         try {
             List<StackTraceElement> elements = new ArrayList<>(Arrays.stream(Thread.currentThread().getStackTrace()).toList());
             elements.remove(0); // remove 0 because "java.lang.Thread" is not important to what I'm doing here

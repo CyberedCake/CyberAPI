@@ -1,6 +1,7 @@
 package net.cybercake.cyberapi.spigot.chat;
 
 import net.cybercake.cyberapi.spigot.CyberAPI;
+import net.cybercake.cyberapi.spigot.Validators;
 import org.bukkit.Bukkit;
 
 import java.util.logging.Level;
@@ -35,6 +36,14 @@ public class Log {
      * @since 1
      */
     public static void log(Level level, String message) {
-        Bukkit.getLogger().log(level, UChat.chat((Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : "") + message)); }
+        try {
+            CyberLogEvent logEvent = new CyberLogEvent(Class.forName(Validators.getCaller()), level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
+            Bukkit.getPluginManager().callEvent(logEvent);
+            if(logEvent.isCancelled()) return;
+            Bukkit.getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
+        } catch (Exception exception) {
+            throw new IllegalStateException("Error occurred whilst logging in " + Log.class.getCanonicalName() + " (potential caller: " + Validators.getCaller() + ")", exception);
+        }
+    }
 
 }
