@@ -37,7 +37,7 @@ public class Log {
      */
     public static void log(Level level, String message) {
         try {
-            CyberLogEvent logEvent = new CyberLogEvent(Class.forName(Validators.getCaller()), level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
+            CyberLogEvent logEvent = new CyberLogEvent(Validators.getCaller(), level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
             ProxyServer.getInstance().getPluginManager().callEvent(logEvent);
             if (logEvent.isCancelled()) return;
             CyberAPI.getInstance().getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));

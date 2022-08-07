@@ -10,13 +10,13 @@ public class CyberLogEvent extends Event implements Cancellable {
 
     private boolean cancelled;
 
-    private final Class<?> caller;
+    private final String caller;
 
     private Level level;
     private String message;
     private @Nullable String prefix;
 
-    public CyberLogEvent(Class<?> caller, Level level, @Nullable String prefix, String message) {
+    public CyberLogEvent(String caller, Level level, @Nullable String prefix, String message) {
         this.caller = caller;
         this.level = level;
         this.prefix = prefix;
@@ -27,7 +27,7 @@ public class CyberLogEvent extends Event implements Cancellable {
     public void setMessage(String message) { this.message = message; }
     public void setPrefix(@Nullable String prefix) { this.prefix = prefix; }
 
-    public Class<?> getCaller() { return this.caller; }
+    public String getCaller() { return this.caller; }
     public Level getLevel() { return this.level; }
     public @Nullable String getPrefix() { return this.prefix; }
     public String getMessage() { return this.message; }
