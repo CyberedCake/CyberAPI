@@ -4,8 +4,8 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
-import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.logging.Level;
 
 public class CyberLogEvent extends Event implements Cancellable {

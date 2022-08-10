@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.spigot.server.serverlist;
 
+import net.cybercake.cyberapi.spigot.CyberAPI;
 import net.cybercake.cyberapi.spigot.Validators;
 import net.cybercake.cyberapi.spigot.server.serverlist.managers.MOTDManager;
 import net.cybercake.cyberapi.spigot.server.serverlist.managers.PlayerListManager;
@@ -8,7 +9,7 @@ import net.cybercake.cyberapi.spigot.server.serverlist.managers.ProtocolManager;
 public class ServerListInfo {
 
     /**
-     * @deprecated Please use {@link ServerListInfo#serverListInfo()} or
+     * @deprecated Please use {@link ServerListInfo#serverListInfo()} or {@link CyberAPI#getServerListInfo()}
      */
     @SuppressWarnings({"all"})
     @Deprecated
