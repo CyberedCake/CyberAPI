@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.spigot;
 
+import com.google.common.collect.ImmutableList;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,15 +27,28 @@ public class Validators {
         if(featureSupport.equals(FeatureSupport.AUTO)) throw new IllegalStateException("Feature Support cannot be set to auto in CyberAPI instance. Maybe it hasn't finished loading yet? (" + featureSupport.getFeature() + ")");
     }
 
-    public static @Nullable String getCaller() {
+    public static @Nullable String getCaller() { return getCaller(Thread.currentThread()); }
+
+    public static @Nullable String getCaller(Thread thread) {
         try {
-            List<StackTraceElement> elements = new ArrayList<>(Arrays.stream(Thread.currentThread().getStackTrace()).toList());
+            List<StackTraceElement> elements = new ArrayList<>(Arrays.stream(thread.getStackTrace()).toList());
             elements.remove(0); // remove 0 because "java.lang.Thread" is not important to what I'm doing here
-            for(StackTraceElement element : elements) {
-                if(element.getClassName().contains("net.cybercake.cyberapi")) continue;
-                return element.getClassName() + "." + element.getMethodName() + "(" + element.getFileName() + ":" + element.getLineNumber() + ")";
-            }
+            return getFirstNonCyberAPIStack(elements);
         } catch (Exception ignored) {}
+        return null;
+    }
+
+    public static @Nullable String getFirstNonCyberAPIStack(List<StackTraceElement> elements) {
+        List<String> CLASSES_TO_AVOID = ImmutableList.of("net.cybercake.cyberapi", "org.bukkit.plugin");
+        for(StackTraceElement element : elements) {
+            if(CLASSES_TO_AVOID.stream()
+                    .filter(clazz -> element.getClassName().contains(clazz))
+                    .findFirst()
+                    .orElse(null)
+            != null)
+                continue;
+            return element.getClassName() + "." + element.getMethodName() + "(" + element.getFileName() + ":" + element.getLineNumber() + ")";
+        }
         return null;
     }
 

@@ -4,6 +4,7 @@ import net.cybercake.cyberapi.bungee.CyberAPI;
 import net.cybercake.cyberapi.bungee.Validators;
 import net.md_5.bungee.api.ProxyServer;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 
 public class Log {
@@ -42,7 +43,7 @@ public class Log {
             if (logEvent.isCancelled()) return;
             CyberAPI.getInstance().getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
         } catch (Exception exception) {
-            throw new IllegalStateException("Error occurred whilst logging in " + Log.class.getCanonicalName() + " (potential caller: " + Validators.getCaller() + ")", exception);
+            throw new IllegalStateException("Error occurred whilst logging in " + Log.class.getCanonicalName() + " (potential caller: " + Validators.getFirstNonCyberAPIStack(Arrays.asList(exception.getStackTrace())) + ")", exception);
         }
     }
 }
