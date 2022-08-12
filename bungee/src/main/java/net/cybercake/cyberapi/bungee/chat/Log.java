@@ -5,6 +5,7 @@ import net.cybercake.cyberapi.bungee.Validators;
 import net.md_5.bungee.api.ProxyServer;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class Log {
@@ -38,10 +39,12 @@ public class Log {
      */
     public static void log(Level level, String message) {
         try {
-            CyberLogEvent logEvent = new CyberLogEvent(Validators.getCaller(), level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
-            ProxyServer.getInstance().getPluginManager().callEvent(logEvent);
-            if (logEvent.isCancelled()) return;
-            CyberAPI.getInstance().getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
+            ProxyServer.getInstance().getScheduler().schedule(CyberAPI.getInstance(), () -> {
+                CyberLogEvent logEvent = new CyberLogEvent(Validators.getCaller(), level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
+                ProxyServer.getInstance().getPluginManager().callEvent(logEvent);
+                if (logEvent.isCancelled()) return;
+                CyberAPI.getInstance().getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
+            }, 0L, TimeUnit.SECONDS);
         } catch (Exception exception) {
             throw new IllegalStateException("Error occurred whilst logging in " + Log.class.getCanonicalName() + " (potential caller: " + Validators.getFirstNonCyberAPIStack(Arrays.asList(exception.getStackTrace())) + ")", exception);
         }

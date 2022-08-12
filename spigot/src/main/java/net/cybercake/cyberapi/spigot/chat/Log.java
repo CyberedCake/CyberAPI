@@ -2,6 +2,7 @@ package net.cybercake.cyberapi.spigot.chat;
 
 import net.cybercake.cyberapi.spigot.CyberAPI;
 import net.cybercake.cyberapi.spigot.Validators;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 
 import java.util.Arrays;
@@ -14,7 +15,9 @@ public class Log {
      * @param message the message to log
      * @since 1
      */
-    public static void info(String message) { log(Level.INFO, message); }
+    public static void info(String message) {
+        log(Level.INFO, message);
+    }
 
     /**
      * Logs a "[WARN]" message to the console, typically in yellow
@@ -38,10 +41,12 @@ public class Log {
      */
     public static void log(Level level, String message) {
         try {
-            CyberLogEvent logEvent = new CyberLogEvent(Validators.getCaller(), level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
-            Bukkit.getPluginManager().callEvent(logEvent);
-            if(logEvent.isCancelled()) return;
-            Bukkit.getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
+            Bukkit.getScheduler().runTask(CyberAPI.getInstance(), () -> {
+                CyberLogEvent logEvent = new CyberLogEvent(Validators.getCaller(), level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
+                Bukkit.getPluginManager().callEvent(logEvent);
+                if(logEvent.isCancelled()) return;
+                Bukkit.getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
+            });
         } catch (Exception exception) {
             throw new IllegalStateException("Error occurred whilst logging in " + Log.class.getCanonicalName() + " (potential caller: " + Validators.getFirstNonCyberAPIStack(Arrays.asList(exception.getStackTrace())) + ")", exception);
         }
