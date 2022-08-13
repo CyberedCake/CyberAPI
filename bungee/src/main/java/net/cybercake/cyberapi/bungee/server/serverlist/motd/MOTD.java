@@ -211,12 +211,11 @@ public class MOTD {
 
         if(centered) {
             List<String> newMOTD = new ArrayList<>();
-            for(String str : text.split("\\n")) {
+            for(String str : text.split("\\n"))
                 newMOTD.add(StringUtils.center(ChatColor.stripColor(str), 45));
-            }
-            return UChat.chat(String.join("\n", newMOTD));
+            return String.join("\n", newMOTD);
         }
-        return UChat.chat(text);
+        return text;
     }
 
 }

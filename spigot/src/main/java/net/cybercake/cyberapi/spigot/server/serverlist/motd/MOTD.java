@@ -230,15 +230,14 @@ public class MOTD {
         boolean mini =isUsingMiniMessage();
         String text = getStringMOTD();
 
-        if(mini) return UChat.chat(LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(text)));
+        if(mini) return LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(text));
         else if(centered) {
             List<String> newMOTD = new ArrayList<>();
-            for(String str : text.split("\\n")) {
+            for(String str : text.split("\\n"))
                 newMOTD.add(org.apache.commons.lang3.StringUtils.center(ChatColor.stripColor(str), 45));
-            }
-            return UChat.chat(String.join("\n", newMOTD));
+            return String.join("\n", newMOTD);
         }
-        return UChat.chat(text);
+        return text;
     }
 
 }
