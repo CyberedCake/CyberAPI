@@ -40,6 +40,14 @@ public class Log {
      * @since 1
      */
     public static void log(Level level, String message) {
+        if(
+                CyberAPI.getInstance() == null
+                || Arrays.stream(Thread.currentThread().getStackTrace()).anyMatch(element -> element.getMethodName().equalsIgnoreCase("onDisable"))
+                || !CyberAPI.getInstance().isEnabled()
+        ) {
+            Bukkit.getLogger().log(level, UChat.chat(Boolean.TRUE == CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs() ? "[" + CyberAPI.getInstance().getPrefix() + "] " : "") + message);
+            return;
+        }
         try {
             Bukkit.getScheduler().runTask(CyberAPI.getInstance(), () -> {
                 CyberLogEvent logEvent = new CyberLogEvent(Validators.getCaller(), level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
