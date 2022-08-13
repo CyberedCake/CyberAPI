@@ -97,6 +97,8 @@ public class CyberAPI extends Plugin implements CommonManager {
 
         // load all support variables, so they're not 'null'
         // automatically sets the variable in these methods, so returned values are not used
+        getAdventureAPISupport();
+        getMiniMessageSupport();
         getLuckPermsSupport();
         getProtocolizeSupport();
 
@@ -343,22 +345,46 @@ public class CyberAPI extends Plugin implements CommonManager {
     }
 
     /**
-     * Gets the Adventure API support. This method will always return {@link FeatureSupport#UNSUPPORTED} because this CyberAPI server type does not support it!
-     * @return the {@link FeatureSupport} enum of the value, always {@link FeatureSupport#UNSUPPORTED}
-     * @since 25
+     * Gets the Adventure API support. This method assumes the best of the developer as if they marked Adventure Support as {@link FeatureSupport#SUPPORTED}, it will try to use Adventure API.
+     * @return the {@link FeatureSupport} enum of the value
+     * @since 73
      */
     public FeatureSupport getAdventureAPISupport() {
-        if(this.adventureAPISupport == null) this.adventureAPISupport = FeatureSupport.UNSUPPORTED;
+        if(adventureAPISupport == null) {
+            adventureAPISupport = settings.supportsAdventureAPI();
+
+            if(adventureAPISupport.equals(FeatureSupport.AUTO)) {
+                try {
+                    Class.forName("net.kyori.adventure.text.Component");
+                    this.adventureAPISupport = FeatureSupport.SUPPORTED;
+                } catch (Exception exception) {
+                    this.adventureAPISupport = FeatureSupport.UNSUPPORTED;
+                }
+                log.verbose("Adventure API support was set to auto, detected: " + adventureAPISupport.name());
+            }
+        }
         return this.adventureAPISupport;
     }
 
     /**
-     * Gets the MiniMessage support. This method will always return {@link FeatureSupport#UNSUPPORTED} because this CyberAPI server type does not support it!
-     * @return the {@link FeatureSupport} enum of the value, always {@link FeatureSupport#UNSUPPORTED}
-     * @since 25
+     * Gets the MiniMessage support. This method assumes the best of the developer as if they marked MiniMessage as {@link FeatureSupport#SUPPORTED}, it will allow the use of MiniMessage methods.
+     * @return the {@link FeatureSupport} enum of the value
+     * @since 73
      */
     public FeatureSupport getMiniMessageSupport() {
-        if(this.miniMessageSupport == null) this.miniMessageSupport = FeatureSupport.UNSUPPORTED;
+        if(miniMessageSupport == null) {
+            miniMessageSupport = settings.supportsMiniMessage();
+
+            if(miniMessageSupport.equals(FeatureSupport.AUTO)) {
+                try {
+                    Class.forName("net.kyori.adventure.text.minimessage.MiniMessage");
+                    this.miniMessageSupport = FeatureSupport.SUPPORTED;
+                } catch (Exception exception) {
+                    this.miniMessageSupport = FeatureSupport.UNSUPPORTED;
+                }
+                log.verbose("MiniMessage support was set to auto, detected: " + miniMessageSupport.name());
+            }
+        }
         return this.miniMessageSupport;
     }
 

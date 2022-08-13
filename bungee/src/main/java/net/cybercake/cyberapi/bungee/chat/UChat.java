@@ -1,7 +1,10 @@
 package net.cybercake.cyberapi.bungee.chat;
 
 import net.cybercake.cyberapi.bungee.CyberAPI;
+import net.cybercake.cyberapi.bungee.Validators;
 import net.cybercake.cyberapi.bungee.player.CyberPlayer;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -143,6 +146,139 @@ public class UChat {
      */
     public static List<BaseComponent> listBComponent(String... messages) {
         return listBComponent('&', messages);
+    }
+
+    /**
+     * Returns a {@link Component#text(String)} but with an alternate color code and message
+     * @param character the alternate color code to replace
+     * @param message the message containing the alternate color code
+     * @return the {@link Component} containing the formatted message
+     * @apiNote requires Adventure API support
+     * @since 73
+     */
+    public static Component component(Character character, String message) {
+        Validators.validateAdventureSupport();
+        return Component.text(chat(character, message));
+    }
+
+    /**
+     * Returns a {@link Component#text(String)} but with an assumed alternate color code of '{@literal &}' and a message
+     * @param message the message containing the alternate color code of '{@literal &}'
+     * @return the {@link Component} containing the formatted message
+     * @apiNote requires Adventure API support
+     * @since 73
+     */
+    public static Component component(String message) {
+        Validators.validateAdventureSupport();
+        return component('&', message);
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link ChatColor#translateAlternateColorCodes(char, String)}
+     * @param character the alternate color code to replace
+     * @param messages the messages containing the alternate color code
+     * @return the {@link List} of {@link Component}s that are formatted
+     * @since 73
+     * @apiNote requires Adventure API support
+     */
+    public static List<Component> listComponent(Character character, String... messages) {
+        Validators.validateAdventureSupport();
+        List<Component> returned = new ArrayList<>();
+        for(String message : messages) returned.add(UChat.component(character, message));
+        return returned;
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link ChatColor#translateAlternateColorCodes(char, String)}
+     * @param messages the messages containing the alternate color code of '{@literal &}'
+     * @return the {@link List} of {@link Component}s that are formatted
+     * @since 73
+     * @apiNote requires Adventure API support
+     */
+    public static List<Component> listComponent(String... messages) {
+        return listComponent('&', messages);
+    }
+
+    /**
+     * Returns a {@link MiniMessage} message but formatted with {@link MiniMessage#deserialize(Object)}
+     * @param message the message containing MiniMessage formats
+     * @return the {@link Component} containing the formatted message
+     * @apiNote requires MiniMessage support
+     * @since 73
+     */
+    public static Component miniMessage(String message) {
+        Validators.validateMiniMessageSupport();
+        return miniMessage(false, message);
+    }
+
+    /**
+     * Returns a {@link MiniMessage} message but formatted with {@link MiniMessage#deserialize(Object)}
+     * @param strict whether the message is held to be strict, default: false
+     * @param message the message containing MiniMessage formats
+     * @see <a href="https://docs.adventure.kyori.net/minimessage/api.html#error-handling">MiniMessage's Builder Documentation</a>
+     * @return the {@link Component} containing the formatted message
+     * @apiNote requires MiniMessage support
+     * @since 73
+     */
+    public static Component miniMessage(boolean strict, String message) {
+        Validators.validateMiniMessageSupport();
+        return MiniMessage.builder().strict(strict).build().deserialize(message);
+    }
+
+    /**
+     * Returns a {@link MiniMessage} message but formatted with {@link MiniMessage#deserialize(Object)}
+     * @param builder the built {@link MiniMessage} instance
+     * @param message the message containing MiniMessage formats
+     * @see <a href="https://docs.adventure.kyori.net/minimessage/api.html#error-handling">MiniMessage's Builder Documentation</a>
+     * @return the {@link Component} containing the formatted message
+     * @apiNote requires MiniMessage support
+     * @since 73
+     */
+    public static Component miniMessage(MiniMessage builder, String message) {
+        Validators.validateMiniMessageSupport();
+        return builder.deserialize(message);
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link MiniMessage}
+     * @param messages the messages containing MiniMessage format
+     * @return the {@link List} of {@link Component}s in MiniMessage format
+     * @since 73
+     * @apiNote requires MiniMessage support
+     */
+    public static List<Component> listMiniMessage(String... messages) {
+        Validators.validateMiniMessageSupport();
+        return listMiniMessage(MiniMessage.builder().build(), messages);
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link MiniMessage}
+     * @param strict whether the message is held to be strict, default: false
+     * @param messages the messages containing MiniMessage format
+     * @return the {@link List} of {@link Component}s in MiniMessage format
+     * @see <a href="https://docs.adventure.kyori.net/minimessage/api.html#error-handling">MiniMessage's Builder Documentation</a>
+     * @apiNote requires MiniMessage support
+     * @since 73
+     */
+    public static List<Component> listMiniMessage(boolean strict, String... messages) {
+        Validators.validateMiniMessageSupport();
+        return listMiniMessage(MiniMessage.builder().strict(strict).build(), messages);
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link MiniMessage}
+     * @param builder the built {@link MiniMessage} instance
+     * @param messages the messages containing MiniMessage format
+     * @return the {@link List} of {@link Component}s in MiniMessage format
+     * @see <a href="https://docs.adventure.kyori.net/minimessage/api.html#error-handling">MiniMessage's Builder Documentation</a>
+     * @since 73
+     * @apiNote requires MiniMessage support
+     */
+    public static List<Component> listMiniMessage(MiniMessage builder, String... messages) {
+        Validators.validateMiniMessageSupport();
+        List<Component> returned = new ArrayList<>();
+        for(String message : messages) returned.add(miniMessage(builder, message));
+        return returned;
     }
 
     /**

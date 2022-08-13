@@ -61,6 +61,27 @@ public class Validators {
     /**
      * --{@literal >} <b>MAINLY FOR USE INSIDE CYBERAPI ONLY</b> {@literal <}--
      * <br><br>
+     * Validates that Adventure API is supported and working
+     */
+    public static void validateAdventureSupport() {
+        validateIsNotAuto(CyberAPI.getInstance().getAdventureAPISupport());
+        if(!CyberAPI.getInstance().getAdventureAPISupport().equals(FeatureSupport.SUPPORTED)) throw dependency("Adventure API");
+    }
+
+    /**
+     * --{@literal >} <b>MAINLY FOR USE INSIDE CYBERAPI ONLY</b> {@literal <}--
+     * <br><br>
+     * Validates that Mini Message is supported and working
+     */
+    public static void validateMiniMessageSupport() {
+        validateIsNotAuto(CyberAPI.getInstance().getMiniMessageSupport());
+        validateAdventureSupport();
+        if(!CyberAPI.getInstance().getMiniMessageSupport().equals(FeatureSupport.SUPPORTED)) throw dependency("MiniMessage");
+    }
+
+    /**
+     * --{@literal >} <b>MAINLY FOR USE INSIDE CYBERAPI ONLY</b> {@literal <}--
+     * <br><br>
      * Validates that LuckPerms is supported and working
      */
     public static void validateLuckPermsHook() {

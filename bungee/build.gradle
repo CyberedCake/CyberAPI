@@ -14,6 +14,13 @@ dependencies {
     // cyberapi
     implementation project(':common')
 
+    // adventure API (https://docs.adventure.kyori.net/)
+    implementation "net.kyori:adventure-text-serializer-plain:4.11.0"
+    implementation "net.kyori:adventure-text-serializer-legacy:4.11.0"
+
+    compileOnly "net.kyori:adventure-api:4.11.0"
+    compileOnly 'net.kyori:adventure-text-minimessage:4.11.0'
+
     // bungeecord and plugin hooks
     compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
     compileOnly 'net.luckperms:api:5.4'
