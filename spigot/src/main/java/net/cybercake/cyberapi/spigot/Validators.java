@@ -39,9 +39,15 @@ public class Validators {
     }
 
     public static @Nullable String getFirstNonCyberAPIStack(List<StackTraceElement> elements) {
-        List<String> CLASSES_TO_AVOID = ImmutableList.of("net.cybercake.cyberapi", "org.bukkit.plugin");
+        List<String> PACKAGES_TO_AVOID = ImmutableList.of(
+                "net.cybercake.cyberapi",
+                "jdk.internal",
+                "java.lang",
+                "io.netty",
+                "org.bukkit"
+        );
         for(StackTraceElement element : elements) {
-            if(CLASSES_TO_AVOID.stream()
+            if(PACKAGES_TO_AVOID.stream()
                     .filter(clazz -> element.getClassName().contains(clazz))
                     .findFirst()
                     .orElse(null)
