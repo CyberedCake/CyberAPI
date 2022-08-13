@@ -1,6 +1,9 @@
 package net.cybercake.cyberapi.bungee.server.serverlist.motd;
 
 import net.cybercake.cyberapi.bungee.chat.UChat;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +35,7 @@ public class MOTD {
 
         private String motd;
         private boolean centered;
+        private MOTDTextFormatter motdTextFormatter;
         private @Nullable File iconFile;
         private @Nullable URL iconURL;
         private MOTDIconType iconType;
@@ -55,6 +59,7 @@ public class MOTD {
 
             this.motd = String.valueOf(ProxyServer.getInstance().getConfig().getListeners().stream().toList().get(0).getMotd());
             this.centered = false;
+            this.motdTextFormatter = MOTDTextFormatter.PLAIN;
             this.iconFile = null;
             this.iconURL = null;
             this.iconType = MOTDIconType.UNSET;
@@ -101,6 +106,14 @@ public class MOTD {
          */
         public Builder shouldCenter(boolean centered) {
             this.centered = centered; return this;
+        }
+
+        /**
+         * Sets the {@link MOTDTextFormatter}, which is how color and decorations should be applied to the {@link MOTD} text
+         * @param motdTextFormatter the {@link MOTDTextFormatter} of the MOTD
+         */
+        public Builder motdTextFormatter(MOTDTextFormatter motdTextFormatter) {
+            this.motdTextFormatter = motdTextFormatter; return this;
         }
 
         /**
@@ -168,6 +181,13 @@ public class MOTD {
     }
 
     /**
+     * Gets the MOTD text formatter of the MOTD
+     * @return the MOTD text formatter of the MOTD
+     * @since 73
+     */
+    public MOTDTextFormatter getMOTDTextFormatter() { return builder.motdTextFormatter; }
+
+    /**
      * Gets the icon type of the MOTD
      * @return the icon type of MOTD
      * @since 28
@@ -213,9 +233,16 @@ public class MOTD {
             List<String> newMOTD = new ArrayList<>();
             for(String str : text.split("\\n"))
                 newMOTD.add(StringUtils.center(ChatColor.stripColor(str), 45));
-            return String.join("\n", newMOTD);
+            text = String.join("\n", newMOTD);
         }
-        return text;
+
+        return switch(this.getMOTDTextFormatter()) {
+            case LEGACY -> UChat.chat(text);
+            case MINIMESSAGE ->
+                    LegacyComponentSerializer.builder().useUnusualXRepeatedCharacterHexFormat().hexColors().build()
+                            .serialize(UChat.miniMessage(text));
+            default -> text;
+        };
     }
 
 }

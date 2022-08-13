@@ -33,7 +33,7 @@ public class MOTD {
 
         private String motd;
         private boolean centered;
-        private boolean useMiniMessage;
+        private MOTDTextFormatter motdTextFormatter;
         private @Nullable File iconFile;
         private @Nullable URL iconURL;
         private MOTDIconType iconType;
@@ -57,7 +57,7 @@ public class MOTD {
 
             this.motd = String.valueOf(new ServerProperties().getProperty("motd"));
             this.centered = false;
-            this.useMiniMessage = false;
+            this.motdTextFormatter = MOTDTextFormatter.PLAIN;
             this.iconFile = null;
             this.iconURL = null;
             this.iconType = MOTDIconType.UNSET;
@@ -109,9 +109,18 @@ public class MOTD {
         /**
          * Should the text use MiniMessage formatting instead of legacy bukkit color codes (will cancel out {@link Builder#shouldCenter(boolean)} (boolean)})
          * @param useMiniMessage use bukkit color codes (set to 'false') or use mini message (set to 'true')
+         * @deprecated please use {@link Builder#motdTextFormatter(MOTDTextFormatter)} and define a {@link MOTDTextFormatter} instead
          */
-        public Builder shouldUseMiniMessage(boolean useMiniMessage) {
-            this.useMiniMessage = useMiniMessage; return this;
+        @Deprecated public Builder shouldUseMiniMessage(boolean useMiniMessage) {
+            this.motdTextFormatter = MOTDTextFormatter.MINIMESSAGE; return this;
+        }
+
+        /**
+         * Sets the {@link MOTDTextFormatter}, which is how color and decorations should be applied to the {@link MOTD} text
+         * @param motdTextFormatter the {@link MOTDTextFormatter} of the MOTD
+         */
+        public Builder motdTextFormatter(MOTDTextFormatter motdTextFormatter) {
+            this.motdTextFormatter = motdTextFormatter; return this;
         }
 
         /**
@@ -182,10 +191,18 @@ public class MOTD {
      * Gets whether the {@link MOTD} should be using MiniMessage parsing or not. This overrides {@link MOTD#isCentered()}.
      * @return whether the {@link MOTD} should be using MiniMessage
      * @since 10
+     * @deprecated please use {@link MOTD#getMOTDTextFormatter()} and retrieve a {@link MOTDTextFormatter} instead
      */
-    public boolean isUsingMiniMessage() {
-        return builder.useMiniMessage;
+    @Deprecated public boolean isUsingMiniMessage() {
+        return (builder.motdTextFormatter == MOTDTextFormatter.MINIMESSAGE);
     }
+
+    /**
+     * Gets how the {@link MOTD} will be formatted, using a {@link MOTDTextFormatter}
+     * @return the {@link MOTDTextFormatter} type
+     * @since 73
+     */
+    public MOTDTextFormatter getMOTDTextFormatter() { return builder.motdTextFormatter; }
 
     /**
      * Gets the icon type of the MOTD
@@ -227,17 +244,22 @@ public class MOTD {
      */
     public String getFormattedMOTD() {
         boolean centered = isCentered();
-        boolean mini =isUsingMiniMessage();
         String text = getStringMOTD();
 
-        if(mini) return LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(text));
-        else if(centered) {
+        if(centered) {
             List<String> newMOTD = new ArrayList<>();
             for(String str : text.split("\\n"))
                 newMOTD.add(org.apache.commons.lang3.StringUtils.center(ChatColor.stripColor(str), 45));
-            return String.join("\n", newMOTD);
+            text = String.join("\n", newMOTD);
         }
-        return text;
+
+        return switch(this.getMOTDTextFormatter()) {
+            case LEGACY -> UChat.chat(text);
+            case MINIMESSAGE ->
+                    LegacyComponentSerializer.builder().useUnusualXRepeatedCharacterHexFormat().hexColors().build()
+                            .serialize(UChat.miniMessage(text));
+            default -> text;
+        };
     }
 
 }

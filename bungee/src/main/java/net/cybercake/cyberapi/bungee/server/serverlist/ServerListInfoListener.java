@@ -7,6 +7,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.Favicon;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.ServerPing;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -54,9 +55,9 @@ public class ServerListInfoListener implements Listener {
             ProxyServer.getInstance().getPluginManager().callEvent(serverListPingEvent);
 
             // MOTD
-            MOTD motd = (serverListPingEvent.getMOTD() == null ? MOTD.builder("default_temp").build() : serverListPingEvent.getMOTD());
+            MOTD motd = serverListPingEvent.getMOTD();
             if(motd == null) motd = MOTD.builder("_default").build();
-            ping.setDescriptionComponent(UChat.bComponent(motd.getFormattedMOTD()));
+            ping.setDescription(motd.getFormattedMOTD());
             try {
                 Favicon image = null;
                 switch(motd.getMOTDIconType()) {
