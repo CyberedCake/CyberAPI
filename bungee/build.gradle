@@ -5,8 +5,7 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
     maven {
-        name = 'exceptionflug'
-        url = 'https://mvn.exceptionflug.de/repository/exceptionflug-public/'
+        url = uri('https://mvn.exceptionflug.de/repository/exceptionflug-public/')
     }
 }
 
