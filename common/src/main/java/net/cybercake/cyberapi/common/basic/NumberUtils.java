@@ -211,7 +211,7 @@ public class NumberUtils {
      */
     public static String formatLong(long number) {
         NumberFormat format = NumberFormat.getInstance();
-        format.setGroupingUsed(false);
+        format.setGroupingUsed(true);
 
         return format.format(number);
     }
