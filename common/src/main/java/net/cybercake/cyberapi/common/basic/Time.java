@@ -2,9 +2,8 @@ package net.cybercake.cyberapi.common.basic;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -176,7 +175,7 @@ public class Time {
     /**
      * Gets the difference between two {@link Date}s, returns a {@link Map} of {@link TimeUnit}s and {@link Long}s
      * @param biggerDate the bigger date, closer to the most recent time
-     * @param smallerDate the smaller date, furthest away from the most recent time
+     * @param smallerDate the smaller date, the furthest away from the most recent time
      * @return the {@link Map} of {@link TimeUnit}'s and their distance from the {@link Date}
      * @since 15
      */
@@ -222,15 +221,14 @@ public class Time {
     /**
      * Gets the current time and formats it using the {@link SimpleDateFormat} after using {@link ZoneOffset} and {@link OffsetDateTime} to offset the current time by a set amount
      * @param pattern the pattern used by <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>
-     * @param timeOffset the time offset, see {@link ZoneOffset#of(String)} for formats
+     * @param zoneOffset the time offset, see {@link ZoneOffset}
      * @return the formatted date
      * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
      * @see SimpleDateFormat
      * @see ZoneOffset#of(String)
      * @since 15
      */
-    public static String getFormattedDate(String pattern, String timeOffset) {
-        ZoneOffset zoneOffset = ZoneOffset.of(timeOffset);
+    public static String getFormattedDate(String pattern, ZoneOffset zoneOffset) {
         OffsetDateTime offset = OffsetDateTime.now(zoneOffset);
         Date date = new Date(offset.toInstant().toEpochMilli());
         SimpleDateFormat ft = new SimpleDateFormat(pattern);
@@ -257,6 +255,39 @@ public class Time {
     }
 
     /**
+     * Gets the current time and formats it using the {@link SimpleDateFormat} after converting the time to a specified {@link TimeZone}
+     * @param pattern the pattern used by <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>
+     * @param timeZone the timezone to use (example: "America/New_York" or "Europe/Paris")
+     * @return the formatted date
+     * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
+     * @see SimpleDateFormat
+     * @see TimeZone
+     * @since 78
+     */
+    public static String getFormattedDate(String pattern, String timeZone) {
+        return getFormattedDate(pattern, TimeZone.getTimeZone(timeZone));
+    }
+
+    /**
+     * Gets the current time and formats it using the {@link SimpleDateFormat} after converting the time to a specified {@link TimeZone}
+     * @param pattern the pattern used by <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>
+     * @param timeZone the {@link TimeZone} to use
+     * @return the formatted date
+     * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
+     * @see SimpleDateFormat
+     * @see TimeZone
+     * @since 78
+     */
+    public static String getFormattedDate(String pattern, TimeZone timeZone) {
+        LocalDateTime local = LocalDateTime.parse(getFormattedDate("YYYY-MM-DDTHH:mm"));
+        int offset = (int)(ChronoUnit.HOURS.between(
+                local.atZone(Calendar.getInstance().getTimeZone().toZoneId()),
+                local.atZone(timeZone.toZoneId())
+        ));
+        return getFormattedDate(pattern, offset < 0 ? Math.abs(offset) : -offset);
+    }
+
+    /**
      * Gets a formatted time from a unix timestamp (in seconds, not milliseconds) and formatted using {@link SimpleDateFormat} formatting patterns
      * @param unix the unix time to get from the date
      * @param pattern the pattern used by <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>
@@ -267,6 +298,39 @@ public class Time {
      */
     public static String getFormattedDateUnix(long unix, String pattern) {
         return getFormattedDateUnix(unix, pattern, 0);
+    }
+
+    /**
+     * Gets a formatted time from a unix timestamp (in seconds, not milliseconds) and formatted using {@link SimpleDateFormat} and offset by a {@link TimeZone}
+     * @param unix the unix time to get from the date
+     * @param pattern the pattern used by <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>
+     * @param timeZone the timezone to use (example: "America/New_York" or "Europe/Paris")
+     * @return the formatted date with a set unix time and offset by a {@link TimeZone}
+     * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
+     * @see SimpleDateFormat
+     * @since 78
+     */
+    public static String getFormattedDateUnix(long unix, String pattern, String timeZone) {
+        return getFormattedDateUnix(unix, pattern, TimeZone.getTimeZone(timeZone));
+    }
+
+    /**
+     * Gets a formatted time from a unix timestamp (in seconds, not milliseconds) and formatted using {@link SimpleDateFormat} and offset by a {@link TimeZone}
+     * @param unix the unix time to get from the date
+     * @param pattern the pattern used by <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>
+     * @param timeZone the {@link TimeZone} to use
+     * @return the formatted date with a set unix time and offset by a {@link TimeZone}
+     * @apiNote you can view {@link SimpleDateFormat}'s formats <a href="https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html">by clicking here</a>
+     * @see SimpleDateFormat
+     * @since 78
+     */
+    public static String getFormattedDateUnix(long unix, String pattern, TimeZone timeZone) {
+        LocalDateTime local = LocalDateTime.parse(getFormattedDateUnix(unix, "YYYY-MM-DDTHH:mm"));
+        int offset = (int)(ChronoUnit.HOURS.between(
+                local.atZone(Calendar.getInstance().getTimeZone().toZoneId()),
+                local.atZone(timeZone.toZoneId())
+        ));
+        return getFormattedDateUnix(unix, pattern, offset < 0 ? Math.abs(offset) : -offset);
     }
 
     /**
@@ -294,13 +358,9 @@ public class Time {
      */
     public static String formatBasicSeconds(long number) {
 
-        int SECOND = 1000;        // no. of ms in a second
-        int MINUTE = SECOND * 60; // no. of ms in a minute
-        int HOUR = MINUTE * 60;   // no. of ms in an hour
-
-        long hours   = (number / HOUR);
-        long minutes = ((number % HOUR) / MINUTE);
-        long seconds = ((number % MINUTE) / SECOND);
+        long hours   = (number / ONE_HOUR);
+        long minutes = ((number % ONE_HOUR) / ONE_MINUTE);
+        long seconds = ((number % ONE_MINUTE) / ONE_SECOND);
 
         return hours + "h, " + minutes + "m, " + seconds + "s";
     }
@@ -313,13 +373,9 @@ public class Time {
      */
     public static String formatBasicSecondsColons(long number) {
 
-        int SECOND = 1000;        // no. of ms in a second
-        int MINUTE = SECOND * 60; // no. of ms in a minute
-        int HOUR = MINUTE * 60;   // no. of ms in an hour
-
-        long hours   = (number / HOUR);
-        long minutes = ((number % HOUR) / MINUTE);
-        long seconds = ((number % MINUTE) / SECOND);
+        long hours   = (number / ONE_SECOND);
+        long minutes = ((number % ONE_HOUR) / ONE_MINUTE);
+        long seconds = ((number % ONE_MINUTE) / ONE_SECOND);
 
         return (hours != 0 ? hours + ":" : "") + (NumberUtils.isBetweenEquals(minutes, 0, 9) ? "0" : "") + minutes + ":" + (NumberUtils.isBetweenEquals(seconds, 0, 9) ? "0" : "") + seconds + "";
     }
