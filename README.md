@@ -1,5 +1,5 @@
 # CyberAPI
-[![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI)
+[![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI)   [![](https://github.com/CyberedCake/CyberAPI/actions/workflows/actions.yml/badge.svg)](https://github.com/CyberedCake/CyberAPI/actions/workflows/actions.yml)
 <br> <br>
 The new and improved CyberAPI, version 3, is here! This is a library used for most of [CyberedCake's](https://github.com/CyberedCake) plugins and can be used by you for free! It adds additional features that Spigot and Bungeecord do not have and makes existing stuff easier.
 <br> <br>
