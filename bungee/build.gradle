@@ -10,9 +10,6 @@ repositories {
 }
 
 dependencies {
-    // cyberapi
-    implementation project(':common')
-
     // adventure API (https://docs.adventure.kyori.net/)
     implementation "net.kyori:adventure-text-serializer-plain:4.11.0"
     implementation "net.kyori:adventure-text-serializer-legacy:4.11.0"

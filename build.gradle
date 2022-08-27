@@ -165,8 +165,8 @@ subprojects { Project subProject ->
     publishing {
         publications {
             maven(MavenPublication) {
-                groupId project.group
-                artifactId project.name
+                groupId subProject.group
+                artifactId subProject.name
                 version build
 
                 from components.java
