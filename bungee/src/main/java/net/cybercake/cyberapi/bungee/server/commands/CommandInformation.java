@@ -2,16 +2,19 @@ package net.cybercake.cyberapi.bungee.server.commands;
 
 import net.cybercake.cyberapi.bungee.chat.TabCompleteType;
 import net.cybercake.cyberapi.bungee.chat.UTabComp;
+import net.cybercake.cyberapi.bungee.server.commands.cooldown.CommandCooldown;
 import net.md_5.bungee.api.CommandSender;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class CommandInformation {
+public class CommandInformation implements Serializable {
 
     /**
      * Gets a new instance of the {@link Builder} for {@link CommandInformation}
-     * @param name the name of the command, with the slash ommitted
+     * @param name the name of the command, with the slash omitted
      * @return the {@link Builder} instance
      * @since 41
      */
@@ -19,15 +22,16 @@ public class CommandInformation {
         return new Builder(name);
     }
 
-    public static class Builder {
+    public static class Builder implements Serializable {
         private final String name;
         private String permission = "";
         private String permissionMessage = "";
+        private CommandCooldown cooldown = null;
         private String description = "";
         private String usage = "";
         private String[] aliases = new String[]{};
         private TabCompleteType tabCompleteType = TabCompleteType.NONE;
-        private List<Builder> additionalCommands = new ArrayList<>();
+        private final List<Builder> additionalCommands = new ArrayList<>();
 
         /**
          * Creates an instance of {@link Builder}, allowing you to customize the stored information on the command.
@@ -107,6 +111,18 @@ public class CommandInformation {
         }
 
         /**
+         * Sets the cooldown for the command, a {@link CommandCooldown} object
+         * <br>
+         *  (<b>note, not persistent over server restarts</b>)
+         * @param cooldown the cooldown in between command usages
+         * @since 79
+         * @see CommandCooldown
+         */
+        public Builder setCooldown(CommandCooldown cooldown) {
+            this.cooldown = cooldown; return this;
+        }
+
+        /**
          * Adds additional commands to this command.
          * <br> <br>
          * Note: you will have to do an additional method to get the {@link Builder} for multiple commands: {@code getAdditionalCommand(index)} or {@code getAdditionalCommands(name)}
@@ -123,6 +139,21 @@ public class CommandInformation {
          */
         public CommandInformation build() {
             return new CommandInformation(this);
+        }
+
+        @Override
+        public String toString() {
+            return this.getClass().getSimpleName() + "{" +
+                    "name='" + name + '\'' +
+                    ", permission='" + permission + '\'' +
+                    ", permissionMessage='" + permissionMessage + '\'' +
+                    ", cooldown=" + cooldown +
+                    ", description='" + description + '\'' +
+                    ", usage='" + usage + '\'' +
+                    ", aliases=" + Arrays.toString(aliases) +
+                    ", tabCompleteType=" + tabCompleteType +
+                    ", additionalCommands=" + additionalCommands +
+                    '}';
         }
     }
 
@@ -175,4 +206,18 @@ public class CommandInformation {
      */
     public TabCompleteType getTabCompleteType() { return builder.tabCompleteType; }
 
+    /**
+     * @return the command cooldown (<b>note, not persistent over server restarts</b>)
+     * @since 79
+     * @see CommandCooldown
+     */
+    public CommandCooldown getCooldown() { return builder.cooldown; }
+
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{" +
+                "builder=" + builder +
+                '}';
+    }
 }

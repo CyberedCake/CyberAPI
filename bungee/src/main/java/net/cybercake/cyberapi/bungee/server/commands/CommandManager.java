@@ -7,6 +7,10 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Method;
 
+/**
+ * and no, this isn't documented because, for the most part, it is internal
+ * @apiNote **<b>any methods in this class are subject to change without warning</b>**
+ */
 public class CommandManager {
 
     private static CommandManager commandManager = null;

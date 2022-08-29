@@ -3,16 +3,19 @@ package net.cybercake.cyberapi.spigot.server.commands;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.cybercake.cyberapi.spigot.chat.TabCompleteType;
 import net.cybercake.cyberapi.spigot.chat.UTabComp;
+import net.cybercake.cyberapi.spigot.server.commands.cooldown.CommandCooldown;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
-public class CommandInformation {
+public class CommandInformation implements Serializable {
 
     /**
      * Gets a new instance of the {@link Builder} for {@link CommandInformation}
-     * @param name the name of the command, with the slash ommitted
+     * @param name the name of the command, with the slash omitted
      * @return the {@link Builder} instance
      * @since 41
      */
@@ -20,10 +23,11 @@ public class CommandInformation {
         return new Builder(name);
     }
 
-    public static class Builder {
+    public static class Builder implements Serializable {
         private final String name;
         private String permission = "";
         private String permissionMessage = "";
+        private CommandCooldown cooldown = null;
         private String description = "";
         private String usage = "";
         private String[] aliases = new String[]{};
@@ -109,6 +113,18 @@ public class CommandInformation {
         }
 
         /**
+         * Sets the cooldown for the command, a {@link CommandCooldown} object
+         * <br>
+         *  (<b>note, not persistent over server restarts</b>)
+         * @param cooldown the cooldown in between command usages
+         * @since 79
+         * @see CommandCooldown
+         */
+        public Builder setCooldown(CommandCooldown cooldown) {
+            this.cooldown = cooldown; return this;
+        }
+
+        /**
          * Sets the commodore {@link com.mojang.brigadier.builder.LiteralArgumentBuilder LiteralArgumentBuilder} for this command
          * @param node the node for the command
          * @since 46
@@ -145,6 +161,22 @@ public class CommandInformation {
          */
         public CommandInformation build() {
             return new CommandInformation(this);
+        }
+
+        @Override
+        public String toString() {
+            return this.getClass().getSimpleName() + "{" +
+                    "name='" + name + '\'' +
+                    ", permission='" + permission + '\'' +
+                    ", permissionMessage='" + permissionMessage + '\'' +
+                    ", cooldown=" + cooldown +
+                    ", description='" + description + '\'' +
+                    ", usage='" + usage + '\'' +
+                    ", aliases=" + Arrays.toString(aliases) +
+                    ", tabCompleteType=" + tabCompleteType +
+                    ", node=" + node +
+                    ", useFolderCommodore=" + useFolderCommodore +
+                    '}';
         }
     }
 
@@ -198,6 +230,13 @@ public class CommandInformation {
     public TabCompleteType getTabCompleteType() { return builder.tabCompleteType; }
 
     /**
+     * @return the command cooldown (<b>note, not persistent over server restarts</b>)
+     * @since 79
+     * @see CommandCooldown
+     */
+    public CommandCooldown getCooldown() { return builder.cooldown; }
+
+    /**
      * @return the commodore {@link LiteralCommandNode}
      * @since 46
      */
@@ -211,4 +250,10 @@ public class CommandInformation {
 
     protected Builder getCommandInformationBuilder() { return this.builder; }
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "{" +
+                "builder=" + builder +
+                '}';
+    }
 }

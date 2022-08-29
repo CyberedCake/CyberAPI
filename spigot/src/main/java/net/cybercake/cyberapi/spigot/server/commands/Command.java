@@ -1,6 +1,9 @@
 package net.cybercake.cyberapi.spigot.server.commands;
 
+import net.cybercake.cyberapi.common.basic.Time;
+import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.chat.UTabComp;
+import net.cybercake.cyberapi.spigot.server.commands.cooldown.ActiveCooldown;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -10,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"unused"})
 public abstract class Command implements CommandExecutor, TabCompleter {
@@ -89,6 +93,16 @@ public abstract class Command implements CommandExecutor, TabCompleter {
     }
 
     /**
+     * Cancels the cooldown for a specific {@link CommandSender user}, but only for a specific {@link CommandInformation command}
+     * @param information the command that the cooldown needs to be cancelled for
+     * @param sender the user the cooldown should affect
+     * @since 79
+     */
+    public void cancelCooldown(CommandSender sender, CommandInformation information) {
+        ActiveCooldown.cancelCooldownFor(sender, information);
+    }
+
+    /**
      * The Bukkit command's execution
      * @param sender the sender that executes the command
      * @param command the command name {@code sender} ran
@@ -110,7 +124,36 @@ public abstract class Command implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
-        return perform(commandSender, s, getCommand(s), strings);
+        CommandInformation info = getCommand(s);
+        if(info != null && info.getCooldown() != null) {
+            ActiveCooldown cooldown = ActiveCooldown.getCooldownFor(commandSender, info);
+            if(cooldown != null && cooldown.getExpiration() > System.currentTimeMillis()  && (info.getCooldown().getBypassPermission() == null || (info.getCooldown().getBypassPermission() != null && !commandSender.hasPermission(info.getCooldown().getBypassPermission())))) { // if the user currently has a cooldown active
+                long timeLeft = TimeUnit.SECONDS.convert(cooldown.getExpiration(), TimeUnit.MILLISECONDS)-TimeUnit.SECONDS.convert(System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+
+                String timeDuration = Time.getBetterTimeDisplay(timeLeft, true).replace(" and ", ", ");
+                String timeDurationSimplified = Time.getBetterTimeDisplay(timeLeft, false);
+                String timeDurationMilliseconds = Time.formatBasicMs(cooldown.getExpiration()-System.currentTimeMillis(), false);
+
+                if(info.getCooldown().getMessage() != null) {
+                    commandSender.sendMessage(info.getCooldown().getMessage()
+                            .replace("%remaining_time%", timeDuration)
+                            .replace("%remaining_time_simplified%", timeDurationSimplified)
+                            .replace("%remaining_time_ms%", timeDurationMilliseconds)
+                    );
+                }else if(info.getCooldown().getMessage() == null) {
+                    commandSender.sendMessage(UChat.chat("&cYou cannot use this command for another &6" + timeDuration + "&c!"));
+                }
+
+                return true;
+            }
+
+            // sets a new cooldown since the execution of the command is about to occur
+            if((info.getCooldown().getBypassPermission() != null && !commandSender.hasPermission(info.getCooldown().getBypassPermission())) || info.getCooldown().getBypassPermission() == null) {
+                cancelCooldown(commandSender, info);
+                ActiveCooldown.setNewCooldown(info, commandSender, TimeUnit.MILLISECONDS.convert(Time.getUnix(info.getCooldown().getUnit())+info.getCooldown().getTime(), info.getCooldown().getUnit()));
+            }
+        }
+        return perform(commandSender, s, info, strings);
     }
 
     @Nullable

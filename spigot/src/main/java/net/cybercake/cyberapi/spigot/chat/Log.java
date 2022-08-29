@@ -2,7 +2,6 @@ package net.cybercake.cyberapi.spigot.chat;
 
 import net.cybercake.cyberapi.spigot.CyberAPI;
 import net.cybercake.cyberapi.spigot.Validators;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 
 import java.util.Arrays;

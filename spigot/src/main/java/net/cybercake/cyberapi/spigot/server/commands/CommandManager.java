@@ -7,6 +7,7 @@ import net.cybercake.cyberapi.spigot.chat.UChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
@@ -19,7 +20,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
-// and no, this isn't documented because, for the most part, it isn't used by non-CyberAPI classes
+/**
+ * and no, this isn't documented because, for the most part, it is internal
+ * @apiNote **<b>any methods in this class are subject to change without warning</b>**
+ */
 public class CommandManager {
 
     private static CommandManager commandManager = null;

@@ -1,9 +1,7 @@
 package net.cybercake.cyberapi.bungee.server.serverlist.motd;
 
 import net.cybercake.cyberapi.bungee.chat.UChat;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import org.apache.commons.lang3.StringUtils;
