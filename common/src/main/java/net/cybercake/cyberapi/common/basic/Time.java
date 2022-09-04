@@ -282,7 +282,7 @@ public class Time {
      * @since 78
      */
     public static String getFormattedDate(String pattern, TimeZone timeZone) {
-        LocalDateTime local = LocalDateTime.parse(getFormattedDate("YYYY-MM-DDTHH:mm"));
+        LocalDateTime local = LocalDateTime.parse(getFormattedDate("YYYY-MM-DD'T'HH:mm"));
         int offset = (int)(ChronoUnit.HOURS.between(
                 local.atZone(Calendar.getInstance().getTimeZone().toZoneId()),
                 local.atZone(timeZone.toZoneId())
@@ -328,7 +328,7 @@ public class Time {
      * @since 78
      */
     public static String getFormattedDateUnix(long unix, String pattern, TimeZone timeZone) {
-        LocalDateTime local = LocalDateTime.parse(getFormattedDateUnix(unix, "YYYY-MM-DDTHH:mm"));
+        LocalDateTime local = LocalDateTime.parse(getFormattedDateUnix(unix, "YYYY-MM-DD'T'HH:mm"));
         int offset = (int)(ChronoUnit.HOURS.between(
                 local.atZone(Calendar.getInstance().getTimeZone().toZoneId()),
                 local.atZone(timeZone.toZoneId())
