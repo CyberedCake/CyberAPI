@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -282,12 +283,8 @@ public class Time {
      * @since 78
      */
     public static String getFormattedDate(String pattern, TimeZone timeZone) {
-        LocalDateTime local = LocalDateTime.parse(getFormattedDate("YYYY-MM-DD'T'HH:mm"));
-        int offset = (int)(ChronoUnit.HOURS.between(
-                local.atZone(Calendar.getInstance().getTimeZone().toZoneId()),
-                local.atZone(timeZone.toZoneId())
-        ));
-        return getFormattedDate(pattern, offset < 0 ? Math.abs(offset) : -offset);
+        return LocalDateTime.ofInstant(new Date().toInstant(), timeZone.toZoneId())
+                .format(DateTimeFormatter.ofPattern(pattern));
     }
 
     /**
@@ -328,7 +325,7 @@ public class Time {
      * @since 78
      */
     public static String getFormattedDateUnix(long unix, String pattern, TimeZone timeZone) {
-        LocalDateTime local = LocalDateTime.parse(getFormattedDateUnix(unix, "YYYY-MM-DD'T'HH:mm"));
+        LocalDateTime local = LocalDateTime.ofInstant(new Date(unix).toInstant(), Calendar.getInstance().getTimeZone().toZoneId());
         int offset = (int)(ChronoUnit.HOURS.between(
                 local.atZone(Calendar.getInstance().getTimeZone().toZoneId()),
                 local.atZone(timeZone.toZoneId())

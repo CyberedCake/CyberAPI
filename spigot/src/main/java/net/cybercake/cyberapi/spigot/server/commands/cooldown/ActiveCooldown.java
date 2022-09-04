@@ -1,7 +1,6 @@
 package net.cybercake.cyberapi.spigot.server.commands.cooldown;
 
 import com.google.common.base.Preconditions;
-import net.cybercake.cyberapi.common.basic.Time;
 import net.cybercake.cyberapi.spigot.server.commands.CommandInformation;
 import org.bukkit.command.CommandSender;
 
