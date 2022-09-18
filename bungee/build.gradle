@@ -32,7 +32,4 @@ shadowJar {
     relocate 'org.reflections', 'net.cybercake.cyberapi.dependencies.reflections'
     relocate 'com.google.gson', 'net.cybercake.cyberapi.dependencies.google.gson'
     relocate 'org.apache.commons.lang3', 'net.cybercake.cyberapi.dependencies.apache.commons'
-    relocate 'org.intellij.lang.annotations', 'net.cybercake.cyberapi.dependencies.annotations.intellij'
-    relocate 'org.jetbrains.annotations', 'net.cybercake.cyberapi.dependencies.annotations.jetbrains'
-    relocate 'javax.annotation', 'net.cybercake.cyberapi.dependencies.annotations.javax'
 }
