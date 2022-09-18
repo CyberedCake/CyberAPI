@@ -10,7 +10,7 @@ import java.util.logging.Level;
 
 public class CyberLogEvent extends Event implements Cancellable {
 
-    private static final HandlerList HANDLER_LIST = new HandlerList(); // required for custom event
+    public static final HandlerList HANDLER_LIST = new HandlerList(); // required for custom event
 
     private boolean cancelled;
 
