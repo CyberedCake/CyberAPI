@@ -44,7 +44,8 @@ public class Validators {
                 "jdk.internal",
                 "java.lang",
                 "io.netty",
-                "org.bukkit"
+                "org.bukkit",
+                "net.minecraft"
         );
         for(StackTraceElement element : elements) {
             if(PACKAGES_TO_AVOID.stream()
