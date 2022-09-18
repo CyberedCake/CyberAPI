@@ -39,5 +39,6 @@ public class CyberLogEvent extends Event implements Cancellable {
     @Override public boolean isCancelled() { return this.cancelled; }
     @Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
 
+    public static HandlerList getHandlerList() { return HANDLER_LIST; }
     @NotNull @Override public HandlerList getHandlers() { return HANDLER_LIST; } // required for custom event
 }
