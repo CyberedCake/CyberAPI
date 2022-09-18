@@ -31,13 +31,13 @@ public class Validators {
 
     public static @Nullable String getCaller(Thread thread) {
         try {
-            List<StackTraceElement> elements = new ArrayList<>(Arrays.stream(thread.getStackTrace()).toList());
+            StackTraceElement[] elements = thread.getStackTrace();
             return getFirstNonCyberAPIStack(elements);
         } catch (Exception ignored) {}
         return null;
     }
 
-    public static @Nullable String getFirstNonCyberAPIStack(List<StackTraceElement> elements) {
+    public static @Nullable String getFirstNonCyberAPIStack(StackTraceElement[] elements) {
         List<String> PACKAGES_TO_AVOID = ImmutableList.of(
                 "net.cybercake.cyberapi",
                 "jdk.internal",
@@ -48,7 +48,7 @@ public class Validators {
         );
         for(StackTraceElement element : elements) {
             if(PACKAGES_TO_AVOID.stream()
-                    .filter(clazz -> element.getClassName().contains(clazz))
+                    .filter(clazz -> element.getClassName().startsWith(clazz))
                     .findFirst()
                     .orElse(null)
                     != null)

@@ -818,7 +818,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
         public void log(Level level, String message) {
             if(Boolean.TRUE.equals(CyberAPI.this.settings.isSilenced())) return;
-            Log.log(level, ChatColor.LIGHT_PURPLE + "[CyberAPI]" + ChatColor.RESET + " " + message); }
+            Log.log(level, ChatColor.LIGHT_PURPLE + "[CyberAPI]" + ChatColor.RESET + " " + message, Thread.currentThread().getStackTrace()[2]); }
     }
 
     /**

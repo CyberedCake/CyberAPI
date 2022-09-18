@@ -41,7 +41,7 @@ public class BetterStackTraces {
      */
     public static void print(Level level, Throwable exception) {
         for(String element : get(exception)) {
-            Log.log(level, element);
+            Log.log(level, element, Thread.currentThread().getStackTrace()[2]);
         }
     }
 

@@ -14,23 +14,21 @@ public class Log {
      * @param message the message to log
      * @since 1
      */
-    public static void info(String message) {
-        log(Level.INFO, message);
-    }
+    public static void info(String message) { log(Level.INFO, message, Thread.currentThread().getStackTrace()[2]); }
 
     /**
      * Logs a "[WARN]" message to the console, typically in yellow
      * @param message the message to log
      * @since 1
      */
-    public static void warn(String message) { log(Level.WARNING, message); }
+    public static void warn(String message) { log(Level.WARNING, message, Thread.currentThread().getStackTrace()[2]); }
 
     /**
      * Logs a "[ERROR]" message to the console, typically in red, also known as "SEVERE"
      * @param message the message to log
      * @since 1
      */
-    public static void error(String message) { log(Level.SEVERE, message); }
+    public static void error(String message) { log(Level.SEVERE, message, Thread.currentThread().getStackTrace()[2]); }
 
     /**
      * Log at whatever level you want to the console
@@ -38,7 +36,7 @@ public class Log {
      * @param message the message to log
      * @since 1
      */
-    public static void log(Level level, String message) {
+    public static void log(Level level, String message, StackTraceElement stackTraceElement) {
         if(
                 CyberAPI.getInstance() == null
                 || Arrays.stream(Thread.currentThread().getStackTrace()).anyMatch(element -> element.getMethodName().equalsIgnoreCase("onDisable"))
@@ -49,13 +47,13 @@ public class Log {
         }
         try {
             Bukkit.getScheduler().runTask(CyberAPI.getInstance(), () -> {
-                CyberLogEvent logEvent = new CyberLogEvent(Validators.getCaller(), level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
+                CyberLogEvent logEvent = new CyberLogEvent(stackTraceElement, level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
                 Bukkit.getPluginManager().callEvent(logEvent);
                 if(logEvent.isCancelled()) return;
                 Bukkit.getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
             });
         } catch (Exception exception) {
-            throw new IllegalStateException("Error occurred whilst logging in " + Log.class.getCanonicalName() + " (potential caller: " + Validators.getFirstNonCyberAPIStack(Arrays.asList(exception.getStackTrace())) + ")", exception);
+            throw new IllegalStateException("Error occurred whilst logging in " + Log.class.getCanonicalName() + " (potential caller: " + stackTraceElement + ")", exception);
         }
     }
 
