@@ -32,7 +32,6 @@ public class Validators {
     public static @Nullable String getCaller(Thread thread) {
         try {
             List<StackTraceElement> elements = new ArrayList<>(Arrays.stream(thread.getStackTrace()).toList());
-            elements.remove(0); // remove 0 because "java.lang.Thread" is not important to what I'm doing here
             return getFirstNonCyberAPIStack(elements);
         } catch (Exception ignored) {}
         return null;
