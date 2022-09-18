@@ -1,13 +1,9 @@
 package net.cybercake.cyberapi.spigot;
 
 import com.google.common.collect.ImmutableList;
-import jdk.jfr.StackTrace;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

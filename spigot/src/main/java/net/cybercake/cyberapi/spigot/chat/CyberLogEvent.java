@@ -1,6 +1,5 @@
 package net.cybercake.cyberapi.spigot.chat;
 
-import jdk.jfr.StackTrace;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
