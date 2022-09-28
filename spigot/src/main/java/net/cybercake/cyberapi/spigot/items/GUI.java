@@ -14,6 +14,9 @@ import org.bukkit.util.ChatPaginator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents basic GUI functions
+ */
 public class GUI {
 
     /**
@@ -44,7 +47,9 @@ public class GUI {
      * @param lore the lore of the item
      * @return the new {@link ItemStack} with all of your settings
      * @since 1
+     * @deprecated please use {@link Item#createItem()} instead!
      */
+    @Deprecated(forRemoval = true)
     public static ItemStack item(Material material, int amount, boolean hideNbt, boolean shiny, String name, String... lore) {
         try {
             ItemStack item = new ItemStack(material, amount);
@@ -89,7 +94,9 @@ public class GUI {
      * @return the new {@link ItemStack} with all of your settings
      * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
+     * @deprecated please use {@link Item#createItem()} instead!
      */
+    @Deprecated(forRemoval = true)
     public static ItemStack item(Material material, int amount, boolean shiny, String name, ArrayList<String> lore) {
         return item(material, amount, false, shiny, name, lore.toArray(new String[0]));
     }
@@ -103,7 +110,9 @@ public class GUI {
      * @return the new {@link ItemStack} with all of your settings
      * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
+     * @deprecated please use {@link Item#createItem()} instead!
      */
+    @Deprecated(forRemoval = true)
     public static ItemStack item(Material material, int amount, String name, ArrayList<String> lore) {
         return item(material, amount, false, false, name, lore.toArray(new String[0]));
     }
@@ -117,7 +126,9 @@ public class GUI {
      * @return the new {@link ItemStack} with all of your settings
      * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
+     * @deprecated please use {@link Item#createItem()} instead!
      */
+    @Deprecated(forRemoval = true)
     public static ItemStack item(Material material, int amount, String name, String... lore) {
         return item(material, amount, false, false, name, lore);
     }
@@ -132,7 +143,9 @@ public class GUI {
      * @return the new {@link ItemStack} with all of your settings
      * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
+     * @deprecated please use {@link Item#createItem()} instead!
      */
+    @Deprecated(forRemoval = true)
     public static ItemStack item(Material material, int amount, boolean hideNbt, String name, String... lore) {
         return item(material, amount, hideNbt, false, name, lore);
     }
@@ -146,7 +159,9 @@ public class GUI {
      * @return the new {@link ItemStack} with all of your settings
      * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
+     * @deprecated please use {@link Item#createItem()} instead!
      */
+    @Deprecated(forRemoval = true)
     public static ItemStack item(Material material, int amount, boolean hideNbt, String name) {
         return item(material, amount, hideNbt, false, name);
     }
@@ -159,7 +174,9 @@ public class GUI {
      * @return the new {@link ItemStack} with all of your settings
      * @since 1
      * @see GUI#item(Material, int, boolean, String, String...)
+     * @deprecated please use {@link Item#createItem()} instead!
      */
+    @Deprecated(forRemoval = true)
     public static ItemStack item(Material material, int amount, String name) {
         try {
             ItemStack item = new ItemStack(material, amount);
