@@ -1,7 +1,6 @@
 package net.cybercake.cyberapi.spigot.items;
 
 import net.cybercake.cyberapi.spigot.chat.UChat;
-import net.cybercake.cyberapi.spigot.server.serverlist.motd.MOTDTextFormatter;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Material;
