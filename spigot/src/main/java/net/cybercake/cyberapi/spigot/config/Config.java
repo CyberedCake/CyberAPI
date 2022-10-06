@@ -42,6 +42,29 @@ public class Config {
     }
 
     /**
+     * Creates a configuration file from an already-defined {@link File}
+     * @param file the {@link File} to create the config file at
+     * @since 92
+     */
+    public Config(File file) {
+        this.name = file.getName();
+        this.file = file;
+        this.config = YamlConfiguration.loadConfiguration(file);
+    }
+
+    /**
+     * Creates a configuration file from an already-defined {@link File parent} and child file-name
+     * @param parent the {@link File} that is the parent of {@code fileName}
+     * @param fileName the file name, do not include the extension at the end, automatically assumes '.yml'
+     * @since 92
+     */
+    public Config(File parent, String fileName) {
+        this.name = fileName;
+        this.file = new File(parent, fileName);
+        this.config = YamlConfiguration.loadConfiguration(file);
+    }
+
+    /**
      * Saves the config
      * @throws IOException when an error occurs with saving the config
      * @since 1

@@ -48,6 +48,35 @@ public class Config {
     }
 
     /**
+     * Creates a configuration file from an already-defined {@link File}
+     * @param file the {@link File} to create the config file at
+     * @since 92
+     */
+    public Config(File file) {
+        if(!CyberAPI.getInstance().getDataFolder().exists())
+            CyberAPI.getInstance().getDataFolder().mkdir();
+
+        this.name = file.getName();
+        this.file = file;
+        this.config = null;
+    }
+
+    /**
+     * Creates a configuration file from an already-defined {@link File parent} and child file-name
+     * @param parent the {@link File} that is the parent of {@code fileName}
+     * @param fileName the file name, do not include the extension at the end, automatically assumes '.yml'
+     * @since 92
+     */
+    public Config(File parent, String fileName) {
+        if(!CyberAPI.getInstance().getDataFolder().exists())
+            CyberAPI.getInstance().getDataFolder().mkdir();
+
+        this.name = fileName;
+        this.file = new File(parent, fileName);
+        this.config = null;
+    }
+
+    /**
      * Saves the configuration
      * @since 15
      * @throws ConfigurationException when an error occurs with saving the config
