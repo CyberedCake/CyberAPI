@@ -38,7 +38,12 @@ public class CommandManager {
         try {
             long mss = System.currentTimeMillis();
             for(Class<?> clazz : (path == null ? new Reflections() : new Reflections(path)).getSubTypesOf(Command.class)) {
-                Command command = (Command) clazz.getDeclaredConstructor().newInstance();
+                Command command;
+                try {
+                    command = (Command) clazz.getDeclaredConstructor().newInstance();
+                } catch (Exception exception) {
+                    throw new IllegalStateException(exception + ": " + exception.getMessage() + " || potentially remove any constructor arguments, as CyberAPI searches for no arguments in a command constructor", exception);
+                }
                 try {
                     command.getCommands().forEach(information -> {
                         if(information.getName().chars().anyMatch(Character::isUpperCase)) { // (for name) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
