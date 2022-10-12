@@ -440,7 +440,7 @@ public class Item {
          * @return the cloned {@link ItemMeta} instance of the item being created so far
          * @since 90
          * @throws NullPointerException thrown by potentially cloning the {@link ItemMeta}
-         * @deprecated it's generally better to use {@link ItemBuilder#getItem()} and calling {@link ItemStack#getItemMeta()} instead of using this as this builds the instance and then get's the item meta!
+         * @deprecated it's generally better to use {@link net.cybercake.cyberapi.spigot.items.Item Item} and calling {@link ItemStack#getItemMeta()} instead of using this as this builds the instance and then get's the item meta!
          */
         @SuppressWarnings({"all"}) @Deprecated public @Nullable ItemMeta getItemMeta() { return this.build().getItemMeta().clone(); }
     }

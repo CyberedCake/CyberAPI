@@ -16,7 +16,6 @@ import net.cybercake.cyberapi.spigot.config.Config;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.cybercake.cyberapi.spigot.server.CyberAPIListeners;
 import net.cybercake.cyberapi.spigot.server.commands.Command;
-import net.cybercake.cyberapi.spigot.server.commands.CommandInformation;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
 import net.cybercake.cyberapi.spigot.server.placeholderapi.Placeholders;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfo;
