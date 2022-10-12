@@ -123,7 +123,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
     public abstract List<String> tab(@NotNull CommandSender sender, @NotNull String command, CommandInformation information, String[] args);
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
+    public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
         CommandInformation info = getCommand(s);
         if(info != null && info.getCooldown() != null) {
             ActiveCooldown cooldown = ActiveCooldown.getCooldownFor(commandSender, info);
@@ -158,7 +158,7 @@ public abstract class Command implements CommandExecutor, TabCompleter {
 
     @Nullable
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
+    public final List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
         List<String> tab = tab(commandSender, s, getCommand(s), strings);
         if(tab == null) return UTabComp.emptyList;
         return UTabComp.tabCompletions(getMainCommand().getTabCompleteType(), List.of(strings).get(strings.length-1), tab);

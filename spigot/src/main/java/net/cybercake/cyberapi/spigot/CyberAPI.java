@@ -15,6 +15,8 @@ import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.config.Config;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.cybercake.cyberapi.spigot.server.CyberAPIListeners;
+import net.cybercake.cyberapi.spigot.server.commands.Command;
+import net.cybercake.cyberapi.spigot.server.commands.CommandInformation;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
 import net.cybercake.cyberapi.spigot.server.placeholderapi.Placeholders;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfo;
@@ -747,10 +749,21 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param name the name of the command, without a slash
      * @param commandExecutor the executor to parse with the command
      * @see CyberAPI#registerTabCompleter(String, TabCompleter)
+     * @see CyberAPI#registerCommand(Command)
      * @since 1
      */
     public void registerCommand(String name, CommandExecutor commandExecutor) {
         this.getCommand(name).setExecutor(commandExecutor);
+    }
+
+    /**
+     * Registers a {@link Command CyberAPI command} with the Spigot server
+     * @param command the command to register
+     * @see CyberAPI#registerCommand(String, CommandExecutor)
+     * @since 94
+     */
+    public void registerCommand(Command command) {
+        command.getCommands().forEach(information -> CommandManager.commandManager().resolveInformationAndRegister(command, information));
     }
 
     /**

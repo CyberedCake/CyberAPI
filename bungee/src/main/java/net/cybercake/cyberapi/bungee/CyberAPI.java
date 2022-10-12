@@ -535,9 +535,20 @@ public class CyberAPI extends Plugin implements CommonManager {
      * <b>Tab Completers are automatically registered by Bungee using this method, so there is no need for a {@code registerTabCompleter(TabCompleter)} method!</b>
      * @param command the {@link Command} object to execute the command
      * @since 15
+     * @see CyberAPI#registerCommand(net.cybercake.cyberapi.bungee.server.commands.Command)
      */
     public void registerCommand(Command command) {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, command);
+    }
+
+    /**
+     * Registers a {@link net.cybercake.cyberapi.bungee.server.commands.Command CyberAPI command} with the Bungee server
+     * @param command the command to register
+     * @see CyberAPI#registerCommand(Command)
+     * @since 94
+     */
+    public void registerCommand(net.cybercake.cyberapi.bungee.server.commands.Command command) {
+        CommandManager.commandManager().resolveInformationAndRegister(command);
     }
 
     /**

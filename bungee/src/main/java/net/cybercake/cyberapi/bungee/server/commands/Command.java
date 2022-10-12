@@ -82,7 +82,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
     public abstract List<String> tab(CommandSender sender, CommandInformation information, String[] args);
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public final void execute(CommandSender sender, String[] args) {
         if(information != null && information.getCooldown() != null) {
             ActiveCooldown cooldown = ActiveCooldown.getCooldownFor(sender, information);
             if(cooldown != null && cooldown.getExpiration() > System.currentTimeMillis()  && (information.getCooldown().getBypassPermission() == null || (information.getCooldown().getBypassPermission() != null && !sender.hasPermission(information.getCooldown().getBypassPermission())))) { // if the user currently has a cooldown active
@@ -118,7 +118,7 @@ public abstract class Command extends net.md_5.bungee.api.plugin.Command impleme
     }
 
     @Override
-    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+    public final Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         List<String> tab = tab(sender, information, args);
         if(tab == null) return UTabComp.emptyList;
         return UTabComp.tabCompletions(information.getTabCompleteType(), List.of(args).get(args.length-1), tab);

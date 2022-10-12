@@ -34,6 +34,7 @@ public class CommandInformation implements Serializable {
         private TabCompleteType tabCompleteType = TabCompleteType.NONE;
         private LiteralCommandNode<?> node = null;
         private boolean useFolderCommodore = false;
+        private boolean autoRegister = true;
 
         /**
          * Creates an instance of {@link Builder}, allowing you to customize the stored information on the command.
@@ -156,6 +157,15 @@ public class CommandInformation implements Serializable {
         }
 
         /**
+         * Sets whether this command should auto-register with the server or require you to specify it in your main class. Default is {@link Boolean#TRUE true}.
+         * @param shouldAutoRegister whether to auto-register with the {@link org.bukkit.command.SimpleCommandMap SimpleCommandMap}
+         * @since 94
+         */
+        public Builder setAutoRegister(boolean shouldAutoRegister) {
+            this.autoRegister = shouldAutoRegister; return this;
+        }
+
+        /**
          * Builds the command information
          * @return the built command information
          */
@@ -176,6 +186,7 @@ public class CommandInformation implements Serializable {
                     ", tabCompleteType=" + tabCompleteType +
                     ", node=" + node +
                     ", useFolderCommodore=" + useFolderCommodore +
+                    ", autoRegister=" + autoRegister +
                     '}';
         }
     }
@@ -247,6 +258,12 @@ public class CommandInformation implements Serializable {
      * @since 46
      */
     public boolean shouldUseFolderCommodore() { return builder.useFolderCommodore; }
+
+    /**
+     * @return should CyberAPI attempt to auto-register your command with the {@link org.bukkit.command.SimpleCommandMap SimpleCommandMap}
+     * @since 94
+     */
+    public boolean shouldAutoRegister() { return builder.autoRegister; }
 
     protected Builder getCommandInformationBuilder() { return this.builder; }
 

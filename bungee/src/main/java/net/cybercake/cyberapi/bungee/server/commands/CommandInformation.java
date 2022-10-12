@@ -32,6 +32,7 @@ public class CommandInformation implements Serializable {
         private String[] aliases = new String[]{};
         private TabCompleteType tabCompleteType = TabCompleteType.NONE;
         private final List<Builder> additionalCommands = new ArrayList<>();
+        private boolean autoRegister = true;
 
         /**
          * Creates an instance of {@link Builder}, allowing you to customize the stored information on the command.
@@ -134,6 +135,15 @@ public class CommandInformation implements Serializable {
         }
 
         /**
+         * Sets whether this command should auto-register with the server or require you to specify it in your main class. Default is {@link Boolean#TRUE true}.
+         * @param shouldAutoRegister whether to auto-register with the Bungee server
+         * @since 94
+         */
+        public Builder setAutoRegister(boolean shouldAutoRegister) {
+            this.autoRegister = shouldAutoRegister; return this;
+        }
+
+        /**
          * Builds the command information
          * @return the built command information
          */
@@ -153,6 +163,7 @@ public class CommandInformation implements Serializable {
                     ", aliases=" + Arrays.toString(aliases) +
                     ", tabCompleteType=" + tabCompleteType +
                     ", additionalCommands=" + additionalCommands +
+                    ", autoRegister=" + autoRegister +
                     '}';
         }
     }
@@ -213,6 +224,11 @@ public class CommandInformation implements Serializable {
      */
     public CommandCooldown getCooldown() { return builder.cooldown; }
 
+    /**
+     * @return should CyberAPI attempt to auto-register your command with the Bungee server
+     * @since 94
+     */
+    public boolean shouldAutoRegister() { return builder.autoRegister; }
 
     @Override
     public String toString() {

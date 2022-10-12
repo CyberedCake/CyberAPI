@@ -30,7 +30,8 @@ public class CommandManager {
                     throw new IllegalStateException(exception + ": " + exception.getMessage() + " || potentially remove any constructor arguments, as CyberAPI searches for no arguments in a command constructor", exception);
                 }
                 try {
-                    CyberAPI.getInstance().registerCommand(command);
+                    if(!command.getMainCommand().shouldAutoRegister()) break;
+                    resolveInformationAndRegister(command);
                 } catch (Exception exception) {
                     CyberAPI.getInstance().getAPILogger().error("An error occurred whilst registering command /" + command.getName() + ": " + ChatColor.DARK_GRAY + exception);
                     CyberAPI.getInstance().getAPILogger().verboseException(exception);
@@ -43,6 +44,10 @@ public class CommandManager {
         } catch (Exception exception) {
             throw new RuntimeException("An error occurred while registering commands!", exception);
         }
+    }
+
+    public void resolveInformationAndRegister(Command command) {
+        CyberAPI.getInstance().registerCommand(command);
     }
 
 }

@@ -45,37 +45,10 @@ public class CommandManager {
                     throw new IllegalStateException(exception + ": " + exception.getMessage() + " || potentially remove any constructor arguments, as CyberAPI searches for no arguments in a command constructor", exception);
                 }
                 try {
-                    command.getCommands().forEach(information -> {
-                        if(information.getName().chars().anyMatch(Character::isUpperCase)) { // (for name) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
-                            String upperCaseInclusiveString = information.getName();
-
-                            try { // reflection methods
-                                Field nameField = information.getCommandInformationBuilder().getClass().getDeclaredField("name");
-                                nameField.setAccessible(true);
-                                nameField.set(information.getCommandInformationBuilder(), upperCaseInclusiveString.toLowerCase(Locale.ROOT));
-
-                                // add to aliases
-                                List<String> aliases = new ArrayList<>(Arrays.asList(information.getAliases()));
-                                aliases.add(upperCaseInclusiveString);
-                                Field aliasesField = information.getCommandInformationBuilder().getClass().getDeclaredField("aliases");
-                                aliasesField.setAccessible(true);
-                                aliasesField.set(information.getCommandInformationBuilder(), aliases.toArray(String[]::new));
-
-                                fakeCommandsList.put(upperCaseInclusiveString, "remove:" + upperCaseInclusiveString.toLowerCase(Locale.ROOT));
-                            } catch (NoSuchFieldException | IllegalAccessException reflectionException) {
-                                CyberAPI.getInstance().getAPILogger().error("Failed to automatically fix uppercase-containing command: " + information.getName() + " (maybe try removing any uppercase letters in it's name?)");
-                                CyberAPI.getInstance().getAPILogger().verboseException(reflectionException);
-                            }
-                        }
-                        if(Arrays.stream(information.getAliases()).anyMatch(alias -> alias.chars().anyMatch(Character::isUpperCase))) { // (for aliases) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
-                            for(String alias : information.getAliases()) {
-                                if(alias.equalsIgnoreCase(information.getName())) continue; // don't wanna re-do what we already did for prev
-                                if(alias.chars().noneMatch(Character::isUpperCase)) continue; // no uppercase letters in that alias :(
-                                fakeCommandsList.put(alias, information.getName());
-                            }
-                        }
-                        registerCommand(command, information, getCommand(information.getName(), CyberAPI.getInstance()));
-                    });
+                    for(CommandInformation information : command.getCommands()) {
+                        if(!information.shouldAutoRegister()) continue;
+                        resolveInformationAndRegister(command, information);
+                    }
                 } catch (Exception exception) {
                     CyberAPI.getInstance().getAPILogger().error("An error occurred whilst registering command /" + command.getMainCommand().getName() + " - " + command.getClass().getCanonicalName() + ": " + ChatColor.DARK_GRAY + exception);
                     CyberAPI.getInstance().getAPILogger().verboseException(exception);
@@ -88,6 +61,38 @@ public class CommandManager {
         } catch (Exception exception) {
             throw new RuntimeException("An error occurred while registering commands!", exception);
         }
+    }
+
+    public void resolveInformationAndRegister(Command command, CommandInformation information) {
+        if(information.getName().chars().anyMatch(Character::isUpperCase)) { // (for name) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
+            String upperCaseInclusiveString = information.getName();
+
+            try { // reflection methods
+                Field nameField = information.getCommandInformationBuilder().getClass().getDeclaredField("name");
+                nameField.setAccessible(true);
+                nameField.set(information.getCommandInformationBuilder(), upperCaseInclusiveString.toLowerCase(Locale.ROOT));
+
+                // add to aliases
+                List<String> aliases = new ArrayList<>(Arrays.asList(information.getAliases()));
+                aliases.add(upperCaseInclusiveString);
+                Field aliasesField = information.getCommandInformationBuilder().getClass().getDeclaredField("aliases");
+                aliasesField.setAccessible(true);
+                aliasesField.set(information.getCommandInformationBuilder(), aliases.toArray(String[]::new));
+
+                fakeCommandsList.put(upperCaseInclusiveString, "remove:" + upperCaseInclusiveString.toLowerCase(Locale.ROOT));
+            } catch (NoSuchFieldException | IllegalAccessException reflectionException) {
+                CyberAPI.getInstance().getAPILogger().error("Failed to automatically fix uppercase-containing command: " + information.getName() + " (maybe try removing any uppercase letters in it's name?)");
+                CyberAPI.getInstance().getAPILogger().verboseException(reflectionException);
+            }
+        }
+        if(Arrays.stream(information.getAliases()).anyMatch(alias -> alias.chars().anyMatch(Character::isUpperCase))) { // (for aliases) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
+            for(String alias : information.getAliases()) {
+                if(alias.equalsIgnoreCase(information.getName())) continue; // don't wanna re-do what we already did for prev
+                if(alias.chars().noneMatch(Character::isUpperCase)) continue; // no uppercase letters in that alias :(
+                fakeCommandsList.put(alias, information.getName());
+            }
+        }
+        registerCommand(command, information, getCommand(information.getName(), CyberAPI.getInstance()));
     }
 
     private void registerCommand(Command command, CommandInformation info, PluginCommand pluginCommand) {
