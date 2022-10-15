@@ -4,9 +4,9 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
-//    maven {
-//        url = uri('https://mvn.exceptionflug.de/repository/exceptionflug-public/')
-//    }
+    maven {
+        url = uri('https://mvn.exceptionflug.de/repository/exceptionflug-public/')
+    }
 }
 
 dependencies {
@@ -20,7 +20,7 @@ dependencies {
     // bungeecord and plugin hooks
     compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
     compileOnly 'net.luckperms:api:5.4'
-    // compileOnly 'dev.simplix:protocolize-api:2.2.2'
+    compileOnly 'dev.simplix:protocolize-api:2.2.2'
 
     // utils
     implementation 'org.reflections:reflections:0.10.2'
