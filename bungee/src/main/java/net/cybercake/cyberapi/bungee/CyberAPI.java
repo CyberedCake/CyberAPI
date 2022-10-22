@@ -8,6 +8,7 @@ import net.cybercake.cyberapi.bungee.chat.UChat;
 import net.cybercake.cyberapi.bungee.config.Config;
 import net.cybercake.cyberapi.bungee.player.BungeeTitle;
 import net.cybercake.cyberapi.bungee.player.CyberPlayer;
+import net.cybercake.cyberapi.bungee.server.commands.BungeeCommand;
 import net.cybercake.cyberapi.bungee.server.commands.CommandManager;
 import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfoListener;
@@ -535,19 +536,19 @@ public class CyberAPI extends Plugin implements CommonManager {
      * <b>Tab Completers are automatically registered by Bungee using this method, so there is no need for a {@code registerTabCompleter(TabCompleter)} method!</b>
      * @param command the {@link Command} object to execute the command
      * @since 15
-     * @see CyberAPI#registerCommand(net.cybercake.cyberapi.bungee.server.commands.Command)
+     * @see CyberAPI#registerCommand(BungeeCommand)
      */
     public void registerCommand(Command command) {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, command);
     }
 
     /**
-     * Registers a {@link net.cybercake.cyberapi.bungee.server.commands.Command CyberAPI command} with the Bungee server
+     * Registers a {@link BungeeCommand CyberAPI command} with the Bungee server
      * @param command the command to register
      * @see CyberAPI#registerCommand(Command)
      * @since 94
      */
-    public void registerCommand(net.cybercake.cyberapi.bungee.server.commands.Command command) {
+    public void registerCommand(BungeeCommand command) {
         CommandManager.commandManager().resolveInformationAndRegister(command);
     }
 

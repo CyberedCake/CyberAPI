@@ -37,10 +37,10 @@ public class CommandManager {
     public void init(String path) {
         try {
             long mss = System.currentTimeMillis();
-            for(Class<?> clazz : (path == null ? new Reflections() : new Reflections(path)).getSubTypesOf(Command.class)) {
-                Command command;
+            for(Class<?> clazz : (path == null ? new Reflections() : new Reflections(path)).getSubTypesOf(SpigotCommand.class)) {
+                SpigotCommand command;
                 try {
-                    command = (Command) clazz.getDeclaredConstructor().newInstance();
+                    command = (SpigotCommand) clazz.getDeclaredConstructor().newInstance();
                 } catch (Exception exception) {
                     throw new IllegalStateException(exception + ": " + exception.getMessage() + " || potentially remove any constructor arguments, as CyberAPI searches for no arguments in a command constructor", exception);
                 }
@@ -63,7 +63,7 @@ public class CommandManager {
         }
     }
 
-    public void resolveInformationAndRegister(Command command, CommandInformation information) {
+    public void resolveInformationAndRegister(SpigotCommand command, CommandInformation information) {
         if(information.getName().chars().anyMatch(Character::isUpperCase)) { // (for name) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
             String upperCaseInclusiveString = information.getName();
 
@@ -95,7 +95,7 @@ public class CommandManager {
         registerCommand(command, information, getCommand(information.getName(), CyberAPI.getInstance()));
     }
 
-    private void registerCommand(Command command, CommandInformation info, PluginCommand pluginCommand) {
+    private void registerCommand(SpigotCommand command, CommandInformation info, PluginCommand pluginCommand) {
         boolean commodoreSupported = me.lucko.commodore.CommodoreProvider.isSupported();
 
         pluginCommand.setExecutor(command);

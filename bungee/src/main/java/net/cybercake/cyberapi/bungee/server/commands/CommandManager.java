@@ -22,10 +22,10 @@ public class CommandManager {
     public void init(String path) {
         try {
             long mss = System.currentTimeMillis();
-            for(Class<?> clazz : (path == null ? new Reflections() : new Reflections(path)).getSubTypesOf(Command.class)) {
-                Command command;
+            for(Class<?> clazz : (path == null ? new Reflections() : new Reflections(path)).getSubTypesOf(BungeeCommand.class)) {
+                BungeeCommand command;
                 try {
-                    command = (Command) clazz.getDeclaredConstructor().newInstance();
+                    command = (BungeeCommand) clazz.getDeclaredConstructor().newInstance();
                 } catch (Exception exception) {
                     throw new IllegalStateException(exception + ": " + exception.getMessage() + " || potentially remove any constructor arguments, as CyberAPI searches for no arguments in a command constructor", exception);
                 }
@@ -46,7 +46,7 @@ public class CommandManager {
         }
     }
 
-    public void resolveInformationAndRegister(Command command) {
+    public void resolveInformationAndRegister(BungeeCommand command) {
         CyberAPI.getInstance().registerCommand(command);
     }
 

@@ -40,7 +40,7 @@ public class CommandInformation implements Serializable {
          * Creates an instance of {@link Builder}, allowing you to customize the stored information on the command.
          * @param name the name of the command, without the slash
          * @since 12
-         * @deprecated there is no reason to make a {@link Builder} this way, please use {@link Command#newCommand(String)}
+         * @deprecated there is no reason to make a {@link Builder} this way, please use {@link SpigotCommand#newCommand(String)}
          */
         @Deprecated
         @SuppressWarnings({"all"})
@@ -104,7 +104,7 @@ public class CommandInformation implements Serializable {
         }
 
         /**
-         * Sets the types of tab completions for {@link Command#tab(CommandSender, String, CommandInformation, String[])}
+         * Sets the types of tab completions for {@link SpigotCommand#tab(CommandSender, String, CommandInformation, String[])}
          * @param tabCompleteType the type of tab completions
          * @since 12
          * @see UTabComp#tabCompletions(TabCompleteType, String, List)
