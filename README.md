@@ -4,9 +4,9 @@
 <a href="https://jitpack.io/p/CyberedCake/CyberAPI"><img src="https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build" alt="JitPack Build Status"></a>
 <a href="https://github.com/CyberedCake/CyberAPI/releases/latest"><img src="https://github.com/CyberedCake/CyberAPI/actions/workflows/actions.yml/badge.svg" alt="GitHub Actions Build Status"></a>
 </p>
-The new and improved CyberAPI, version 3, is here! This is a library used for most of [CyberedCake's](https://github.com/CyberedCake) plugins and can be used by you for free! It adds additional features that Spigot and Bungeecord do not have and makes existing stuff easier.
+The new and improved CyberAPI, version 3, is here! This is a library used for most of <a href="https://github.com/CyberedCake">CyberedCake's</a> plugins and can be used by you for free! It adds additional features that Spigot and Bungeecord do not have and makes existing stuff easier.
 <br> <br>
-You can view the to-do list and future plans [by clicking here](https://github.com/CyberedCake/CyberAPI/projects/1)
+You can view the to-do list and future plans <a href="https://github.com/CyberedCake/CyberAPI/projects/1">by clicking here</a>
 
 <h1><p align="center">How to install and use</p></h1>
 
