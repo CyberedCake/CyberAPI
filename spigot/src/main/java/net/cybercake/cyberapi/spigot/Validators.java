@@ -59,6 +59,20 @@ public class Validators {
     /**
      * --{@literal >} <b>MAINLY FOR USE INSIDE CYBERAPI ONLY</b> {@literal <}--
      * <br><br>
+     * Weird code, I know, but checks if a {@link ClassCastException} is not thrown when using {@link Class#asSubclass(Class)}
+     */
+    public static boolean isSubtype(Class<?> clazz, Class<?> subtype) {
+        try {
+            clazz.asSubclass(subtype);
+            return true;
+        } catch (ClassCastException ignored) { // ignored because it's not needed to determine the outcome
+            return false;
+        }
+    }
+
+    /**
+     * --{@literal >} <b>MAINLY FOR USE INSIDE CYBERAPI ONLY</b> {@literal <}--
+     * <br><br>
      * Validates that Adventure API is supported and working
      */
     public static void validateAdventureSupport() {

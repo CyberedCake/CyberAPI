@@ -17,6 +17,7 @@ import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.cybercake.cyberapi.spigot.server.CyberAPIListeners;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
 import net.cybercake.cyberapi.spigot.server.commands.SpigotCommand;
+import net.cybercake.cyberapi.spigot.server.listeners.ListenerManager;
 import net.cybercake.cyberapi.spigot.server.placeholderapi.Placeholders;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfoListener;
@@ -38,9 +39,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.ChatPaginator;
 import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import javax.annotation.Nullable;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.Duration;
@@ -107,6 +111,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param settings the settings object as described in the method description
      * @since 1
      */
+    @SuppressWarnings({"deprecation"})
     protected CyberAPI startCyberAPI(@Nullable Settings settings) {
         long mss = System.currentTimeMillis();
         this.serverStarted = mss;
@@ -128,7 +133,35 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         registerListener(new CyberAPIListeners());
 
         reflectionsConsoleFilter(); // deprecated because I don't want anyone else using it
-        CommandManager.commandManager().init(settings.getCommandsPath());
+
+        @Nullable String mainPackagePath = this.getSettings().getMainPackagePath();
+        long timedPackageSearcher = System.currentTimeMillis();
+        this.classes = (mainPackagePath == null ? new Reflections() : new Reflections(mainPackagePath)).getAll(new SubTypesScanner(false))
+                .stream()
+                .filter(clazz -> {
+                    if(mainPackagePath == null) return true;
+                    return clazz.startsWith(mainPackagePath);
+                })
+                .map(clazz -> {
+                    try {
+                        return Class.forName(clazz);
+                    } catch (ClassNotFoundException exception) {
+                        throw new RuntimeException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI", exception);
+                    }
+                })
+                .toList();
+
+        ListenerManager.listenerManager().init(settings.getMainPackagePath());
+        CommandManager.commandManager().init(settings.getMainPackagePath());
+
+        if(mainPackagePath == null) {
+            try {
+                Method method = CyberAPI.class.getDeclaredMethod("startCyberAPI", Settings.class);
+                CyberAPI.getInstance().getAPILogger().warn("Please specify a main package to speed up CyberAPI start time in " + method.getDeclaringClass().getCanonicalName() + "." + method.getName() + "(" + Settings.class.getCanonicalName() + ")! (registering took " + (System.currentTimeMillis()-timedPackageSearcher) + "ms!)");
+            } catch (NoSuchMethodException noSuchMethodException) {
+                throw new IllegalStateException("Failed to find a method", noSuchMethodException);
+            }
+        }
 
         if(getProtocolLibSupport().equals(FeatureSupport.SUPPORTED)) {
             new ServerListInfoListener().init();
@@ -155,6 +188,8 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
     private Config mainConfig = null;
     private final HashMap<String, Config> configs = new HashMap<>();
+
+    private List<? extends Class<?>> classes = null;
 
     private FeatureSupport adventureAPISupport = null;
     private FeatureSupport miniMessageSupport = null;
@@ -219,6 +254,13 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public String getPrefix() { return (getSettings().getPrefix() == null ? getDescription().getPrefix() : getSettings().getPrefix()); }
+
+    /**
+     * Gets the classes that the plugin (not CyberAPI) has set up. For example, if they include the main package name, this method will return all the classes under that package.
+     * @return the classes of the plugin, assuming {@link Settings#getMainPackagePath() the main package path} is set
+     * @since 98
+     */
+    public List<? extends Class<?>> getPluginClasses() { return this.classes; }
 
     /**
      * Gets the name of the server implementation being used
@@ -752,7 +794,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public void registerCommand(String name, CommandExecutor commandExecutor) {
-        this.getCommand(name).setExecutor(commandExecutor);
+        Objects.requireNonNull(this.getCommand(name)).setExecutor(commandExecutor);
     }
 
     /**
@@ -773,7 +815,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public void registerTabCompleter(String name, TabCompleter tabCompleter) {
-        this.getCommand(name).setTabCompleter(tabCompleter);
+        Objects.requireNonNull(this.getCommand(name)).setTabCompleter(tabCompleter);
     }
 
     /**

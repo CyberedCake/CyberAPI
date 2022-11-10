@@ -2,12 +2,46 @@ package net.cybercake.cyberapi.common.server;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.LifeCycle;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.filter.AbstractFilter;
 import org.apache.logging.log4j.message.Message;
 
-public class ReflectionsConsoleFilter extends AbstractFilter {
+public class ReflectionsConsoleFilter extends AbstractFilter implements Filter {
+
+    @Override
+    public LifeCycle.State getState() {
+        return State.STARTED;
+    }
+
+    @Override
+    public void initialize() {
+    }
+
+    @Override
+    public boolean isStarted() {
+        return true;
+    }
+
+    @Override
+    public boolean isStopped() {
+        return false;
+    }
+
+    @Override
+    public void start() {
+    }
+
+    @Override
+    public void stop() {
+    }
+
+    @Override
+    public Result filter(Logger logger, Level level, Marker marker, String msg) {
+        return isLoggable(msg);
+    }
 
     @Override
     public Result filter(LogEvent event) {

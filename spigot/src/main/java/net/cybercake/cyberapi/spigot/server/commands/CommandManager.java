@@ -3,6 +3,7 @@ package net.cybercake.cyberapi.spigot.server.commands;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.cybercake.cyberapi.common.builders.settings.Settings;
 import net.cybercake.cyberapi.spigot.CyberAPI;
+import net.cybercake.cyberapi.spigot.Validators;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,7 +12,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.jetbrains.annotations.Nullable;
-import org.reflections.Reflections;
 
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -34,20 +34,21 @@ public class CommandManager {
     private static final HashMap<String, String> fakeCommandsList = new HashMap<>();
     public static HashMap<String, String> getFakeCommands() { return fakeCommandsList; }
 
+    public static int autoRegisteredCommands = 0;
+
     public void init(String path) {
         try {
             long mss = System.currentTimeMillis();
-            for(Class<?> clazz : (path == null ? new Reflections() : new Reflections(path)).getSubTypesOf(SpigotCommand.class)) {
-                SpigotCommand command;
-                try {
-                    command = (SpigotCommand) clazz.getDeclaredConstructor().newInstance();
-                } catch (Exception exception) {
-                    throw new IllegalStateException(exception + ": " + exception.getMessage() + " || potentially remove any constructor arguments, as CyberAPI searches for no arguments in a command constructor", exception);
-                }
+            for(Class<?> clazz : CyberAPI.getInstance().getPluginClasses()) {
+                if(!(Validators.isSubtype(clazz, SpigotCommand.class)) && !(Validators.isSubtype(clazz, Command.class))) continue;
+                SpigotCommand command = (SpigotCommand) clazz.getDeclaredConstructors()[0].newInstance();
                 try {
                     for(CommandInformation information : command.getCommands()) {
                         if(!information.shouldAutoRegister()) continue;
+                        if(CyberAPI.getInstance().getSettings().getDisabledAutoRegisteredClasses() != null && Arrays.asList(CyberAPI.getInstance().getSettings().getDisabledAutoRegisteredClasses()).contains(clazz)) continue;
+                        autoRegisteredCommands++;
                         resolveInformationAndRegister(command, information);
+                        CyberAPI.getInstance().getAPILogger().verbose("Registered command automatically: " + clazz.getCanonicalName() + " -> /" + command.getMainCommand().getName() + " (with aliases: " + String.join(", ", Arrays.stream(information.getAliases()).map(alias -> "/" + alias).toArray(String[]::new)) + ")");
                     }
                 } catch (Exception exception) {
                     CyberAPI.getInstance().getAPILogger().error("An error occurred whilst registering command /" + command.getMainCommand().getName() + " - " + command.getClass().getCanonicalName() + ": " + ChatColor.DARK_GRAY + exception);
@@ -56,7 +57,7 @@ public class CommandManager {
             }
             if(path == null) {
                 Method method = CyberAPI.class.getDeclaredMethod("startCyberAPI", Settings.class);
-                CyberAPI.getInstance().getAPILogger().warn("Please specify a commands path/package to speed up command registering in " + method.getDeclaringClass().getCanonicalName() + "." + method.getName() + "(" + Settings.class.getCanonicalName() + ")! (registering took " + (System.currentTimeMillis()-mss) + "ms!)");
+                CyberAPI.getInstance().getAPILogger().warn("Please specify a main package to speed up command registering in " + method.getDeclaringClass().getCanonicalName() + "." + method.getName() + "(" + Settings.class.getCanonicalName() + ")! (registering took " + (System.currentTimeMillis()-mss) + "ms!)");
             }
         } catch (Exception exception) {
             throw new RuntimeException("An error occurred while registering commands!", exception);

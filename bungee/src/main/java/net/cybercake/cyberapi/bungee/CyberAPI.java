@@ -26,11 +26,14 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.Duration;
@@ -86,6 +89,7 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @param settings the settings object as described in the method description
      * @since 15
      */
+    @SuppressWarnings({"deprecation"})
     protected CyberAPI startCyberAPI(@Nullable Settings settings) {
         long mss = System.currentTimeMillis();
         this.serverStarted = mss;
@@ -106,7 +110,34 @@ public class CyberAPI extends Plugin implements CommonManager {
         registerListener(new ServerListInfoListener());
 
         reflectionsConsoleFilter(); // deprecated because I don't want anyone else using it
-        CommandManager.commandManager().init(settings.getCommandsPath());
+
+        @Nullable String mainPackagePath =  this.getSettings().getMainPackagePath();
+        long timedPackageSearcher = System.currentTimeMillis();
+        this.classes = (mainPackagePath == null ? new Reflections() : new Reflections(mainPackagePath)).getAll(new SubTypesScanner(false))
+                .stream()
+                .filter(clazz -> {
+                    if(mainPackagePath == null) return true;
+                    return clazz.startsWith(mainPackagePath);
+                })
+                .map(clazz -> {
+                    try {
+                        return Class.forName(clazz);
+                    } catch (ClassNotFoundException exception) {
+                        throw new RuntimeException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI", exception);
+                    }
+                })
+                .toList();
+
+        CommandManager.commandManager().init(settings.getMainPackagePath());
+
+        if(mainPackagePath == null) {
+            try {
+                Method method = CyberAPI.class.getDeclaredMethod("startCyberAPI", Settings.class);
+                CyberAPI.getInstance().getAPILogger().warn("Please specify a main package to speed up CyberAPI start time in " + method.getDeclaringClass().getCanonicalName() + "." + method.getName() + "(" + Settings.class.getCanonicalName() + ")! (registering took " + (System.currentTimeMillis()-timedPackageSearcher) + "ms!)");
+            } catch (NoSuchMethodException noSuchMethodException) {
+                throw new IllegalStateException("Failed to find a method", noSuchMethodException);
+            }
+        }
 
         CyberAPISpecific specific = getCyberAPISpecific();
 
@@ -128,6 +159,8 @@ public class CyberAPI extends Plugin implements CommonManager {
 
     private Config mainConfig = null;
     private final HashMap<String, Config> configs = new HashMap<>();
+
+    private List<? extends Class<?>> classes = null;
 
     private FeatureSupport adventureAPISupport = null;
     private FeatureSupport miniMessageSupport = null;
@@ -190,6 +223,13 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 15
      */
     public String getPrefix() { return getSettings().getPrefix(); }
+
+    /**
+     * Gets the classes that the plugin (not CyberAPI) has set up. For example, if they include the main package name, this method will return all the classes under that package.
+     * @return the classes of the plugin, assuming {@link Settings#getMainPackagePath() the main package path} is set
+     * @since 98
+     */
+    public List<? extends Class<?>> getPluginClasses() { return this.classes; }
 
     /**
      * Gets the name of the server implementation being used

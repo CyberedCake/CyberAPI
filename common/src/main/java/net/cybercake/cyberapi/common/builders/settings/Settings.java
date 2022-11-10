@@ -21,7 +21,8 @@ public class Settings {
     public static class Builder {
         private boolean verbose, silenced, checkForUpdates, showPrefixInLogs, muteStartMessage;
         private FeatureSupport adventureSupport, miniMessageSupport, luckPermsSupport, protocolLibSupport, placeholderAPISupport, protocolizeSupport;
-        private String name, prefix, commandsPath;
+        private String name, prefix, mainPackage;
+        private Class<?>[] disableAutoRegisterFor;
 
         /**
          * Creates a new {@link Builder} instance, which then the method {@link Builder#build()} can build into a {@link Settings}
@@ -43,7 +44,8 @@ public class Settings {
             this.protocolizeSupport = FeatureSupport.AUTO;
             this.name = null;
             this.prefix = null;
-            this.commandsPath = null;
+            this.mainPackage = null;
+            this.disableAutoRegisterFor = null;
         }
 
         /**
@@ -175,9 +177,21 @@ public class Settings {
          * Sets the commands' path to a certain path. This is for registering commands, if no path is given, it will attempt to get your path for you, and it can take a while everytime your server starts if this value is not set.
          * <br> <br>
          * <em>Default Value:</em> *your project's group ID*
-         * @param commandsPath set this to the path where all your commands are localed (usually like 'net.cybercake.myplugin.commands')
+         * @param commandsPath set this to the path where all your commands are located (usually like 'net.cybercake.myplugin.commands')
+         * @deprecated please use {@link Builder#mainPackage(String)} instead, as the other method will define the actual package rather than just the commands path
          */
-        public Builder commandsPath(String commandsPath) { this.commandsPath = commandsPath; return this; }
+        @Deprecated
+        public Builder commandsPath(String commandsPath) { this.mainPackage = commandsPath; return this; }
+
+        /**
+         * Sets the main package of the plugin to a certain path. This is for registering commands and registering listeners, and if no path is given, it will attempt to get your path for you, and it can take a while everytime your server starts if this value is not set.
+         * <br> <br>
+         * <em>Default Value:</em> **your project's group ID*
+         * @param mainPackage set this to the path where your package is located (usually like 'net.cybercake.myplugin')
+         */
+        public Builder mainPackage(String mainPackage) { this.mainPackage = mainPackage; return this; }
+
+        public Builder disableAutoRegistering(Class<?>... disableAutoRegisterFor) { this.disableAutoRegisterFor = disableAutoRegisterFor; return this; }
 
         /**
          * Builds the builder into an {@link Settings} instance
@@ -291,9 +305,25 @@ public class Settings {
 
     /**
      * Gets the package name where all the developer's commands are stored
-     * @return the commands' path
+     * @return the commands' path <em>(deprecated note: this will return the same thing as the main package path, so this no longer accurately reflects the plugin's command's path)</em>>
      * @since 15
+     * @deprecated please use {@link Settings#getMainPackagePath()} instead, as that will return the same value anyway
      */
-    public @Nullable String getCommandsPath() { return builder.commandsPath; }
+    @Deprecated
+    public @Nullable String getCommandsPath() { return builder.mainPackage; }
+
+    /**
+     * Gets the main package where the plugin is located
+     * @return the main package path
+     * @since 98
+     */
+    public @Nullable String getMainPackagePath() { return builder.mainPackage; }
+
+    /**
+     * Gets the classes where the auto-registering has been disabled (usually Listeners or Commands)
+     * @return the classes where auto-registering via CyberAPI is disabled
+     * @since 98
+     */
+    public @Nullable Class<?>[] getDisabledAutoRegisteredClasses() { return builder.disableAutoRegisterFor; }
 
 }
