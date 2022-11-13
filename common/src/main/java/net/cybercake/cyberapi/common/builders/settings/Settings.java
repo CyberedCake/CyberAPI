@@ -51,6 +51,8 @@ public class Settings {
         /**
          * Should CyberAPI print more debug information than usual?
          * <br> <br>
+         * <em>Has no effect on whether the plugin is verbose or not.</em>
+         * <br> <br>
          * <em>Default Value:</em> {@code false}
          * @param verbose set this to 'true' to provide more information in console, 'false' is default
          */
@@ -214,6 +216,8 @@ public class Settings {
 
     /**
      * Gets whether CyberAPI should print verbose information
+     * <br> <br>
+     * <em>Has no effect on whether the plugin is verbose or not.</em>
      * @return should print verbose
      * @since 15
      */

@@ -122,6 +122,8 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         this.settings = settings;
         log.verbose("Starting CyberAPI...");
 
+        this.pluginVerbose = false;
+
         // load all support variables, so they're not 'null'
         // automatically sets the variables in the methods
         getAdventureAPISupport();
@@ -184,6 +186,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
     private Settings settings;
 
+    private boolean pluginVerbose;
     private APILog log;
 
     private Config mainConfig = null;
@@ -836,6 +839,30 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     public void registerRunnable(Runnable runnable, long period) {
         Bukkit.getScheduler().runTaskTimer(this, runnable, 20L, period);
     }
+
+    /**
+     * Checks the status of the plugin's verbose mode.
+     * <br> <br>
+     * If this is set to {@link Boolean#TRUE true}, then the plugin will send any messages logged using {@link Log#verbose(String) the verbose logging option}. Otherwise, it will not send those messages.
+     * <br> <br>
+     * <b>NOTE! This is not the same as CyberAPI's "verbose" option</b>, to enable that one, modify it in the {@link net.cybercake.cyberapi.common.builders.settings.Settings.Builder#verbose(boolean) Settings}!
+     * @return whether CyberAPI will send your verbose messages or not
+     * @since 99
+     * @see CyberAPI#setPluginVerbose(boolean) set this value here!
+     */
+    public boolean isPluginVerbose() { return this.pluginVerbose; }
+
+    /**
+     * Set's the plugin's verbose mode to a {@link Boolean}.
+     * <br> <br>
+     * If this is set to {@link Boolean#TRUE true}, then the plugin will send any messages logged using {@link Log#verbose(String) the verbose logging option}. Otherwise, it will not send these messages.
+     * <br> <br>
+     * <b>NOTE! This is not the same as CyberAPI's "verbose" option</b>, to enable that one, modify it in the {@link net.cybercake.cyberapi.common.builders.settings.Settings.Builder#verbose(boolean) Settings}!
+     * @param pluginVerbose whether the CyberAPI should send your verbose messages or not
+     * @since 99
+     * @see CyberAPI#isPluginVerbose() check this value here!
+     */
+    public void setPluginVerbose(boolean pluginVerbose) { this.pluginVerbose = pluginVerbose; }
 
     /**
      * Gets the API logger, <b>only for use inside CyberAPI!</b>
