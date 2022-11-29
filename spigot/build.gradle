@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     // adventure API (https://docs.adventure.kyori.net/)
-    compileOnly "net.kyori:adventure-api:4.11.0"
+    compileOnly "net.kyori:adventure-api:4.12.0"
     compileOnly "net.kyori:adventure-text-serializer-legacy:4.11.0"
     compileOnly "net.kyori:adventure-text-minimessage:4.11.0"
 
