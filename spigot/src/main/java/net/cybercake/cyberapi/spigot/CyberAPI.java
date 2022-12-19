@@ -172,10 +172,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
         CyberAPISpecific specific = getCyberAPISpecific();
 
-        if(!settings.shouldMuteStartMessage()) {
-            log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
-            log.info("&6&lYay! You're using CyberAPI build &a< &e< &c&l#100 &e> &a>&6&l."); // temp message that will be removed after b100
-        }
+        if(!settings.shouldMuteStartMessage()) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
         if(getSettings().isVerbose()) specific.printBuildInformation();
 
         specific.checkForUpdates(); // check for CyberAPI updates
@@ -1213,7 +1210,6 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
             if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------").append("\n&f");
             builder.append("&5CyberAPI Version String: &f").append(getVersionString()).append("\n");
-            builder.append("&a&l&oYou're using build number #100 :)");
             builder.append("&5Running on Server: &f")
                     .append("\n\t&c\u250D &fServer Type: &6").append(getServerType())
                     .append("\n\t&c\u251C &fServer Type And Version: &6").append(getServerTypeVersion())
