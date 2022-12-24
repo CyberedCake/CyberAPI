@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * General utilities regarding the usage of {@link String Strings} and Arrays of {@link String Strings}
+ */
 public class StringUtils {
 
     /**
@@ -135,7 +138,9 @@ public class StringUtils {
      * @param list the list to remove duplicates from
      * @return the list without duplicates
      * @since 1
+     * @deprecated please use the {@link ListUtils#removeDuplicates(ArrayList) removeDuplicates method in ListUtils} instead
      */
+    @Deprecated
     public static ArrayList<String> removeDuplicates(ArrayList<String> list) {
         ArrayList<String> alreadyOver = new ArrayList<>();
         for(String str : list) {
