@@ -177,6 +177,31 @@ public class Time {
     }
 
     /**
+     * Using a {@link Time#getBetterTimeDisplay(long)}, this method will condense the display into something like "5d, 12h, 38m, 13s" ago instead of the longer form
+     * @param timeDisplay the time display output from {@link Time#getBetterTimeDisplay(long)}
+     * @return the condensed time display
+     * @since 103
+     */
+    public static String condenseTimeDisplay(String timeDisplay) {
+        return timeDisplay
+                .replace(" and ", ", ")
+                .replace(" seconds", "s")
+                .replace(" second", "s")
+                .replace(" minutes", "m")
+                .replace(" minute", "m")
+                .replace(" hours", "h")
+                .replace(" hour", "h")
+                .replace(" days", "d")
+                .replace(" day", "d")
+                .replace(" weeks", "w")
+                .replace(" week", "w")
+                .replace(" months", "mo")
+                .replace(" month", "mo")
+                .replace(" years", "yr")
+                .replace(" year", "yr");
+    }
+
+    /**
      * Gets the difference between two {@link Date}s, returns a {@link Map} of {@link TimeUnit}s and {@link Long}s
      * @param biggerDate the bigger date, closer to the most recent time
      * @param smallerDate the smaller date, the furthest away from the most recent time
