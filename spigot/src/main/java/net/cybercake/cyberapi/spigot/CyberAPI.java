@@ -36,6 +36,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.ChatPaginator;
 import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
@@ -834,10 +835,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Registers a {@link Runnable} with the server, essentially a task
      * @param runnable the runnable to register
      * @param period the amount of ticks in between each execution
+     * @return {@link BukkitTask}: the task form of the runnable (during execution -- used for cancelling/getting the id of)
      * @since 1
      */
-    public void registerRunnable(Runnable runnable, long period) {
-        Bukkit.getScheduler().runTaskTimer(this, runnable, 20L, period);
+    public BukkitTask registerRunnable(Runnable runnable, long period) {
+        return Bukkit.getScheduler().runTaskTimer(this, runnable, 20L, period);
     }
 
     /**

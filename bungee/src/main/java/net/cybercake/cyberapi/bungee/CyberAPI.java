@@ -25,6 +25,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.config.Configuration;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -608,10 +609,11 @@ public class CyberAPI extends Plugin implements CommonManager {
      * Registers a {@link Runnable} with the server, essentially a task
      * @param runnable the runnable to register
      * @param period the amount of ticks in between each execution
+     * @return {@link ScheduledTask}: the task form of the runnable (during execution -- used for cancelling/getting the id of)
      * @since 15
      */
-    public void registerRunnable(Runnable runnable, long period) {
-        ProxyServer.getInstance().getScheduler().schedule(this, runnable, 20L, period*50L, TimeUnit.MILLISECONDS);
+    public ScheduledTask registerRunnable(Runnable runnable, long period) {
+        return ProxyServer.getInstance().getScheduler().schedule(this, runnable, 20L, period*50L, TimeUnit.MILLISECONDS);
     }
 
     /**
