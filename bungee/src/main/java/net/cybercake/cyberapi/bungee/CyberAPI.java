@@ -613,7 +613,19 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 15
      */
     public ScheduledTask registerRunnable(Runnable runnable, long period) {
-        return ProxyServer.getInstance().getScheduler().schedule(this, runnable, 20L, period*50L, TimeUnit.MILLISECONDS);
+        return registerRunnable(runnable, 20, period);
+    }
+
+    /**
+     * Registers a {@link Runnable} with the server, essentially a task
+     * @param runnable the runnable to register
+     * @param delay the amount of ticks before the task is started
+     * @param period the amount of ticks in between each execution
+     * @return {@link ScheduledTask}: the task form of the runnable (during execution -- used for cancelling/getting the id of)
+     * @since 106
+     */
+    public ScheduledTask registerRunnable(Runnable runnable, long delay, long period) {
+        return ProxyServer.getInstance().getScheduler().schedule(this, runnable, delay*50L, period*50L, TimeUnit.MILLISECONDS);
     }
 
     /**

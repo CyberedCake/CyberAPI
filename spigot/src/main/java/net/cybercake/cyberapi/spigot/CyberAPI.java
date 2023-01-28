@@ -839,7 +839,19 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public BukkitTask registerRunnable(Runnable runnable, long period) {
-        return Bukkit.getScheduler().runTaskTimer(this, runnable, 20L, period);
+        return registerRunnable(runnable, 20L, period);
+    }
+
+    /**
+     * Registers a {@link Runnable} with the server, essentially a task
+     * @param runnable the runnable to register
+     * @param delay the amount of ticks before the task is started
+     * @param period the amount of ticks in between each execution
+     * @return {@link BukkitTask}: the task form of the runnable (during execution -- used for cancelling/getting the id of)
+     * @since 106
+     */
+    public BukkitTask registerRunnable(Runnable runnable, long delay, long period) {
+        return Bukkit.getScheduler().runTaskTimer(this, runnable, delay, period);
     }
 
     /**
