@@ -5,6 +5,7 @@ import net.cybercake.cyberapi.bungee.Validators;
 import net.cybercake.cyberapi.bungee.player.CyberPlayer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -158,7 +159,7 @@ public class UChat {
      */
     public static Component component(Character character, String message) {
         Validators.validateAdventureSupport();
-        return Component.text(chat(character, message));
+        return LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().character('&').build().deserialize(chat(character, message));
     }
 
     /**
