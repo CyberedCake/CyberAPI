@@ -148,8 +148,10 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                 .map(clazz -> {
                     try {
                         return Class.forName(clazz);
-                    } catch (ClassNotFoundException exception) {
-                        throw new RuntimeException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI", exception);
+                    } catch (ClassNotFoundException | NoClassDefFoundError exception) {
+                        if(mainPackagePath != null && clazz.startsWith(mainPackagePath))
+                            throw new RuntimeException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI", exception);
+                        return null;
                     }
                 })
                 .toList();
