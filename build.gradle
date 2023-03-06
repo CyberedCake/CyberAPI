@@ -4,7 +4,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'org.tenne.rest' version '0.4.2'
-    id 'com.github.johnrengelman.shadow' version "7.1.2"
+    id 'com.github.johnrengelman.shadow' version "8.1.0"
 }
 
 static String getGroup() { return "net.cybercake.cyberapi"; }
@@ -70,18 +70,18 @@ subprojects { Project subProject ->
         withSourcesJar()
     }
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
     }
 
-    task copyArtifacts {
+    tasks.register('copyArtifacts') {
         doLast {
             def NEW_DIR = "${getRootProject().buildDir}/artifacts"
             def SRC_DIR = "${buildDir}/libs"
 
             ant.copy(todir: NEW_DIR) {
                 fileset(dir: SRC_DIR,
-                        includes:"**/cyberapi-*.jar"
+                        includes: "**/cyberapi-*.jar"
                 )
             }
         }
@@ -90,10 +90,10 @@ subprojects { Project subProject ->
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
 
-    task createProperties {
+    tasks.register('createProperties') {
         doLast {
             File file = new File(this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties");
-            if(!file.exists()) {
+            if (!file.exists()) {
                 file.getParentFile().mkdirs()
                 file.createNewFile()
             }
@@ -148,9 +148,9 @@ subprojects { Project subProject ->
     }
 
     jar {
-        archiveName = "cyberapi-" + getProject().getName() + "-b" + build + ".jar"
-        sourcesJar.archiveName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
-        javadocJar.archiveName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
+        setArchiveFileName(null)
+        sourcesJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
+        javadocJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
 
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
@@ -181,18 +181,17 @@ subprojects { Project subProject ->
     dependencies {
         if(!subProject.getName().contains("common")) {
             // cyberapi
-            implementation project(path: ':common', configuration: 'shadow')
+            implementation project(path: ':common')
         }
     }
 
     shadowJar {
-        archiveClassifier.set('')
-        archiveName = "cyberapi-" + getProject().getName() + "-b" + build.toString() + ".jar"
+        archiveFileName.set("cyberapi-" + getProject().getName() + "-b" + build.toString() + ".jar")
 
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
 
-        tasks.withType(Javadoc) {
+        tasks.withType(Javadoc).configureEach {
             options.addStringOption("Xdoclint:none", '-quiet')
         }
 
