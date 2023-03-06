@@ -148,9 +148,9 @@ subprojects { Project subProject ->
     }
 
     jar {
-        setArchiveFileName("cyberapi-" + getProject().getName() + "-b" + build + ".jar")
-        sourcesJar.setArchiveClassifier("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
-        javadocJar.setArchiveClassifier("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
+        setArchiveFileName(null)
+        sourcesJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
+        javadocJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
 
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
@@ -186,12 +186,12 @@ subprojects { Project subProject ->
     }
 
     shadowJar {
-        archiveClassifier.set("cyberapi-" + getProject().getName() + "-b" + build.toString() + ".jar")
+        archiveFileName.set("cyberapi-" + getProject().getName() + "-b" + build.toString() + ".jar")
 
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
 
-        tasks.withType(Javadoc) {
+        tasks.withType(Javadoc).configureEach {
             options.addStringOption("Xdoclint:none", '-quiet')
         }
 
