@@ -27,10 +27,11 @@ Step 1) Include the below code in your build.gradle "repositories" section.
 	}
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: It is recommended that you include "common" as well in your gradle dependencies in order to include the common java documentation, though it should be noted that this isn't required.
 ```gradle
 	dependencies {
 	        implementation 'com.github.CyberedCake.CyberAPI:spigot:LATEST BUILD'
+		implementation 'com.github.CyberedCake.CyberAPI:common:LATEST BUILD'
 	}
 ```
 
@@ -53,12 +54,17 @@ Step 1) Include the below code in your pom.xml "repositories" section.
     </repositories>
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: It is recommended that you include "common" as well in your gradle dependencies in order to include the common java documentation, though it should be noted that this isn't required.
 ```xml
     <dependencies>
     	<dependency>
             <groupId>com.github.CyberedCake.CyberAPI</groupId>
             <artifactId>spigot</artifactId>
+            <version>LATEST BUILD</version>
+	 </dependency>
+	 <dependency>
+            <groupId>com.github.CyberedCake.CyberAPI</groupId>
+            <artifactId>common</artifactId>
             <version>LATEST BUILD</version>
 	 </dependency>
     </dependencies>
@@ -84,9 +90,9 @@ public class MainClass extends CyberAPI { // you must extend CyberAPI instead of
                 Settings.builder()
                         // put your settings here, usually in the form of .<setting>(<value>)
                         
-                        .commandsPath("<your groupID>.commands")
-                        // usually it's a good idea to define your commands package so that CyberAPI doesn't go searching through
-                        // everything if you are using the 'better commands' feature
+                        .mainPackage("<your groupID>")
+                        // it is necessary (almost required at this point) to define your main package, as it is used for CyberAPI's
+			// custom command and listener system
                         
                         .build() // build once you have changed the settings you want
         );
@@ -117,10 +123,11 @@ Step 1) Include the below code in your build.gradle "repositories" section.
 	}
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: It is recommended that you include "common" as well in your gradle dependencies in order to include the common java documentation, though it should be noted that this isn't required.
 ```gradle
 	dependencies {
 	        implementation 'com.github.CyberedCake.CyberAPI:bungee:LATEST BUILD'
+		implementation 'com.github.CyberedCake.CyberAPI:common:LATEST BUILD'
 	}
 ```
 
@@ -143,12 +150,17 @@ Step 1) Include the below code in your pom.xml "repositories" section.
     </repositories>
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br>
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: It is recommended that you include "common" as well in your gradle dependencies in order to include the common java documentation, though it should be noted that this isn't required.
 ```xml
     <dependencies>
     	<dependency>
             <groupId>com.github.CyberedCake.CyberAPI</groupId>
             <artifactId>bungee</artifactId>
+            <version>LATEST BUILD</version>
+	 </dependency>
+    	<dependency>
+            <groupId>com.github.CyberedCake.CyberAPI</groupId>
+            <artifactId>common</artifactId>
             <version>LATEST BUILD</version>
 	 </dependency>
     </dependencies>
@@ -174,9 +186,9 @@ public class MainClass extends CyberAPI { // you must extend CyberAPI instead of
                 Settings.builder()
                         // put your settings here, usually in the form of .<setting>(<value>)
 
-                        .commandsPath("<your groupID>.commands")
-                        // usually it's a good idea to define your commands package so that CyberAPI doesn't go searching through
-                        // everything if you are using the 'better commands' feature
+                        .mainPackage("<your groupID>")
+                        // it is necessary (almost required at this point) to define your main package, as it is used for CyberAPI's
+			// custom command and listener system
 
                         .build() // build once you have changed the settings you want
         );
