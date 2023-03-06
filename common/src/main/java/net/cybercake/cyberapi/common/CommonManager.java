@@ -17,15 +17,16 @@ import java.util.UUID;
 public interface CommonManager {
 
     /**
-     * Registers the {@link org.apache.logging.log4j.core.filter.AbstractFilter AbstractFilter} for {@link ReflectionsConsoleFilter}
+     * Registers {@link ReflectionsConsoleFilter}
      * <br>
      * <b>I would not recommend calling this method yourself, just let CyberAPI handle it!</b>
      * @deprecated please do not use this method, just what-so-ever, let CyberAPI handle it
      */
-    @Deprecated()
+    @Deprecated
     @SuppressWarnings({"all"})
-    default void reflectionsConsoleFilter() {
-        ((Logger) LogManager.getRootLogger()).addFilter(new ReflectionsConsoleFilter());
+    default void registerLog4jModifiers() {
+        Logger rootLogger = ((Logger) LogManager.getRootLogger());
+        rootLogger.addFilter(new ReflectionsConsoleFilter());
     }
 
     /**

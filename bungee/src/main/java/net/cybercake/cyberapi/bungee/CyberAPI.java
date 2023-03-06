@@ -112,7 +112,7 @@ public class CyberAPI extends Plugin implements CommonManager {
 
         registerListener(new ServerListInfoListener());
 
-        reflectionsConsoleFilter(); // deprecated because I don't want anyone else using it
+        registerLog4jModifiers(); // deprecated because I don't want anyone else using it
 
         @Nullable String mainPackagePath =  this.getSettings().getMainPackagePath();
         long timedPackageSearcher = System.currentTimeMillis();
