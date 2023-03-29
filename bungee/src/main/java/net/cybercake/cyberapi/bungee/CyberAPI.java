@@ -127,7 +127,7 @@ public class CyberAPI extends Plugin implements CommonManager {
                         return Class.forName(clazz);
                     } catch (ClassNotFoundException | NoClassDefFoundError exception) {
                         if(mainPackagePath != null && clazz.startsWith(mainPackagePath))
-                            throw new RuntimeException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI", exception);
+                            throw new IllegalArgumentException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI", exception);
                         return null;
                     }
                 })
@@ -737,7 +737,13 @@ public class CyberAPI extends Plugin implements CommonManager {
          * @return the build number of {@link CyberAPI}
          * @since 15
          */
-        public int getBuild() { return Integer.parseInt(getBuildProperties().getProperty("buildNumber")); }
+        public int getBuild() {
+            try {
+                return Integer.parseInt(getBuildProperties().getProperty("buildNumber"));
+            } catch (Exception ignored) {
+                return 0;
+            }
+        }
 
         /**
          * Gets the latest version of {@link CyberAPI}
@@ -1040,6 +1046,7 @@ public class CyberAPI extends Plugin implements CommonManager {
                 UChat.broadcast(cyberPlayer.getUserHead(
                         UserHeadSettings.builder()
                                 .showHelmet(true)
+                                .character('\u2B1B')
                                 .lines(
                                         " ",
                                         " ",
