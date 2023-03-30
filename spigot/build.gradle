@@ -26,7 +26,7 @@ dependencies {
     compileOnly "com.comphenix.protocol:ProtocolLib:4.8.0"
     compileOnly 'org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT'
     compileOnly 'net.luckperms:api:5.4'
-    compileOnly 'me.clip:placeholderapi:2.11.2'
+    compileOnly 'me.clip:placeholderapi:2.11.3'
 
     // spigot libraries
     implementation 'me.lucko:commodore:2.2'
