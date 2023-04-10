@@ -14,7 +14,7 @@ dependencies {
     implementation "net.kyori:adventure-text-serializer-legacy:4.13.0"
     implementation "net.kyori:adventure-text-serializer-plain:4.13.0"
 
-    compileOnly "net.kyori:adventure-api:4.13.0"
+    compileOnly "net.kyori:adventure-api:4.13.1"
     compileOnly 'net.kyori:adventure-text-minimessage:4.13.0'
 
     // bungeecord and plugin hooks
