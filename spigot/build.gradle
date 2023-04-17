@@ -23,7 +23,7 @@ dependencies {
     compileOnly "net.kyori:adventure-text-minimessage:4.13.0"
 
     // spigot and plugin hooks
-    compileOnly "com.comphenix.protocol:ProtocolLib:4.8.0"
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.0.0-SNAPSHOT'
     compileOnly 'org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly 'me.clip:placeholderapi:2.11.3'
