@@ -148,13 +148,14 @@ subprojects { Project subProject ->
     }
 
     jar {
-        setArchiveFileName(null)
+        dependsOn(shadowJar)
         sourcesJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
         javadocJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
 
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
-            attributes 'build': "#" + this.build.toString()
+            attributes 'version': String.valueOf(actualVersion)
+            attributes 'buildNumber': String.valueOf(build)
         }
     }
 
@@ -174,9 +175,7 @@ subprojects { Project subProject ->
         }
     }
 
-    shadowJar.finalizedBy javadocJar
-    shadowJar.finalizedBy sourcesJar
-    if(!subProject.getName().contains("common")) shadowJar.finalizedBy copyArtifacts
+    // if(!subProject.getName().contains("common")) shadowJar.finalizedBy copyArtifacts
 
     dependencies {
         if(!subProject.getName().contains("common")) {
@@ -186,6 +185,9 @@ subprojects { Project subProject ->
     }
 
     shadowJar {
+        dependsOn javadocJar
+        dependsOn sourcesJar
+
         archiveFileName.set("cyberapi-" + getProject().getName() + "-b" + build.toString() + ".jar")
 
         sourceCompatibility = javaVersion
@@ -197,14 +199,17 @@ subprojects { Project subProject ->
 
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
-            attributes 'buildNumber': "#" + this.build.toString()
+            attributes 'version': String.valueOf(actualVersion)
+            attributes 'buildNumber': String.valueOf(build)
         }
 
         mergeServiceFiles()
     }
+
+    shadowJar.finalizedBy copyArtifacts
 }
 
 wrapper {
-    gradleVersion = "7.4"
+    gradleVersion = "8.0.1"
     distributionType = Wrapper.DistributionType.ALL
 }
