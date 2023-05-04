@@ -27,10 +27,10 @@ jobs:
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1.0.4
       - name: Set Gradle Version
-        uses: gradle/gradle-build-action@v2.2.0
+        uses: gradle/gradle-build-action@v2.4.2
         with:
           gradle-version: release-candidate
       - name: Build Gradle
-        uses: gradle/gradle-build-action@v2.2.0
+        uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: shadowJar --stacktrace
