@@ -64,7 +64,7 @@ public class ReflectionsConsoleFilter extends AbstractFilter implements Filter {
     }
 
     // my hard-coded way to remove Reflection's messages
-    // create an issue on GitHub (https://github.com/CyberedCake/CyberAPI/issues) if you have a better way!
+    // create an issue on GitHub (https://github.com/CyberedCake/CyberAPI-testing/issues) if you have a better way!
     private Result isLoggable(String msg) {
         if(msg == null) return Result.NEUTRAL;
         if(!msg.contains("Reflections took")) return Result.NEUTRAL;

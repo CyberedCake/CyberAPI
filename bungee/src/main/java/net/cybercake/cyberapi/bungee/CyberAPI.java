@@ -48,7 +48,7 @@ import java.util.logging.Level;
  * Welcome to CyberAPI: Bungee!
  * @author CyberedCake
  * @version use {@link CyberAPI#getCyberAPISpecific()} and then {@link CyberAPISpecific#getVersion()} to see the version!
- * @Website: <a href="https://github.com/CyberedCake/CyberAPI">github.com/CyberedCake/CyberAPI</a>
+ * @Website: <a href="https://github.com/CyberedCake/CyberAPI-testing">github.com/CyberedCake/CyberAPI-testing</a>
  */
 @SuppressWarnings({"unused"})
 public class CyberAPI extends Plugin implements CommonManager {
@@ -127,7 +127,7 @@ public class CyberAPI extends Plugin implements CommonManager {
                         return Class.forName(clazz);
                     } catch (ClassNotFoundException | NoClassDefFoundError exception) {
                         if(mainPackagePath != null && clazz.startsWith(mainPackagePath))
-                            throw new IllegalArgumentException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI", exception);
+                            throw new IllegalArgumentException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI-testing", exception);
                         return null;
                     }
                 })
@@ -786,7 +786,7 @@ public class CyberAPI extends Plugin implements CommonManager {
                 log.verbose("Checking for updates...");
                 try {
                     // thanks stack overflow (https://stackoverflow.com/a/21964051/15519255)
-                    URL url = new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest");
+                    URL url = new URL("https://api.github.com/repos/CyberedCake/CyberAPI-testing/releases/latest");
                     URLConnection connection = url.openConnection();
                     connection.connect();
 
@@ -807,10 +807,11 @@ public class CyberAPI extends Plugin implements CommonManager {
                     if(latestBuild - getBuild() > 0) {
                         log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest build is #" + ChatColor.GREEN + latestBuild + DEFAULT_WARN_LOG + ", using #" + ChatColor.RED + getBuild() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
                         log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
+                        log.warn(DEFAULT_WARN_LOG + "It is especially important that you update as you are running a " + ChatColor.DARK_PURPLE + "DEVELOPER VERSION" + DEFAULT_WARN_LOG + " of CyberAPI!");
                     }
                 }
 
-                log.verbose("Checked for updates! (build=" + getCyberAPISpecific().getBuild() + ", latest=" + getCyberAPISpecific().getLatestBuild() + ")");
+                log.verbose("Checked for updates! (build=" + getCyberAPISpecific().getBuild() + ", latest=" + getCyberAPISpecific().getLatestBuild() + ", testing=" + Boolean.TRUE.toString() + ")");
             });
         }
 

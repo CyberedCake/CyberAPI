@@ -1,4 +1,4 @@
-name: CyberAPI
+name: CyberAPI (dev)
 
 on:
   push:

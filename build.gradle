@@ -8,8 +8,8 @@ plugins {
 }
 
 static String getGroup() { return "net.cybercake.cyberapi"; }
-static URL getWebsite() { return new URL("https://github.com/CyberedCake/CyberAPI"); }
-static String getDescription() { return "The new and improved CyberAPI!"; }
+static URL getWebsite() { return new URL("https://github.com/CyberedCake/CyberAPI-testing"); }
+static String getDescription() { return "The new and improved CyberAPI! (DEVELOPER EDITION - EXPERIMENTAL ONLY)"; }
 static String[] getAuthors() { return new String[]{"CyberedCake"}; }
 static int getTargetJavaVersion() { return 17; }
 
@@ -18,7 +18,7 @@ static int getTargetJavaVersion() { return 17; }
 
 
 
-def getLatestTag = new JsonSlurper().parse(new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest")).tag_name
+def getLatestTag = new JsonSlurper().parse(new URL("https://api.github.com/repos/CyberedCake/CyberAPI-testing/releases/latest")).tag_name
 
 def currentBuild = {
     String tagSplit = getLatestTag
@@ -115,8 +115,8 @@ subprojects { Project subProject ->
                 properties['buildNumber'] = String.valueOf(build)
                 properties['version'] = String.valueOf(actualVersion)
                 properties['description'] = this.getDescription()
-                properties['testingEnvironment'] = Boolean.FALSE.toString()
-                properties.store writer, "CyberAPI Build Information {project: " + getProject().getName() + "}\n(all information from the computer that built CyberAPI)"
+                properties['testingEnvironment'] = Boolean.TRUE.toString()
+                properties.store writer, "CyberAPI Build Information {project: " + getProject().getName() + "}\n(all information from the computer that built CyberAPI)\n--> THIS IS A TESTING ENVIRONMENT. PROCEED WITH CAUTION. <--"
             }
         }
     }
