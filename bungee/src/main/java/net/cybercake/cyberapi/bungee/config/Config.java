@@ -91,6 +91,8 @@ public class Config {
 
     /**
      * Saves the defaults to the config from the "resources/" folder
+     * <br> <br>
+     * Note: Bungeecord does not support a <b>{@code copyDefaults()}</b> style method like Spigot!
      * @since 15
      * @throws ConfigurationException when an error occurs with saving the defaults for the config
      */

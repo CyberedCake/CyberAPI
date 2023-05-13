@@ -74,12 +74,22 @@ public class Config {
     }
 
     /**
-     * Saves the defaults to the config from the "resources/" folder
+     * Saves the defaults for this configuration file. If the file already exists in the plugin's folder, it will simply do nothing.
+     * <br> <br>
+     * There <b>is a difference</b> between this and {@link Config#copyDefaults() copyDefaults}, read about it <a href="https://www.spigotmc.org/threads/whats-the-difference-between-savedefaultconfig-copydefaults.301865/#post-2876283">by clicking here</a>
      * @since 1
      */
     public void saveDefaults() {
         if(!file.exists()) CyberAPI.getInstance().saveResource(name + ".yml", false);
     }
+
+    /**
+     * Copies any default values from your 'resources' folder of this config file into the plugin's copy of your config without disrupting currently modified values
+     * <br> <br>
+     * There <b>is a difference</b> between this and {@link Config#saveDefaults() saveDefaults}, read about it <a href="https://www.spigotmc.org/threads/whats-the-difference-between-savedefaultconfig-copydefaults.301865/#post-2876283">by clicking here</a>
+     * @since 116
+     */
+    public void copyDefaults() { this.config.options().copyDefaults(true); }
 
     /**
      * Reloads the config and allows for the new values the user has edited to be obtained

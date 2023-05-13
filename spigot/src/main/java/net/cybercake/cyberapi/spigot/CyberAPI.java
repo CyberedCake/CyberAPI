@@ -361,12 +361,24 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     }
 
     /**
-     * Saves the defaults for the main configuration file ('config.yml')
+     * Saves the defaults for the main configuration file ('config.yml'). If the file already exists in the plugin's folder, it will simply do nothing.
+     * <br> <br>
+     * There <b>is a difference</b> between this and {@link CyberAPI#copyDefaultConfig() copyDefaultConfig}, read about it <a href="https://www.spigotmc.org/threads/whats-the-difference-between-savedefaultconfig-copydefaults.301865/#post-2876283">by clicking here</a>
      * @since 15
      */
     @Override
     public void saveDefaultConfig() {
         getMainConfig().saveDefaults();
+    }
+
+    /**
+     * Copies any default values from your 'resources' folder into the plugin's copy of your config without disrupting currently modified values
+     * <br> <br>
+     * There <b>is a difference</b> between this and {@link CyberAPI#saveDefaultConfig() saveDefaultConfig}, read about it <a href="https://www.spigotmc.org/threads/whats-the-difference-between-savedefaultconfig-copydefaults.301865/#post-2876283">by clicking here</a>
+     * @since 116
+     */
+    public void copyDefaultConfig() {
+        getMainConfig().copyDefaults();
     }
 
     /**

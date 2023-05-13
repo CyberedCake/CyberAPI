@@ -305,9 +305,13 @@ public class CyberAPI extends Plugin implements CommonManager {
 
     /**
      * Saves the defaults for the main configuration file ('config.yml')
+     * <br> <br>
+     * Note: Bungeecord does not support a <b>{@code copyDefaults()}</b> style method like Spigot!
      * @since 15
      */
-    public void saveDefaultConfig() { getConfig().saveDefaults(); }
+    public void saveDefaultConfig() {
+        getConfig().saveDefaults();
+    }
 
     /**
      * Returns when the server started in Unix time
