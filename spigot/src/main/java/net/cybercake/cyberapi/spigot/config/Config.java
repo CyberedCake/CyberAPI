@@ -2,6 +2,7 @@ package net.cybercake.cyberapi.spigot.config;
 
 import com.google.common.base.Charsets;
 import net.cybercake.cyberapi.spigot.CyberAPI;
+import net.cybercake.cyberapi.spigot.chat.Log;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -9,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Allows the user to create, edit, and get configurations
@@ -80,7 +82,8 @@ public class Config {
      * @since 1
      */
     public void saveDefaults() {
-        if(!file.exists()) CyberAPI.getInstance().saveResource(name + ".yml", false);
+        if(file.exists()) return;
+        CyberAPI.getInstance().saveResource(name + ".yml", false);
     }
 
     /**
@@ -89,7 +92,18 @@ public class Config {
      * There <b>is a difference</b> between this and {@link Config#saveDefaults() saveDefaults}, read about it <a href="https://www.spigotmc.org/threads/whats-the-difference-between-savedefaultconfig-copydefaults.301865/#post-2876283">by clicking here</a>
      * @since 116
      */
-    public void copyDefaults() { this.config.options().copyDefaults(true); }
+    public void copyDefaults() throws IOException {
+        if(this.config.getDefaults() == null) {
+            InputStream stream = CyberAPI.getInstance().getResource(name + ".yml");
+            if(stream == null) return;
+            FileConfiguration defaults = YamlConfiguration.loadConfiguration(
+                    new InputStreamReader(stream, StandardCharsets.UTF_8)
+            );
+            this.config.setDefaults(defaults);
+        }
+        this.config.options().copyDefaults(true);
+        this.config.save(this.file);
+    }
 
     /**
      * Reloads the config and allows for the new values the user has edited to be obtained

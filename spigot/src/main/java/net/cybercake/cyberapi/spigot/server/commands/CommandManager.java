@@ -36,6 +36,7 @@ public class CommandManager {
 
     public static int autoRegisteredCommands = 0;
 
+    @SuppressWarnings({"deprecation"})
     public void init(String path) {
         try {
             long mss = System.currentTimeMillis();

@@ -378,7 +378,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 116
      */
     public void copyDefaultConfig() {
-        getMainConfig().copyDefaults();
+        try {
+            getMainConfig().copyDefaults();
+        } catch (IOException ex) {
+            throw new IllegalStateException("Failed to copy the default configuration! (config.yml)", ex);
+        }
     }
 
     /**
