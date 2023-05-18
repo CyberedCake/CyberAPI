@@ -160,7 +160,7 @@ public class UChat {
      */
     public static Component component(Character character, String message) {
         Validators.validateAdventureSupport();
-        return LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().character('&').build().deserialize(chat(character, message));
+        return LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().character(character).build().deserialize(message);
     }
 
     /**

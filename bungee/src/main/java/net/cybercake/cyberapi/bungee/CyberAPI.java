@@ -18,6 +18,8 @@ import net.cybercake.cyberapi.common.basic.logs.Logs;
 import net.cybercake.cyberapi.common.builders.player.UserHeadSettings;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import net.cybercake.cyberapi.common.builders.settings.Settings;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -151,6 +153,10 @@ public class CyberAPI extends Plugin implements CommonManager {
 
         specific.checkForUpdates();
 
+        if(this.getAdventureAPISupport() != FeatureSupport.AUTO && this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
+            this.consoleAudience = BungeeAudiences.create(this).sender(getProxy().getConsole());
+        }
+
         log.verbose("Finished! CyberAPI took " + (System.currentTimeMillis()-mss) + "ms to start.");
         return this;
     }
@@ -173,6 +179,8 @@ public class CyberAPI extends Plugin implements CommonManager {
     private FeatureSupport luckPermsSupport = null;
     private FeatureSupport protocolLibSupport = null;
     private FeatureSupport protocolizeSupport = null;
+
+    private Audience consoleAudience = null;
 
     // override methods from CommonManager
 
@@ -493,6 +501,17 @@ public class CyberAPI extends Plugin implements CommonManager {
             }
         }
         return this.protocolizeSupport;
+    }
+
+    /**
+     * Returns an instance of {@link Audience}, a way for Spigot to work with Paper and AdventureAPI
+     * @return the {@link Audience} instance
+     * @since 116
+     * @apiNote requires AdventureAPI support
+     */
+    public Audience getConsoleAudience() {
+        Validators.validateAdventureSupport();
+        return this.consoleAudience;
     }
 
     /**

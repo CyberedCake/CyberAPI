@@ -1,5 +1,7 @@
 package net.cybercake.cyberapi.spigot.chat;
 
+import net.cybercake.cyberapi.common.CommonAdapter;
+import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import net.cybercake.cyberapi.spigot.CyberAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -67,11 +69,22 @@ public class Log {
                 CyberLogEvent logEvent = new CyberLogEvent(stackTraceElement, level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
                 Bukkit.getPluginManager().callEvent(logEvent);
                 if(logEvent.isCancelled()) return;
-                Bukkit.getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
+                String realContent = (logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage();
+                if(CyberAPI.getInstance().getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
+                    CyberAPI.getInstance().getConsoleAudience().sendMessage(UChat.component("LEVEL_" + (javaLevelTo4jLevel(level)) + CommonAdapter.THREE_SEPARATION_CHARACTERS + realContent));
+                    return;
+                }
+                Bukkit.getLogger().log(logEvent.getLevel(), UChat.chat(realContent));
             });
         } catch (Exception exception) {
             throw new IllegalStateException("Error occurred whilst logging in " + Log.class.getCanonicalName() + " (potential caller: " + stackTraceElement + ")", exception);
         }
+    }
+
+    private static String javaLevelTo4jLevel(Level level) {
+        if (level.equals(Level.WARNING)) return "WARN";
+        else if (level.equals(Level.SEVERE)) return "ERROR";
+        return level.getName();
     }
 
 }

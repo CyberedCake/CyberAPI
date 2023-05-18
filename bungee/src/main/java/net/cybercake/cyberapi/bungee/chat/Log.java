@@ -1,6 +1,7 @@
 package net.cybercake.cyberapi.bungee.chat;
 
 import net.cybercake.cyberapi.bungee.CyberAPI;
+import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 
@@ -67,6 +68,10 @@ public class Log {
                 CyberLogEvent logEvent = new CyberLogEvent(stackTraceElement, level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
                 ProxyServer.getInstance().getPluginManager().callEvent(logEvent);
                 if (logEvent.isCancelled()) return;
+                if(CyberAPI.getInstance().getAdventureAPISupport() != FeatureSupport.AUTO && CyberAPI.getInstance().getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
+                    CyberAPI.getInstance().getConsoleAudience().sendMessage(UChat.component(message));
+                    return;
+                }
                 CyberAPI.getInstance().getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
             }, 0L, TimeUnit.SECONDS);
         } catch (Exception exception) {

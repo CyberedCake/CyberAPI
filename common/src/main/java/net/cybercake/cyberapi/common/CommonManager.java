@@ -5,16 +5,16 @@ import com.google.gson.JsonParser;
 import net.cybercake.cyberapi.common.basic.logs.Logs;
 import net.cybercake.cyberapi.common.server.ReflectionsConsoleFilter;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.core.*;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.UUID;
 
 public interface CommonManager {
+
+    String THREE_SEPARATION_CHARACTERS = "\uE22B\uE22B\uE22B";
 
     /**
      * Registers {@link ReflectionsConsoleFilter}
@@ -25,8 +25,11 @@ public interface CommonManager {
     @Deprecated
     @SuppressWarnings({"all"})
     default void registerLog4jModifiers() {
-        Logger rootLogger = ((Logger) LogManager.getRootLogger());
-        rootLogger.addFilter(new ReflectionsConsoleFilter());
+        try {
+            ((Logger) LogManager.getRootLogger()).addFilter(new ReflectionsConsoleFilter());
+        } catch (Exception exception) {
+            throw new IllegalArgumentException("Failed to register Log4J modified in CyberAPI! This is CyberAPI's fault.", exception);
+        }
     }
 
     /**

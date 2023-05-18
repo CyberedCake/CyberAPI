@@ -21,6 +21,10 @@ import net.cybercake.cyberapi.spigot.server.listeners.ListenerManager;
 import net.cybercake.cyberapi.spigot.server.placeholderapi.Placeholders;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfoListener;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.chat.ChatType;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
@@ -51,7 +55,9 @@ import java.net.URLConnection;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 /**
  * The main class for CyberAPI!
@@ -180,6 +186,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
         specific.checkForUpdates(); // check for CyberAPI updates
 
+        if(this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
+            this.consoleAudience = BukkitAudiences.create(this).console();
+            log.verbose("Created " + BukkitAudiences.class.getCanonicalName() + " for CONSOLE in " + Bukkit.getLogger().getClass().getCanonicalName());
+        }
+
         log.verbose("Finished! CyberAPI took " + (System.currentTimeMillis()-mss) + "ms to start.");
         return this;
     }
@@ -204,6 +215,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     private FeatureSupport placeholderAPISupport = null;
     private FeatureSupport protocolizeSupport = null;
 
+    private Audience consoleAudience = null;
 
     // override methods from CommonManager
 
@@ -590,6 +602,17 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     public FeatureSupport getProtocolizeSupport() {
         if(this.protocolizeSupport == null) this.protocolizeSupport = FeatureSupport.UNSUPPORTED;
         return this.protocolizeSupport;
+    }
+
+    /**
+     * Returns an instance of {@link Audience}, a way for Spigot to work with Paper and AdventureAPI
+     * @return the {@link Audience} instance
+     * @since 116
+     * @apiNote requires AdventureAPI support
+     */
+    public Audience getConsoleAudience() {
+        Validators.validateAdventureSupport();
+        return this.consoleAudience;
     }
 
     /**
