@@ -607,7 +607,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     /**
      * Returns an instance of {@link Audience}, a way for Spigot to work with Paper and AdventureAPI
      * @return the {@link Audience} instance
-     * @since 116
+     * @since 118
      * @apiNote requires AdventureAPI support
      */
     public Audience getConsoleAudience() {
