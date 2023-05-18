@@ -102,7 +102,6 @@ public class Config {
             this.config.setDefaults(defaults);
         }
         this.config.options().copyDefaults(true);
-        this.config.save(this.file);
     }
 
     /**
