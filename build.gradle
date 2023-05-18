@@ -18,8 +18,7 @@ static int getTargetJavaVersion() { return 17; }
 
 
 
-// def getLatestTag = new JsonSlurper().parse(new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest")).tag_name
-def getLatestLag = "117"
+def getLatestTag = new JsonSlurper().parse(new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest")).tag_name
 
 def currentBuild = {
     String tagSplit = getLatestTag
