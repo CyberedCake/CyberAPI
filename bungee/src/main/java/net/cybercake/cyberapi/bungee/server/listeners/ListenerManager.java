@@ -28,7 +28,7 @@ public class ListenerManager {
         try {
             long mss = System.currentTimeMillis();
             for(Class<?> clazz : CyberAPI.getInstance().getPluginClasses()) {
-                if(!(Validators.isSubtype(clazz, BungeeListener.class)) && !(Validators.isSubtype(clazz, BungeeListener.class))) continue;
+                if(!(Validators.isSubtype(clazz, BungeeListener.class)) && !(Validators.isSubtype(clazz, Listener.class))) continue;
                 Listener listener;
                 try {
                     listener = (Listener) clazz.getDeclaredConstructors()[0].newInstance();

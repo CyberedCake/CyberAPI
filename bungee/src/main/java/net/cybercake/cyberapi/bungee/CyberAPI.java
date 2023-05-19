@@ -10,6 +10,7 @@ import net.cybercake.cyberapi.bungee.player.BungeeTitle;
 import net.cybercake.cyberapi.bungee.player.CyberPlayer;
 import net.cybercake.cyberapi.bungee.server.commands.BungeeCommand;
 import net.cybercake.cyberapi.bungee.server.commands.CommandManager;
+import net.cybercake.cyberapi.bungee.server.listeners.ListenerManager;
 import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.bungee.server.serverlist.ServerListInfoListener;
 import net.cybercake.cyberapi.common.CommonManager;
@@ -136,6 +137,7 @@ public class CyberAPI extends Plugin implements CommonManager {
                 .toList();
 
         CommandManager.commandManager().init(settings.getMainPackagePath());
+        ListenerManager.listenerManager().init(settings.getMainPackagePath());
 
         if(mainPackagePath == null) {
             try {
