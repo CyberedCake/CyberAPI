@@ -13,6 +13,8 @@ import net.cybercake.cyberapi.spigot.basic.BetterStackTraces;
 import net.cybercake.cyberapi.spigot.chat.Log;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.config.Config;
+import net.cybercake.cyberapi.spigot.items.Item;
+import net.cybercake.cyberapi.spigot.items.ItemCreator;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.cybercake.cyberapi.spigot.server.CyberAPIListeners;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
@@ -187,8 +189,12 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         specific.checkForUpdates(); // check for CyberAPI updates
 
         if(this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
-            this.consoleAudience = BukkitAudiences.create(this).console();
-            log.verbose("Created " + BukkitAudiences.class.getCanonicalName() + " for CONSOLE in " + Bukkit.getLogger().getClass().getCanonicalName());
+            try(BukkitAudiences audience = BukkitAudiences.create(this)){
+                this.consoleAudience = audience.console();
+                log.verbose("Created " + BukkitAudiences.class.getCanonicalName() + " for CONSOLE in " + Bukkit.getLogger().getClass().getCanonicalName());
+            } catch (Exception ex) {
+                this.consoleAudience = null; // BukkitAudiences does not exist
+            }
         }
 
         log.verbose("Finished! CyberAPI took " + (System.currentTimeMillis()-mss) + "ms to start.");
@@ -215,7 +221,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     private FeatureSupport placeholderAPISupport = null;
     private FeatureSupport protocolizeSupport = null;
 
-    private Audience consoleAudience = null;
+    private @Nullable Audience consoleAudience = null;
 
     // override methods from CommonManager
 
@@ -624,11 +630,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
     /**
      * Returns an instance of {@link Audience}, a way for Spigot to work with Paper and AdventureAPI
-     * @return the {@link Audience} instance
+     * @return the {@link Audience} instance, or {@code null} if the audience was not set for some reason
      * @since 118
      * @apiNote requires AdventureAPI support
      */
-    public Audience getConsoleAudience() {
+    public @Nullable Audience getConsoleAudience() {
         Validators.validateAdventureSupport();
         return this.consoleAudience;
     }

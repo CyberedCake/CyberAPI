@@ -155,8 +155,13 @@ public class CyberAPI extends Plugin implements CommonManager {
 
         specific.checkForUpdates();
 
-        if(this.getAdventureAPISupport() != FeatureSupport.AUTO && this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
-            this.consoleAudience = BungeeAudiences.create(this).sender(getProxy().getConsole());
+        if(this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
+            try(BungeeAudiences audience = BungeeAudiences.create(this)){
+                this.consoleAudience = audience.console();
+                log.verbose("Created " + BungeeAudiences.class.getCanonicalName() + " for CONSOLE in " + ProxyServer.getInstance().getLogger().getClass().getCanonicalName());
+            } catch (Exception ex) {
+                this.consoleAudience = null; // BungeeAudiences does not exist
+            }
         }
 
         log.verbose("Finished! CyberAPI took " + (System.currentTimeMillis()-mss) + "ms to start.");
@@ -536,10 +541,10 @@ public class CyberAPI extends Plugin implements CommonManager {
     /**
      * Returns an instance of {@link Audience}, a way for Spigot to work with Paper and AdventureAPI
      * @return the {@link Audience} instance
-     * @since 116
+     * @since 118
      * @apiNote requires AdventureAPI support
      */
-    public Audience getConsoleAudience() {
+    public @Nullable Audience getConsoleAudience() {
         Validators.validateAdventureSupport();
         return this.consoleAudience;
     }

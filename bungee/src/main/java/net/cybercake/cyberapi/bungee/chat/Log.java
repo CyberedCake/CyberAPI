@@ -1,6 +1,7 @@
 package net.cybercake.cyberapi.bungee.chat;
 
 import net.cybercake.cyberapi.bungee.CyberAPI;
+import net.cybercake.cyberapi.common.CommonAdapter;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -40,16 +41,6 @@ public class Log {
     public static void verbose(String message) { verbose(Thread.currentThread().getStackTrace()[2], message); }
 
     /**
-     * <b>internal method only, do not touch!</b>
-     */
-    @Deprecated(forRemoval = true)
-    @SuppressWarnings({"all"}) // remove the "deprecated member is still in use" as the deprecation is just for effect
-    private static void verbose(StackTraceElement stackTraceElement, String message) {
-        if(CyberAPI.getInstance().isPluginVerbose())
-            log(Level.INFO, ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "VERBOSE/" + stackTraceElement.getClassName() + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message, stackTraceElement);
-    }
-
-    /**
      * Log at whatever level you want to the console
      * @param level the level at which to log
      * @param message the message to log
@@ -68,14 +59,36 @@ public class Log {
                 CyberLogEvent logEvent = new CyberLogEvent(stackTraceElement, level, (Boolean.TRUE.equals(CyberAPI.getInstance().getSettings().shouldShowPrefixInLogs()) ? "[" + CyberAPI.getInstance().getPrefix() + "] " : null), message);
                 ProxyServer.getInstance().getPluginManager().callEvent(logEvent);
                 if (logEvent.isCancelled()) return;
-                if(CyberAPI.getInstance().getAdventureAPISupport() != FeatureSupport.AUTO && CyberAPI.getInstance().getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
-                    CyberAPI.getInstance().getConsoleAudience().sendMessage(UChat.component(message));
+                String realContent = (logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage();
+                if(CyberAPI.getInstance().getAdventureAPISupport() == FeatureSupport.SUPPORTED && CyberAPI.getInstance().getConsoleAudience() != null) {
+                    CyberAPI.getInstance().getConsoleAudience().sendMessage(UChat.component("LEVEL_" + (javaLevelTo4jLevel(level)) + CommonAdapter.THREE_SEPARATION_CHARACTERS + realContent));
                     return;
                 }
-                CyberAPI.getInstance().getLogger().log(logEvent.getLevel(), UChat.chat((logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage()));
+                CyberAPI.getInstance().getLogger().log(logEvent.getLevel(), UChat.chat(realContent));
             }, 0L, TimeUnit.SECONDS);
         } catch (Exception exception) {
             throw new IllegalStateException("Error occurred whilst logging in " + Log.class.getCanonicalName() + " (potential caller: " + stackTraceElement + ")", exception);
         }
+    }
+
+    /**
+     * <b>internal method only, do not touch!</b>
+     */
+    @Deprecated(forRemoval = true)
+    @SuppressWarnings({"all"}) // remove the "deprecated member is still in use" as the deprecation is just for effect
+    private static void verbose(StackTraceElement stackTraceElement, String message) {
+        if(CyberAPI.getInstance().isPluginVerbose())
+            log(Level.INFO, ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "VERBOSE/" + stackTraceElement.getClassName() + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message, stackTraceElement);
+    }
+
+    /**
+     * <b>internal method only, do not touch!</b>
+     */
+    @Deprecated(forRemoval = true)
+    @SuppressWarnings({"all"}) // remove the "deprecated member is still in use" as the deprecation is just for effect
+    private static String javaLevelTo4jLevel(Level level) {
+        if (level.equals(Level.WARNING)) return "WARN";
+        else if (level.equals(Level.SEVERE)) return "ERROR";
+        return level.getName();
     }
 }
