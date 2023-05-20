@@ -12,13 +12,22 @@ static URL getWebsite() { return new URL("https://github.com/CyberedCake/CyberAP
 static String getDescription() { return "The new and improved CyberAPI!"; }
 static String[] getAuthors() { return new String[]{"CyberedCake"}; }
 static int getTargetJavaVersion() { return 17; }
+static boolean isOffline() { return Boolean.FALSE.booleanValue(); }
 
 
 
 
 
-
-def getLatestTag = new JsonSlurper().parse(new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest")).tag_name
+def getLatestTag
+try {
+    if(isOffline()) {
+        throw new IllegalStateException("Offline mode set to 'TRUE'")
+    }
+    getLatestTag = new JsonSlurper().parse(new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest")).tag_name
+} catch (Exception exception) {
+    logger.error "> Error obtaining latest version, exception: " + exception.toString()
+    getLatestTag = "0"
+}
 
 def currentBuild = {
     String tagSplit = getLatestTag
