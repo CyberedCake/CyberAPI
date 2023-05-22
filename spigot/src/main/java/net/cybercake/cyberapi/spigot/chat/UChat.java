@@ -445,4 +445,25 @@ public class UChat {
         broadcast(message, null);
     }
 
+    /**
+     * Broadcast a message to all online players and logs to console
+     * @param message the message to send, as a {@link Component}
+     * @see UChat#broadcast(Component, String)
+     * @since 125
+     * @apiNote requires Adventure API support
+     */
+    public static void broadcast(Component message) { broadcast(message, null); }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link Component}
+     * @param permission the permission required to see the message
+     * @since 125
+     * @apiNote requires Adventure API Support
+     */
+    public static void broadcast(Component message, @Nullable String permission) {
+        Validators.validateAdventureSupport();
+        broadcast(LegacyComponentSerializer.legacyAmpersand().serialize(message), permission);
+    }
+
 }
