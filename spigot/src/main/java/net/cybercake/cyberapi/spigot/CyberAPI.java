@@ -24,6 +24,8 @@ import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfoListener;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
@@ -54,6 +56,7 @@ import java.net.URLConnection;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 
 /**
@@ -672,10 +675,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Broadcast a message to all online players and logs to console
      * @param message the message to send
      * @since 1
-     * @see CyberAPI#broadcast(String, String) 
+     * @see UChat#broadcast(String, String)
+     * @see UChat#broadcast(Component, Predicate)
      */
-    public void broadcast(String message) {
-        broadcast(message, "");
+    public static void broadcast(String message) {
+        UChat.broadcast(message);
     }
 
     /**
@@ -684,10 +688,95 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param permission the permission required to see the message
      * @since 1
      * @see UChat#broadcast(String)
+     * @see UChat#broadcast(String, Predicate)
+     */
+    public static void broadcast(String message, @Nullable String permission) {
+        UChat.broadcast(message, permission);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send
+     * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
+     * @since 126
+     * @see UChat#broadcast(String)
      * @see UChat#broadcast(String, String)
      */
-    public void broadcast(String message, String permission) {
+    public static void broadcast(String message, @Nullable Predicate<? super CommandSender> filter) {
+        UChat.broadcast(message, filter);
+    }
+
+    /**
+     * Broadcast a message to all online players and logs to console
+     * @param message the message to send, as a {@link Component}
+     * @since 125
+     * @apiNote requires Adventure API support
+     * @see UChat#broadcast(Component, String)
+     * @see UChat#broadcast(Component, Predicate)
+     */
+    public static void broadcast(Component message) {
+        UChat.broadcast(message);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link Component}
+     * @param permission the permission required to see the message
+     * @since 125
+     * @apiNote requires Adventure API Support
+     * @see UChat#broadcast(Component)
+     * @see UChat#broadcast(Component, Predicate)
+     */
+    public static void broadcast(Component message, @Nullable String permission) {
         UChat.broadcast(message, permission);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link Component}
+     * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
+     * @since 126
+     * @apiNote requires Adventure API support
+     * @see UChat#broadcast(Component)
+     * @see UChat#broadcast(Component, String)
+     */
+    public static void broadcast(Component message, @Nullable Predicate<? super CommandSender> filter) {
+        UChat.broadcast(message, filter);
+    }
+
+    /**
+     * Broadcast a message to all online players and logs to console
+     * @param message the message to send, as a {@link BaseComponent}
+     * @since 125
+     * @see UChat#broadcast(BaseComponent, String)
+     * @see UChat#broadcast(BaseComponent, Predicate)
+     */
+    public static void broadcast(BaseComponent message) {
+        UChat.broadcast(message);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link BaseComponent}
+     * @param permission the permission required to see the message
+     * @since 125
+     * @see UChat#broadcast(BaseComponent)
+     * @see UChat#broadcast(BaseComponent, Predicate)
+     */
+    public static void broadcast(BaseComponent message, @Nullable String permission) {
+        UChat.broadcast(message, permission);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link BaseComponent}
+     * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
+     * @since 126
+     * @see UChat#broadcast(BaseComponent)
+     * @see UChat#broadcast(BaseComponent, String)
+     */
+    public static void broadcast(BaseComponent message, @Nullable Predicate<? super CommandSender> filter) {
+        UChat.broadcast(message, filter);
     }
     
     /**

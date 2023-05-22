@@ -22,9 +22,11 @@ import net.cybercake.cyberapi.common.builders.settings.Settings;
 import net.cybercake.cyberapi.common.server.ConsoleModifiers;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
@@ -44,6 +46,7 @@ import java.net.URLConnection;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 
 /**
@@ -593,20 +596,110 @@ public class CyberAPI extends Plugin implements CommonManager {
     /**
      * Broadcast a message to all online players and logs to console
      * @param message the message to send
-     * @since 15
-     * @see CyberAPI#broadcast(String, String)
+     * @since 1
+     * @see UChat#broadcast(String, String)
+     * @see UChat#broadcast(Component, Predicate)
      */
-    public void broadcast(String message) { broadcast(message, ""); }
+    public static void broadcast(String message) {
+        UChat.broadcast(message);
+    }
 
     /**
      * Broadcast a message to all online players if they have a specified permission and logs to console
      * @param message the message to send
      * @param permission the permission required to see the message
-     * @since 15
+     * @since 1
+     * @see UChat#broadcast(String)
+     * @see UChat#broadcast(String, Predicate)
+     */
+    public static void broadcast(String message, @Nullable String permission) {
+        UChat.broadcast(message, permission);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send
+     * @param filter the filter of command senders that can see this message, note: only {@link ProxiedPlayer players} and {@link CommandSender console} are checked!
+     * @since 126
      * @see UChat#broadcast(String)
      * @see UChat#broadcast(String, String)
      */
-    public void broadcast(String message, String permission) { UChat.broadcast(message, permission); }
+    public static void broadcast(String message, @Nullable Predicate<? super CommandSender> filter) {
+        UChat.broadcast(message, filter);
+    }
+
+    /**
+     * Broadcast a message to all online players and logs to console
+     * @param message the message to send, as a {@link Component}
+     * @since 125
+     * @apiNote requires Adventure API support
+     * @see UChat#broadcast(Component, String)
+     * @see UChat#broadcast(Component, Predicate)
+     */
+    public static void broadcast(Component message) {
+        UChat.broadcast(message);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link Component}
+     * @param permission the permission required to see the message
+     * @since 125
+     * @apiNote requires Adventure API Support
+     * @see UChat#broadcast(Component)
+     * @see UChat#broadcast(Component, Predicate)
+     */
+    public static void broadcast(Component message, @Nullable String permission) {
+        UChat.broadcast(message, permission);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link Component}
+     * @param filter the filter of command senders that can see this message, note: only {@link ProxiedPlayer players} and {@link CommandSender console} are checked!
+     * @since 126
+     * @apiNote requires Adventure API support
+     * @see UChat#broadcast(Component)
+     * @see UChat#broadcast(Component, String)
+     */
+    public static void broadcast(Component message, @Nullable Predicate<? super CommandSender> filter) {
+        UChat.broadcast(message, filter);
+    }
+
+    /**
+     * Broadcast a message to all online players and logs to console
+     * @param message the message to send, as a {@link BaseComponent}
+     * @since 125
+     * @see UChat#broadcast(BaseComponent, String)
+     * @see UChat#broadcast(BaseComponent, Predicate)
+     */
+    public static void broadcast(BaseComponent message) {
+        UChat.broadcast(message);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link BaseComponent}
+     * @param permission the permission required to see the message
+     * @since 125
+     * @see UChat#broadcast(BaseComponent)
+     * @see UChat#broadcast(BaseComponent, Predicate)
+     */
+    public static void broadcast(BaseComponent message, @Nullable String permission) {
+        UChat.broadcast(message, permission);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link BaseComponent}
+     * @param filter the filter of command senders that can see this message, note: only {@link ProxiedPlayer players} and {@link CommandSender console} are checked!
+     * @since 126
+     * @see UChat#broadcast(BaseComponent)
+     * @see UChat#broadcast(BaseComponent, String)
+     */
+    public static void broadcast(BaseComponent message, @Nullable Predicate<? super CommandSender> filter) {
+        UChat.broadcast(message, filter);
+    }
 
     /**
      * Performs a command as a {@link ProxiedPlayer} if {@link CommandSender} is not a player. Please include a '/' in your command when typing it here

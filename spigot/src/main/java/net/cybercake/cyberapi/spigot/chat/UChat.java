@@ -11,12 +11,14 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.ChatPaginator;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class UChat {
 
@@ -421,38 +423,56 @@ public class UChat {
     }
 
     /**
+     * Broadcast a message to all online players and logs to console
+     * @param message the message to send
+     * @since 1
+     * @see UChat#broadcast(String, String)
+     * @see UChat#broadcast(Component, Predicate)
+     */
+    public static void broadcast(String message) { broadcast(message, (Predicate<? super CommandSender>) null); }
+
+    /**
      * Broadcast a message to all online players if they have a specified permission and logs to console
      * @param message the message to send
      * @param permission the permission required to see the message
      * @since 1
+     * @see UChat#broadcast(String)
+     * @see UChat#broadcast(String, Predicate)
      */
     public static void broadcast(String message, @Nullable String permission) {
-        for(Player player : CyberAPI.getInstance().getOnlinePlayers()) {
-            if(!((permission == null || permission.strip().equalsIgnoreCase("")) || player.hasPermission(permission))) continue;
-
-            player.sendMessage(chat(message));
-        }
-        Log.info(message);
+        broadcast(message, player ->
+                permission == null
+                        || permission.strip().equalsIgnoreCase("")
+                        || player.hasPermission(permission)
+        );
     }
 
     /**
-     * Broadcast a message to all online players and logs to console
+     * Broadcast a message to all online players if they have a specified permission and logs to console
      * @param message the message to send
+     * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
+     * @since 126
+     * @see UChat#broadcast(String)
      * @see UChat#broadcast(String, String)
-     * @since 1
      */
-    public static void broadcast(String message) {
-        broadcast(message, null);
+    public static void broadcast(String message, @Nullable Predicate<? super CommandSender> filter) {
+        for(Player player : CyberAPI.getInstance().getOnlinePlayers()) {
+            if(filter != null && !filter.test(player)) continue;
+            player.sendMessage(chat(message));
+        }
+        if(filter == null || filter.test(CyberAPI.getInstance().getServer().getConsoleSender()))
+            Log.info(message);
     }
 
     /**
      * Broadcast a message to all online players and logs to console
      * @param message the message to send, as a {@link Component}
-     * @see UChat#broadcast(Component, String)
      * @since 125
      * @apiNote requires Adventure API support
+     * @see UChat#broadcast(Component, String)
+     * @see UChat#broadcast(Component, Predicate)
      */
-    public static void broadcast(Component message) { broadcast(message, null); }
+    public static void broadcast(Component message) { broadcast(message, (Predicate<? super CommandSender>) null); }
 
     /**
      * Broadcast a message to all online players if they have a specified permission and logs to console
@@ -460,10 +480,59 @@ public class UChat {
      * @param permission the permission required to see the message
      * @since 125
      * @apiNote requires Adventure API Support
+     * @see UChat#broadcast(Component)
+     * @see UChat#broadcast(Component, Predicate)
      */
     public static void broadcast(Component message, @Nullable String permission) {
         Validators.validateAdventureSupport();
         broadcast(LegacyComponentSerializer.legacyAmpersand().serialize(message), permission);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link Component}
+     * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
+     * @since 126
+     * @apiNote requires Adventure API support
+     * @see UChat#broadcast(Component)
+     * @see UChat#broadcast(Component, String)
+     */
+    public static void broadcast(Component message, @Nullable Predicate<? super CommandSender> filter) {
+        Validators.validateAdventureSupport();
+        broadcast(LegacyComponentSerializer.legacyAmpersand().serialize(message), filter);
+    }
+
+    /**
+     * Broadcast a message to all online players and logs to console
+     * @param message the message to send, as a {@link BaseComponent}
+     * @since 125
+     * @see UChat#broadcast(BaseComponent, String)
+     * @see UChat#broadcast(BaseComponent, Predicate)
+     */
+    public static void broadcast(BaseComponent message) { broadcast(message, (Predicate<? super CommandSender>) null); }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link BaseComponent}
+     * @param permission the permission required to see the message
+     * @since 125
+     * @see UChat#broadcast(BaseComponent)
+     * @see UChat#broadcast(BaseComponent, Predicate)
+     */
+    public static void broadcast(BaseComponent message, @Nullable String permission) {
+        broadcast(BaseComponent.toLegacyText(message), permission);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link BaseComponent}
+     * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
+     * @since 126
+     * @see UChat#broadcast(BaseComponent)
+     * @see UChat#broadcast(BaseComponent, String)
+     */
+    public static void broadcast(BaseComponent message, @Nullable Predicate<? super CommandSender> filter) {
+        broadcast(BaseComponent.toLegacyText(message), filter);
     }
 
 }
