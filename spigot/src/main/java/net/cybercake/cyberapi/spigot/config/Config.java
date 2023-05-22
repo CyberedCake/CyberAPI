@@ -2,7 +2,6 @@ package net.cybercake.cyberapi.spigot.config;
 
 import com.google.common.base.Charsets;
 import net.cybercake.cyberapi.spigot.CyberAPI;
-import net.cybercake.cyberapi.spigot.chat.Log;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

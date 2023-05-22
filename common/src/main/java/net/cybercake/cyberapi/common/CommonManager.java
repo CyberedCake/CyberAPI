@@ -5,10 +5,12 @@ import com.google.gson.JsonParser;
 import net.cybercake.cyberapi.common.basic.logs.Logs;
 import net.cybercake.cyberapi.common.server.ReflectionsConsoleFilter;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.*;
-import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.UUID;
 

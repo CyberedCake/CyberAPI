@@ -4,7 +4,6 @@ import net.cybercake.cyberapi.spigot.CyberAPI;
 import net.cybercake.cyberapi.spigot.Validators;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
