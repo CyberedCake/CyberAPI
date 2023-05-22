@@ -1,6 +1,7 @@
 package net.cybercake.cyberapi.bungee.chat;
 
 import net.cybercake.cyberapi.common.basic.NumberUtils;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 
@@ -119,12 +120,18 @@ public class UTabComp {
     }
 
     /**
+     * Represents an empty list with {@link Component}s
+     */
+    public static List<Component> emptyComponentList = new ArrayList<>();
+
+    /**
      * Represents an empty list with {@link BaseComponent}s
      */
-    public static ArrayList<BaseComponent> emptyComponentList = new ArrayList<>();
+    public static List<BaseComponent> emptyBaseComponentList = new ArrayList<>();
+
     /**
      * Represents an empty list with {@link String}s, used instead of {@code null} for returning {@link net.md_5.bungee.api.plugin.TabExecutor#onTabComplete(CommandSender, String[])}
      */
-    public static ArrayList<String> emptyList = new ArrayList<>();
+    public static List<String> emptyList = new ArrayList<>();
 
 }

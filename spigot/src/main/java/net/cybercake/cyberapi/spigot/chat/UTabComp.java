@@ -2,6 +2,7 @@ package net.cybercake.cyberapi.spigot.chat;
 
 import net.cybercake.cyberapi.common.basic.NumberUtils;
 import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -122,10 +123,16 @@ public class UTabComp {
     /**
      * Represents an empty list with {@link Component}s
      */
-    public static ArrayList<Component> emptyComponentList = new ArrayList<>();
+    public static List<Component> emptyComponentList = new ArrayList<>();
+
+    /**
+     * Represents an empty list with {@link BaseComponent}s
+     */
+    public static List<BaseComponent> emptyBaseComponentList = new ArrayList<>();
+
     /**
      * Represents an empty list with {@link String}s, used instead of {@code null} for returning {@link org.bukkit.command.TabExecutor#onTabComplete(CommandSender, Command, String, String[])}
      */
-    public static ArrayList<String> emptyList = new ArrayList<>();
+    public static List<String> emptyList = new ArrayList<>();
 
 }
