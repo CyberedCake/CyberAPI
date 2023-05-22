@@ -13,15 +13,7 @@ import org.apache.logging.log4j.core.filter.AbstractFilter;
 import org.apache.logging.log4j.message.Message;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.lang.reflect.Executable;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.function.Supplier;
-
-public class ReflectionsConsoleFilter extends AbstractFilter implements Filter {
+public class ConsoleModifiers extends AbstractFilter implements Filter {
 
     private static final Level DEFAULT_LEVEL = Level.INFO;
 
