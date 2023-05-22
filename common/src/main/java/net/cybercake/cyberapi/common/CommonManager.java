@@ -3,7 +3,7 @@ package net.cybercake.cyberapi.common;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.cybercake.cyberapi.common.basic.logs.Logs;
-import net.cybercake.cyberapi.common.server.ReflectionsConsoleFilter;
+import net.cybercake.cyberapi.common.server.ConsoleModifiers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
@@ -28,7 +28,7 @@ public interface CommonManager {
     @SuppressWarnings({"all"})
     default void registerLog4jModifiers() {
         try {
-            ((Logger) LogManager.getRootLogger()).addFilter(new ReflectionsConsoleFilter());
+            ((Logger) LogManager.getRootLogger()).addFilter(new ConsoleModifiers());
         } catch (Exception exception) {
             throw new IllegalArgumentException("Failed to register Log4J modified in CyberAPI! This is CyberAPI's fault.", exception);
         }
