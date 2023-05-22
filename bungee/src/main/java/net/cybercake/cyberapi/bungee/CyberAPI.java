@@ -19,6 +19,7 @@ import net.cybercake.cyberapi.common.basic.logs.Logs;
 import net.cybercake.cyberapi.common.builders.player.UserHeadSettings;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import net.cybercake.cyberapi.common.builders.settings.Settings;
+import net.cybercake.cyberapi.common.server.ConsoleModifiers;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.ChatColor;
@@ -112,13 +113,16 @@ public class CyberAPI extends Plugin implements CommonManager {
         getMiniMessageSupport();
         getLuckPermsSupport();
         getProtocolizeSupport();
+        log.verbose("Loaded all potential supported libraries and classes");
 
         registerListener(new ServerListInfoListener());
 
         registerLog4jModifiers(); // deprecated because I don't want anyone else using it
+        log.verbose("Loaded console modifiers, using class " + ConsoleModifiers.class + " (" + ConsoleModifiers.class.getDeclaredMethods().length + " methods)");
 
         @Nullable String mainPackagePath =  this.getSettings().getMainPackagePath();
         long timedPackageSearcher = System.currentTimeMillis();
+        List<String> classes = new ArrayList<>();
         this.classes = (mainPackagePath == null ? new Reflections() : new Reflections(mainPackagePath)).getAll(new SubTypesScanner(false))
                 .stream()
                 .filter(clazz -> {
@@ -127,14 +131,18 @@ public class CyberAPI extends Plugin implements CommonManager {
                 })
                 .map(clazz -> {
                     try {
+                        classes.add(clazz);
                         return Class.forName(clazz);
                     } catch (ClassNotFoundException | NoClassDefFoundError exception) {
+                        log.verbose(ChatColor.RED + "Failed to find class despite being included in package scan: " + clazz);
+                        log.verbose(ChatColor.RED + "|-> Related exception: " + exception);
                         if(mainPackagePath != null && clazz.startsWith(mainPackagePath))
                             throw new IllegalArgumentException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI", exception);
                         return null;
                     }
                 })
                 .toList();
+        log.verbose("Found the following classes: [" + String.join(", ", classes) + "]");
 
         CommandManager.commandManager().init(settings.getMainPackagePath());
         ListenerManager.listenerManager().init(settings.getMainPackagePath());
@@ -143,6 +151,7 @@ public class CyberAPI extends Plugin implements CommonManager {
             try {
                 Method method = CyberAPI.class.getDeclaredMethod("startCyberAPI", Settings.class);
                 CyberAPI.getInstance().getAPILogger().warn("Please specify a main package to speed up CyberAPI start time in " + method.getDeclaringClass().getCanonicalName() + "." + method.getName() + "(" + Settings.class.getCanonicalName() + ")! (registering took " + (System.currentTimeMillis()-timedPackageSearcher) + "ms!)");
+                log.verbose("Needed to scan an unnecessary amount of classes. Scanned " + classes.size() + ", need reduction to lower time.");
             } catch (NoSuchMethodException noSuchMethodException) {
                 throw new IllegalStateException("Failed to find a method", noSuchMethodException);
             }
@@ -151,7 +160,7 @@ public class CyberAPI extends Plugin implements CommonManager {
         CyberAPISpecific specific = getCyberAPISpecific();
 
         if(!settings.shouldMuteStartMessage()) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
-        if(getSettings().isVerbose()) specific.printBuildInformation();
+        if(getSettings().isVerbose() && !settings.shouldMuteStartMessage()) specific.printBuildInformation();
 
         specific.checkForUpdates();
 
@@ -160,6 +169,7 @@ public class CyberAPI extends Plugin implements CommonManager {
                 this.consoleAudience = audience.console();
                 log.verbose("Created " + BungeeAudiences.class.getCanonicalName() + " for CONSOLE in " + ProxyServer.getInstance().getLogger().getClass().getCanonicalName());
             } catch (Exception ex) {
+                log.verbose("BukkitAudiences not available in Adventure: " + ex);
                 this.consoleAudience = null; // BungeeAudiences does not exist
             }
         }
