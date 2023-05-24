@@ -291,9 +291,7 @@ public class CyberAPI extends Plugin implements CommonManager {
      * Gets the main config of the server. If no config exists, create one and save.
      * @return the main {@link Config} (main config is always 'config.yml')
      * @since 15
-     * @deprecated it is recommended that you use {@link CyberAPI#getConfig()}
      */
-    @Deprecated
     public Config getMainConfig() {
         if(mainConfig == null) mainConfig = new Config();
         return mainConfig;
@@ -303,10 +301,11 @@ public class CyberAPI extends Plugin implements CommonManager {
      * Gets the main config of the server. If no config exists, create one and save.
      * @return the main {@link Config} (main config is always 'config.yml')
      * @since 15
+     * @deprecated it is recommended that you use {@link CyberAPI#getMainConfig()}
      */
+    @Deprecated(forRemoval = true)
     public Config getConfig() {
-        if(mainConfig == null) mainConfig = new Config();
-        return mainConfig;
+        return getMainConfig();
     }
 
     /**
