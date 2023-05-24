@@ -61,10 +61,8 @@ public class ConsoleModifiers extends AbstractFilter implements Filter {
 
     @Override
     public Result filter(LogEvent event) {
-        $log("Message initial: " + (event != null ? event.getMessage().getFormattedMessage() : "(is null - cannot find)"));
         @Nullable String[] message = checkContains(event == null ? null : (event.getMessage().getFormattedMessage() == null ? null : event.getMessage().getFormattedMessage()));
         if(message != null && event != null) {
-            $log("Message final: " + message[0]);
             LogBuilder builder = LogManager.getRootLogger().atLevel(getLevel(message[0]));
             if(event.getMarker() != null)
                 builder = builder.withMarker(event.getMarker());
@@ -111,23 +109,22 @@ public class ConsoleModifiers extends AbstractFilter implements Filter {
     private void $log(String message) {
         if(message.contains("[INTERNAL]")) return;
         java.util.logging.Logger.getAnonymousLogger().log(java.util.logging.Level.INFO, "[INTERNAL] " + message);
-        if(2 > 1) return;
-        try {
-            Class<?> clazz = Class.forName("net.cybercake.cyberapi.spigot.chat.UChat");
-            Method method = clazz.getDeclaredMethod("broadcast", String.class, Predicate.class);
-            if(checkClassExists("net.md_5.bungee.api.CommandSender")) {
-                Predicate<? super net.md_5.bungee.api.CommandSender> predicate = (user) -> !user.getName().equalsIgnoreCase("console");
-                method.invoke(null, message, predicate);
-            }else if(checkClassExists("org.bukkit.command.CommandSender")) {
-                Predicate<? super org.bukkit.command.CommandSender> predicate = (user) -> !user.getServer().getConsoleSender().equals(user);
-                method.invoke(null, message, predicate);
-            }else{
-                method = clazz.getDeclaredMethod("broadcast", String.class);
-                method.invoke(null, message);
-            }
-        } catch (Exception exception) {
-            java.util.logging.LogManager.getLogManager().getLogger("").log(java.util.logging.Level.SEVERE, "Failed: " + exception);
-        }
+//        try {
+//            Class<?> clazz = Class.forName("net.cybercake.cyberapi.spigot.chat.UChat");
+//            Method method = clazz.getDeclaredMethod("broadcast", String.class, Predicate.class);
+//            if(checkClassExists("net.md_5.bungee.api.CommandSender")) {
+//                Predicate<? super net.md_5.bungee.api.CommandSender> predicate = (user) -> !user.getName().equalsIgnoreCase("console");
+//                method.invoke(null, message, predicate);
+//            }else if(checkClassExists("org.bukkit.command.CommandSender")) {
+//                Predicate<? super org.bukkit.command.CommandSender> predicate = (user) -> !user.getServer().getConsoleSender().equals(user);
+//                method.invoke(null, message, predicate);
+//            }else{
+//                method = clazz.getDeclaredMethod("broadcast", String.class);
+//                method.invoke(null, message);
+//            }
+//        } catch (Exception exception) {
+//            java.util.logging.LogManager.getLogManager().getLogger("").log(java.util.logging.Level.SEVERE, "Failed: " + exception);
+//        }
     }
 
     private boolean checkClassExists(String clazz) {
@@ -142,7 +139,6 @@ public class ConsoleModifiers extends AbstractFilter implements Filter {
     private @Nullable String[] checkContains(@Nullable String msg) {
         if(msg == null) return null;
         if(!msg.contains(CommonManager.THREE_SEPARATION_CHARACTERS)) return null;
-        $log("Made to last check -- returning...");
         return new String[]{msg.split(CommonManager.THREE_SEPARATION_CHARACTERS)[0], msg.split(CommonManager.THREE_SEPARATION_CHARACTERS)[1]};
     }
 

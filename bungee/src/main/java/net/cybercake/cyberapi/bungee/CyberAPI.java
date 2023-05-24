@@ -168,7 +168,8 @@ public class CyberAPI extends Plugin implements CommonManager {
         specific.checkForUpdates();
 
         if(this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
-            try(BungeeAudiences audience = BungeeAudiences.create(this)){
+            try {
+                BungeeAudiences audience = BungeeAudiences.create(this);
                 this.consoleAudience = audience.console();
                 log.verbose("Created " + BungeeAudiences.class.getCanonicalName() + " for CONSOLE in " + ProxyServer.getInstance().getLogger().getClass().getCanonicalName());
             } catch (Exception ex) {

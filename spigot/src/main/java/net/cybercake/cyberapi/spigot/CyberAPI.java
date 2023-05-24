@@ -207,7 +207,8 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         }
 
         if(this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
-            try(BukkitAudiences audience = BukkitAudiences.create(this)){
+            try {
+                BukkitAudiences audience = BukkitAudiences.create(this);
                 this.consoleAudience = audience.console();
                 log.verbose("Created " + BukkitAudiences.class.getCanonicalName() + " for CONSOLE in " + Bukkit.getLogger().getClass().getCanonicalName());
             } catch (Exception ex) {
