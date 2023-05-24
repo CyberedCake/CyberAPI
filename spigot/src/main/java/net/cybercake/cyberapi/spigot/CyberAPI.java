@@ -143,7 +143,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         registerListener(new CyberAPIListeners());
 
         registerLog4jModifiers(); // deprecated because I don't want anyone else using it
-        log.verbose("Loaded console modifiers, using class " + ConsoleModifiers.class + " (" + ConsoleModifiers.class.getDeclaredMethods().length + " methods)");
+        log.verbose("Loaded console modifiers, using " + ConsoleModifiers.class);
 
         @Nullable String mainPackagePath = this.getSettings().getMainPackagePath();
         long timedPackageSearcher = System.currentTimeMillis();
@@ -182,17 +182,29 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             }
         }
 
-        if(getProtocolLibSupport().equals(FeatureSupport.SUPPORTED)) {
-            new ServerListInfoListener().init();
-            registerListener(new ServerListInfoListener.JoinListener());
-        }
-
         CyberAPISpecific specific = getCyberAPISpecific();
 
         if(!settings.shouldMuteStartMessage()) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
         if(getSettings().isVerbose() && !settings.shouldMuteStartMessage()) specific.printBuildInformation();
 
         specific.checkForUpdates(); // check for CyberAPI updates
+
+        if(this.getPlaceholderAPISupport() == FeatureSupport.SUPPORTED) {
+            Placeholders placeholders = new Placeholders();
+            placeholders.register();
+            log.verbose("Loaded " + placeholders.getPlaceholderList().size() + " placeholders with PlaceholderAPI and registered expansion under name=" + placeholders.getName()
+                    + " | identifier=" + placeholders.getIdentifier()
+                    + " | author(s)=" + placeholders.getAuthor()
+                    + " | version=" + placeholders.getVersion()
+                    + " | requiredPlugin(s)=" + placeholders.getRequiredPlugin()
+                    + " | canRegister=" + placeholders.canRegister()
+            );
+        }
+
+        if(this.getProtocolLibSupport() == FeatureSupport.SUPPORTED) {
+            new ServerListInfoListener().init();
+            registerListener(new ServerListInfoListener.JoinListener());
+        }
 
         if(this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
             try(BukkitAudiences audience = BukkitAudiences.create(this)){

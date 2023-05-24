@@ -198,6 +198,7 @@ public class Placeholders extends PlaceholderExpansion {
 
     @Override
     public boolean register() {
+        this.unregister();
         return super.register();
     }
 }

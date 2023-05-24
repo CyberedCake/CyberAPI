@@ -19,7 +19,7 @@ public interface CommonManager {
     String THREE_SEPARATION_CHARACTERS = "\uE22B\uE22B\uE22B";
 
     /**
-     * Registers {@link ReflectionsConsoleFilter}
+     * Registers {@link ConsoleModifiers}
      * <br>
      * <b>I would not recommend calling this method yourself, just let CyberAPI handle it!</b>
      * @deprecated please do not use this method, just what-so-ever, let CyberAPI handle it

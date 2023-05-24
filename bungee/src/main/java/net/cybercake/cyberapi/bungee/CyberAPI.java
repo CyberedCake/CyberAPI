@@ -121,7 +121,7 @@ public class CyberAPI extends Plugin implements CommonManager {
         registerListener(new ServerListInfoListener());
 
         registerLog4jModifiers(); // deprecated because I don't want anyone else using it
-        log.verbose("Loaded console modifiers, using class " + ConsoleModifiers.class + " (" + ConsoleModifiers.class.getDeclaredMethods().length + " methods)");
+        log.verbose("Loaded console modifiers, using class " + ConsoleModifiers.class);
 
         @Nullable String mainPackagePath =  this.getSettings().getMainPackagePath();
         long timedPackageSearcher = System.currentTimeMillis();
