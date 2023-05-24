@@ -12,6 +12,7 @@ static URL getWebsite() { return new URL("https://github.com/CyberedCake/CyberAP
 static String getDescription() { return "The new and improved CyberAPI!"; }
 static String[] getAuthors() { return new String[]{"CyberedCake"}; }
 static int getTargetJavaVersion() { return 17; }
+static boolean isTestingEnvironment() { return Boolean.FALSE.booleanValue(); }
 static boolean isOffline() { return Boolean.FALSE.booleanValue(); }
 
 
@@ -124,7 +125,8 @@ subprojects { Project subProject ->
                 properties['buildNumber'] = String.valueOf(build)
                 properties['version'] = String.valueOf(actualVersion)
                 properties['description'] = this.getDescription()
-                properties['testingEnvironment'] = Boolean.FALSE.toString()
+                properties['testingEnvironment'] = isTestingEnvironment().toString()
+                properties['offline'] = isOffline().toString()
                 properties.store writer, "CyberAPI Build Information {project: " + getProject().getName() + "}\n(all information from the computer that built CyberAPI)"
             }
         }
