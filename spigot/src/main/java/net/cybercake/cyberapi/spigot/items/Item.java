@@ -20,26 +20,32 @@ public class Item extends ItemCreator {
         /**
          * @deprecated use {@link ItemCreator.SimilarItem} instead!
          */
+        @Deprecated
         SWORD,
         /**
          * @deprecated use {@link ItemCreator.SimilarItem} instead!
          */
+        @Deprecated
         SHOVEL,
         /**
          * @deprecated use {@link ItemCreator.SimilarItem} instead!
          */
+        @Deprecated
         PICKAXE,
         /**
          * @deprecated use {@link ItemCreator.SimilarItem} instead!
          */
+        @Deprecated
         AXE,
         /**
          * @deprecated use {@link ItemCreator.SimilarItem} instead!
          */
+        @Deprecated
         HOE,
         /**
          * @deprecated use {@link ItemCreator.SimilarItem} instead!
          */
+        @Deprecated
         ARMOR;
     }
 
