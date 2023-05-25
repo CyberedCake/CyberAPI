@@ -62,13 +62,7 @@ public class ConsoleModifiers extends AbstractFilter implements Filter {
     @Override
     public Result filter(LogEvent event) {
         @Nullable String[] message = checkContains(event == null ? null : (event.getMessage().getFormattedMessage() == null ? null : event.getMessage().getFormattedMessage()));
-        if(message != null && event != null) {
-            LogBuilder builder = LogManager.getRootLogger().atLevel(getLevel(message[0]));
-            if(event.getMarker() != null)
-                builder = builder.withMarker(event.getMarker());
-            if(event.getThrown() != null)
-                builder = builder.withThrowable(event.getThrown());
-            builder.log(message[1]);
+        if(message != null) {
             java.util.logging.LogManager.getLogManager().getLogger("").log(message[0] == null ? java.util.logging.Level.INFO : toJavaLoggerLevel(message[0]), message[1]);
             return Result.DENY;
         }
@@ -143,6 +137,7 @@ public class ConsoleModifiers extends AbstractFilter implements Filter {
     }
 
     private java.util.logging.Level toJavaLoggerLevel(String level) {
+        if(level.contains("LEVEL_")) level = level.substring("LEVEL_".length());
         return switch(level) {
             case "INFO" -> java.util.logging.Level.INFO;
             case "WARN" -> java.util.logging.Level.WARNING;
