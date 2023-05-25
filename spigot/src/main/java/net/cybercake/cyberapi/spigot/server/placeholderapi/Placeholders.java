@@ -9,10 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class Placeholders extends PlaceholderExpansion {
 
@@ -40,7 +37,7 @@ public class Placeholders extends PlaceholderExpansion {
     private boolean persist = false;
     private boolean register = true;
     private String requiredPlugin = null;
-    private static final List<Placeholder> placeholderList = new ArrayList<>();
+    private static final List<StoredPlaceholder> placeholderList = new ArrayList<>();
 
     /**
      * Gets the identifier of the PlaceholderAPI expansion, which is usually your plugin's name in all lower case, but if you use {@link Placeholders#setIdentifier(String)} you can set a custom identifier
@@ -134,60 +131,63 @@ public class Placeholders extends PlaceholderExpansion {
 
     /**
      * Adds a placeholder to register with PlaceholderAPI
-     * @param placeholder the placeholder to register
+     * @param parameter the parameter that will invoke the {@link Placeholder} (i.e., "%identifier_parameter%")
+     * @param placeholder the placeholder's functionality to register which executes if the parameter is called
      * @since 52
+     * @see Placeholders#addPlaceholder(String[], Placeholder) 
+     * @see Placeholders#addPlaceholder(List, Placeholder) 
      */
-    public void addPlaceholder(Placeholder placeholder) {
-        placeholderList.add(placeholder);
+    public StoredPlaceholder addPlaceholder(String parameter, Placeholder placeholder) {
+        return addPlaceholder(Collections.singletonList(parameter), placeholder);
     }
 
     /**
      * Adds a few placeholders to register with PlaceholderAPI
-     * @param placeholders the placeholders to register
-     * @since 52
+     * @param parameters the parameters that will invoke the {@link Placeholder} (i.e., "%identifier_parameter% AND %identifier_parameter2%")
+     * @param placeholder the placeholder's functionality to register which executes if any of the parameters are called
+     * @since 133
+     * @see Placeholders#addPlaceholder(String, Placeholder) 
+     * @see Placeholders#addPlaceholder(List, Placeholder) 
      */
-    public void addPlaceholder(Placeholder... placeholders) { placeholderList.addAll(List.of(placeholders)); }
+    public StoredPlaceholder addPlaceholder(String[] parameters, Placeholder placeholder) {
+        return addPlaceholder(Arrays.stream(parameters).toList(), placeholder);
+    }
+    
+    /**
+     * Adds a few placeholders to register with PlaceholderAPI
+     * @param parameters the parameters that will invoke the {@link Placeholder} (i.e., "%identifier_parameter% AND %identifier_parameter2%")
+     * @param placeholder the placeholder's functionality to register which executes if any of the parameters are called
+     * @since 52
+     * @see Placeholders#addPlaceholder(String, Placeholder) 
+     * @see Placeholders#addPlaceholder(String[], Placeholder) 
+     */
+    public StoredPlaceholder addPlaceholder(List<String> parameters, Placeholder placeholder) {
+        StoredPlaceholder storedPlaceholder = new StoredPlaceholder(parameters, placeholder);
+        placeholderList.add(storedPlaceholder);
+        return storedPlaceholder;
+    }
 
     /**
      * Gets all the registered placeholders
-     * @return the {@link List} of currently registered {@link Placeholder}s
+     * @return the {@link List} of currently registered {@link StoredPlaceholder}s
      * @since 52
      */
-    public List<Placeholder> getPlaceholderList() { return placeholderList; }
-
-    /**
-     * Gets a registered placeholder from the params it uses
-     * @param paramUsed the parameters used by the {@link Placeholder}
-     * @return the {@link Placeholder} associated, 'null' if none is found or multiple matches are found
-     * @since 52
-     */
-    public @Nullable Placeholder getPlaceholderFrom(String paramUsed) {
-        List<Placeholder> placeholderMatcher =
-                getPlaceholderList()
-                        .stream()
-                        .filter(placeholder -> List.of(placeholder.getParams()).contains(paramUsed))
-                        .toList();
-        if(placeholderMatcher.size() != 1) return null;
-        return placeholderMatcher.get(0);
-    }
+    public List<StoredPlaceholder> getPlaceholderList() { return placeholderList; }
 
 
-
+    // for offline users
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
-        for(Placeholder placeholder : placeholderList) {
-            if(!Arrays.stream(placeholder.getParams()).toList().contains(params)) continue;
-            return placeholder.run(player, (player != null && player.isOnline()));
+        for(StoredPlaceholder placeholder : placeholderList) {
+            if(!placeholder.parameters().contains(params)) continue;
+            return placeholder.placeholder().run(player);
         }
         return null;
     }
 
+    // for online users
     @Override
     public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
-        for(Placeholder placeholder : placeholderList) {
-            if(!Arrays.stream(placeholder.getParams()).toList().contains(params)) continue;
-            return placeholder.run(player);
-        }
         return null;
     }
 
