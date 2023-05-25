@@ -115,7 +115,12 @@ public class ItemCreator {
      * Create a blank item in the item builder
      * @return the {@link ItemBuilder} instance
      * @since 90
+     * @deprecated please do not try to create a blank item instance, see the section below for more options
+     * @see ItemCreator#createItem(Material)
+     * @see ItemCreator#createItem(ItemStack)
+     * @see ItemCreator#createItem(ItemMeta)
      */
+    @Deprecated(since = "132")
     public static ItemBuilder createItem() { return new ItemBuilder(); }
 
     /**
@@ -159,7 +164,12 @@ public class ItemCreator {
         /**
          * Creates a blank item in the item builder
          * @since 90
+         * @deprecated please do not try to create a blank item instance, see the section below for more options
+         * @see ItemBuilder#ItemBuilder(Material)
+         * @see ItemBuilder#ItemBuilder(ItemStack)
+         * @see ItemBuilder#ItemBuilder(ItemMeta)
          */
+        @Deprecated(since = "132")
         public ItemBuilder() {
             this(Material.AIR);
         }
