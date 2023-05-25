@@ -171,7 +171,7 @@ public class ItemCreator {
          */
         @Deprecated(since = "132")
         public ItemBuilder() {
-            this(Material.AIR);
+            this(Material.STONE);
         }
 
         /**
@@ -201,7 +201,7 @@ public class ItemCreator {
          * @since 90
          */
         public ItemBuilder(@NotNull ItemMeta meta) {
-            ItemStack item = new ItemStack(Material.AIR);
+            ItemStack item = new ItemStack(Material.STONE);
             item.setItemMeta(meta);
 
             this.item = item;
