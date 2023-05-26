@@ -147,7 +147,7 @@ public class CenteredMessage {
             case TWO -> {
                 if(TextType.CHAT.getLength() != length) CyberAPI.getInstance().getAPILogger().warn("The CenteredMessage method, 'Method.TWO', recommends using it only for Chat Options, as the 'length' is not used in method two!");
 
-                String[] lines = this.message.split("\n");
+                String[] lines = (this.message.contains("\n") ? this.message.split("\n") : new String[]{this.message});
                 StringBuilder centeredLines = new StringBuilder();
                 for(String line : lines) {
                     if(line == null || line.equals("")) continue;
@@ -181,7 +181,7 @@ public class CenteredMessage {
                         sb.append(" ");
                         compensated += spaceLength;
                     }
-                    centeredLines.append(sb);
+                    centeredLines.append(sb).append(line);
                 }
 
                 return UChat.chat(centeredLines.toString()).stripTrailing();

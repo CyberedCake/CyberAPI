@@ -1119,7 +1119,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
          * @since 1
          */
         public String getVersion() {
-            return "v" + getBuildProperties().getProperty("version");
+            return getBuildProperties().getProperty("version");
         }
 
         /**

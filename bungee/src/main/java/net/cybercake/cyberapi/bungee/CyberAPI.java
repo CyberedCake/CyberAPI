@@ -891,7 +891,7 @@ public class CyberAPI extends Plugin implements CommonManager {
          * @return the version of {@link CyberAPI}
          * @since 15
          */
-        public String getVersion() { return "v" + getBuildProperties().getProperty("version"); }
+        public String getVersion() { return getBuildProperties().getProperty("version"); }
 
         /**
          * Gets the current build number of {@link CyberAPI}
