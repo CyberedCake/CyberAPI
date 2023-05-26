@@ -11,6 +11,7 @@ import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import net.cybercake.cyberapi.common.builders.settings.Settings;
 import net.cybercake.cyberapi.common.server.ConsoleModifiers;
 import net.cybercake.cyberapi.spigot.basic.BetterStackTraces;
+import net.cybercake.cyberapi.spigot.basic.LocationUtils;
 import net.cybercake.cyberapi.spigot.chat.Log;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.config.Config;
@@ -43,7 +44,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.ChatPaginator;
-import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -253,6 +253,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 43
      */
     @Override
+    @SuppressWarnings({"resultignored"})
     public Logs createOrGetLogs(String id, String fileNameWithoutExtension) {
         File logs = new File(getDataFolder(), "logs");
         if(!logs.exists()) logs.mkdirs();
@@ -886,12 +887,12 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param location2 the second location
      * @return the distance between {@code location1} and {@code location2}
      * @throws IllegalArgumentException when the two locations are not in the same world
-     * @see CyberAPI#getDistance(Location, Location)
      * @since 1
+     * @see LocationUtils#get2DDistance(Location, Location)
+     * @see LocationUtils#getDistance(Location, Location)
      */
     public double get2DDistance(Location location1, Location location2) {
-        if(!location1.getWorld().getName().equals(location2.getWorld().getName())) throw new IllegalArgumentException("The two locations, location1 and location2, must be in the same world!");
-        return Math.sqrt(NumberConversions.square(location1.getX() - location2.getX()) + NumberConversions.square(location1.getZ() - location2.getZ()));
+        return LocationUtils.get2DDistance(location1, location2);
     }
 
     /**
@@ -900,12 +901,12 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param location2 the second location
      * @return the distance between {@code location1} and {@code location2}
      * @throws IllegalArgumentException when the two locations are not in the same world
-     * @see CyberAPI#get2DDistance(Location, Location)
      * @since 1
+     * @see LocationUtils#get2DDistance(Location, Location) 
+     * @see LocationUtils#getDistance(Location, Location) 
      */
     public double getDistance(Location location1, Location location2) {
-        if(!location1.getWorld().getName().equals(location2.getWorld().getName())) throw new IllegalArgumentException("The two locations, location1 and location2, must be in the same world!");
-        return location1.distance(location2);
+        return LocationUtils.getDistance(location1, location2);
     }
 
     /**
@@ -913,9 +914,10 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param location the location to check, will start at y=*world height*
      * @return the new location that would be the highest block that isn't {@link Block#isEmpty()}
      * @since 1
+     * @see LocationUtils#getTopBlock(Location) 
      */
     public Location getTopBlock(@NotNull Location location) {
-        return getTopBlock(location, location.getWorld().getMaxHeight());
+        return LocationUtils.getTopBlock(location);
     }
 
     /**
@@ -924,19 +926,10 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param yStartChecking where the method should start checking
      * @return the new location that would be the highest block that isn't {@link Block#isEmpty()}
      * @since 1
+     * @see LocationUtils#getTopBlock(Location, long) 
      */
     public Location getTopBlock(@NotNull Location location, long yStartChecking) {
-        location = location.clone();
-        location.setY(yStartChecking);
-        for(int y=0; y<yStartChecking; y++) {
-            if(location.getWorld().getBlockAt(location).isEmpty() || !(location.getWorld().getBlockAt(location.clone().add(0, 1, 0)).isEmpty())) {
-                location.setY(location.getY() - 1);
-            }else if(!location.getWorld().getBlockAt(location).isEmpty()) {
-                location = location.add(0, 1, 0);
-                return location;
-            }
-        }
-        return null;
+        return LocationUtils.getTopBlock(location, yStartChecking);
     }
 
     /**
@@ -1476,12 +1469,16 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                     }
                     ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
                     SkullMeta meta = (SkullMeta) skull.getItemMeta();
+                    if(meta == null) continue;
                     meta.setOwnerProfile(Bukkit.createPlayerProfile(uuid, "Technoblade"));
                     meta.setDisplayName(UChat.chat("&d[PIG&b+++&d] Technoblade"));
                     meta.setLore(UChat.listChat(ChatPaginator.paginate(
-                            "&7\"I hope you guys enjoyed my content, and that I made &7some of you laugh. And I hope you all " +
-                                    "go on to live &7long, prosperous, and happy lives. Because I love you &7guys.\"\n\n&fYou will be in our hearts forever more, Technoblade, &fand " +
-                                    "may you rest in peace and fly high!\n\n&dIn Memoriam: Technoblade &8(1999 - 2022)", 25).getLines()));
+                            """
+                                    &7"I hope you guys enjoyed my content, and that I made &7some of you laugh. And I hope you all go on to live &7long, prosperous, and happy lives. Because I love you &7guys."
+
+                                    &fYou will be in our hearts forever more, Technoblade, &fand may you rest in peace and fly high!
+
+                                    &dIn Memoriam: Technoblade &8(1999 - 2022)""", 25).getLines()));
                     skull.setItemMeta(meta);
                     player.getInventory().addItem(skull);
                     amount++;
