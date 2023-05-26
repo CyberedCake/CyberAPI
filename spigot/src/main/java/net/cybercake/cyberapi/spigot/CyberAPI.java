@@ -1177,6 +1177,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                 try {
                     // thanks stack overflow (https://stackoverflow.com/a/21964051/15519255)
                     URL url = new URL("https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest");
+                    log.verbose("(Updates) Checking URL: https://api.github.com/repos/CyberedCake/CyberAPI/releases/latest");
                     URLConnection connection = url.openConnection();
                     connection.connect();
 
@@ -1185,6 +1186,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                         String tag = element.getAsJsonObject().get("tag_name").getAsString();
                         latestVersion = getVersion();
                         latestBuild = Integer.parseInt(tag);
+                        log.verbose("(Updates) Found latest: tag=" + tag + ", version=" + latestVersion + ", build=" + Integer.parseInt(tag));
                     } catch (Exception exception) {
                         log.error("An error occurred fetching the latest version for GitHub repo 'CyberAPI', tag=" + element.getAsJsonObject().get("tag_name").getAsString() + ": " + ChatColor.DARK_GRAY + exception.toString());
                     }
@@ -1192,11 +1194,9 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                     log.error("Failed version checking for CyberAPI build #" + getBuild() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException(exception);return;
                 }
 
-                if(getBuild() != latestBuild) {
-                    if(latestBuild - getBuild() > 0) {
-                        log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest build is #" + ChatColor.GREEN + latestBuild + DEFAULT_WARN_LOG + ", using #" + ChatColor.RED + getBuild() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
-                        log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
-                    }
+                if(getBuild() != latestBuild && latestBuild - getBuild() > 0) {
+                    log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest build is #" + ChatColor.GREEN + latestBuild + DEFAULT_WARN_LOG + ", using #" + ChatColor.RED + getBuild() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
+                    log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
                 }
 
                 log.verbose("Checked for updates! (build=" + getCyberAPISpecific().getBuild() + ", latest=" + getCyberAPISpecific().getLatestBuild() + ")");
@@ -1390,31 +1390,36 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             StringBuilder builder = new StringBuilder();
             BuildInformation info = getBuildInformation();
 
-            if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------").append("\n&f");
-            builder.append("&5CyberAPI Version String: &f").append(getVersionString()).append("\n");
-            builder.append("&5Running on Server: &f")
-                    .append("\n\t&c\u250D &fServer Type: &6").append(getServerType())
-                    .append("\n\t&c\u251C &fServer Type And Version: &6").append(getServerTypeVersion())
-                    .append("\n\t&c\u251C &fBukkit Version String: &6").append(getBukkitVersionString())
-                    .append("\n\t&c\u2515 &fMinecraft Version: &6").append(getMinecraftVersion());
-            builder.append(" ").append("\n").append(" ").append("\n");
-            builder.append("&5Build Properties: &b").append(info.toString()
-                    .replace("\"", "&c\"&r&a")
-                    .replace("=", "&e=&r")
-                    .replace(",", "&e,&r&b")).append("\n");
-            builder.append(" ").append("\n");
-            builder
-                    .append("&6").append(info.getGroup()).append("&f.&c").append(info.getName())
-                    .append("&f (&aCyberAPI&f) was compiled on &d")
-                    .append(info.getBuildDate("MMM dd, yyyy HH:mm:ss z"))
-                    .append(" &fby &b").append(info.getBuildUser())
-                    .append(" &fwith &eJava ").append(info.getBuilderJavaVersion())
-                    .append(" (").append(info.getBuilderJavaVendor()).append(")")
-                    .append(" &ffor &6SPIGOT")
-                    .append("\n");
-            builder.append(" ").append("\n&f");
-            builder.append("&fPlugin &3").append(getPluginName()).append(" &b(").append(getDescription().getVersion()).append("&b) &fhas requested this build information!").append("\n");
-            if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------");
+            try {
+                if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------").append("\n&f");
+                builder.append("&5CyberAPI Version String: &f").append(getVersionString()).append("\n");
+                builder.append("&5Running on Server: &f")
+                        .append("\n\t&c\u250D &fServer Type: &6").append(getServerType())
+                        .append("\n\t&c\u251C &fServer Type And Version: &6").append(getServerTypeVersion())
+                        .append("\n\t&c\u251C &fBukkit Version String: &6").append(getBukkitVersionString())
+                        .append("\n\t&c\u2515 &fMinecraft Version: &6").append(getMinecraftVersion());
+                builder.append(" ").append("\n").append(" ").append("\n");
+                builder.append("&5Build Properties: &b").append(info.toString()
+                        .replace("\"", "&c\"&r&a")
+                        .replace("=", "&e=&r")
+                        .replace(",", "&e,&r&b")).append("\n");
+                builder.append(" ").append("\n");
+                builder
+                        .append("&6").append(info.getGroup()).append("&f.&c").append(info.getName())
+                        .append("&f (&aCyberAPI&f) was compiled on &d")
+                        .append(info.getBuildDate("MMM dd, yyyy HH:mm:ss z"))
+                        .append(" &fby &b").append(info.getBuildUser())
+                        .append(" &fwith &eJava ").append(info.getBuilderJavaVersion())
+                        .append(" (").append(info.getBuilderJavaVendor()).append(")")
+                        .append(" &ffor &6SPIGOT")
+                        .append("\n");
+                builder.append(" ").append("\n&f");
+                builder.append("&fPlugin &3").append(getPluginName()).append(" &b(").append(getDescription().getVersion()).append("&b) &fhas requested this build information!").append("\n");
+                if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------");
+            } catch (Exception exception) {
+                getAPILogger().verbose("Failed to print start information that comes with 'verbose=true'");
+                getAPILogger().verboseException(exception);
+            }
 
             return UChat.chat(builder.toString());
         }
