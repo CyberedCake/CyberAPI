@@ -1,6 +1,9 @@
 package net.cybercake.cyberapi.bungee.chat.centered;
 
-// taken from some SpigotMC page somewhere, I'll update this with the link if I ever find it again, but thanks to the SpigotMC community for now <3
+/**
+ * @since 136
+ * @author <a href="https://www.spigotmc.org/threads/free-code-sending-perfectly-centered-chat-message.95872/">SirSpoodles on the SpigotMC forums</a>
+ */
 public enum DefaultFontInfo {
 
     A('A', 5),
@@ -100,8 +103,8 @@ public enum DefaultFontInfo {
     SPACE(' ', 3),
     DEFAULT('a', 4);
 
-    private char character;
-    private int length;
+    private final char character;
+    private final int length;
 
     DefaultFontInfo(char character, int length) {
         this.character = character;
