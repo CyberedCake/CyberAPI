@@ -2,8 +2,6 @@ package net.cybercake.cyberapi.common.server;
 
 import net.cybercake.cyberapi.common.CommonManager;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogBuilder;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LifeCycle;
@@ -13,10 +11,6 @@ import org.apache.logging.log4j.core.filter.AbstractFilter;
 import org.apache.logging.log4j.message.Message;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
-
-import java.lang.invoke.TypeDescriptor;
-import java.lang.reflect.Method;
-import java.util.function.Predicate;
 
 public class ConsoleModifiers extends AbstractFilter implements Filter {
 

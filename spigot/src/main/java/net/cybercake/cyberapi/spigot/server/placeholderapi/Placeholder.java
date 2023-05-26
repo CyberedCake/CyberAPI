@@ -1,7 +1,6 @@
 package net.cybercake.cyberapi.spigot.server.placeholderapi;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 public interface Placeholder {
 
