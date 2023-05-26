@@ -3,6 +3,8 @@ package net.cybercake.cyberapi.common.basic;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -227,6 +229,37 @@ public class NumberUtils {
         if(min > max) throw new IllegalArgumentException("Minimum (" + min + ") cannot be greater than maximum (" + max + ")!");
         if(min == max) throw new IllegalArgumentException("Minimum (" + min + ") and maximum (" + max + ") cannot be the exact same number!");
         return new Random().nextInt((max - min) + 1) + min;
+    }
+
+    /**
+     * Obtain a {@link List} of {@link Integer Integers} between two numbers
+     * @param smallerNumber the smaller number (inclusive)
+     * @param largerNumber the larger number (inclusive)
+     * @return the list of integers between the two numbers (both numbers will be included in the returned values)
+     * @since 134
+     * @see NumberUtils#getNumbersBetweenArray(int, int)
+     */
+    public static List<Integer> getNumbersBetween(int smallerNumber, int largerNumber) {
+        int small = Math.min(smallerNumber, largerNumber);
+        int large = Math.max(smallerNumber, largerNumber);
+
+        List<Integer> numbers = new ArrayList<>();
+        for(int i = small; i <= large; i++)
+            numbers.add(i);
+
+        return numbers;
+    }
+
+    /**
+     * Obtain an array of {@link Integer Integers} between two numbers
+     * @param smallerNumber the smaller number (inclusive)
+     * @param largerNumber the larger number (inclusive)
+     * @return an array of integers between the two numbers (both numbers will be included in the returned values)
+     * @since 134
+     * @see NumberUtils#getNumbersBetween(int, int)
+     */
+    public static Integer[] getNumbersBetweenArray(int smallerNumber, int largerNumber) {
+        return getNumbersBetween(smallerNumber, largerNumber).toArray(Integer[]::new);
     }
 
 }
