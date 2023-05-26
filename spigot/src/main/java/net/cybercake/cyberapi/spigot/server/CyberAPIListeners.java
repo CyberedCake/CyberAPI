@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.spigot.server;
 
+import net.cybercake.cyberapi.spigot.CyberAPI;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -37,27 +38,30 @@ public class CyberAPIListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onTabCompleteEvent(TabCompleteEvent event) {
-        String command = event.getBuffer().split(" ")[0];
-        String argsTogether = event.getBuffer().substring((command + " ").length());
-        String[] args = argsTogether.split(" ");
-        if(argsTogether.endsWith(" ")) {
-            char[] characters = argsTogether.toCharArray();
-            int totalIncrease = 0;
-            for(int i = characters.length-1; i>0; i--) {
-                if(Character.isSpaceChar(characters[i])) break;
-                totalIncrease++;
+        try {
+            String command = event.getBuffer().split(" ")[0];
+            String argsTogether = event.getBuffer().substring((command + " ").length());
+            String[] args = argsTogether.split(" ");
+            if(argsTogether.endsWith(" ")) {
+                char[] characters = argsTogether.toCharArray();
+                int totalIncrease = 0;
+                for(int i = characters.length-1; i>0; i--) {
+                    if(Character.isSpaceChar(characters[i])) break;
+                    totalIncrease++;
+                }
+                List<String> newArgs = new ArrayList<>(List.of(args));
+                newArgs.add(" ".repeat(totalIncrease));
+                args = newArgs.toArray(String[]::new);
             }
-            List<String> newArgs = new ArrayList<>(List.of(args));
-            newArgs.add(" ".repeat(totalIncrease));
-            args = newArgs.toArray(String[]::new);
+            String fakeCommandActual = CommandManager.getFakeCommands().get(command.substring(1));
+            if(fakeCommandActual == null) return;
+            PluginCommand pluginCommand = Bukkit.getPluginCommand(fakeCommandActual);
+            if(pluginCommand == null) return;
+            List<String> newCompletions = pluginCommand.tabComplete(event.getSender(), command, args);
+            event.setCompletions(newCompletions);
+        } catch (Exception exception) {
+            CyberAPI.getInstance().getAPILogger().verbose("An error occurred whilst tab completing: " + exception);
         }
-        String fakeCommandActual = CommandManager.getFakeCommands().get(command.substring(1));
-        if(fakeCommandActual == null) return;
-        PluginCommand pluginCommand = Bukkit.getPluginCommand(fakeCommandActual);
-        if(pluginCommand == null) return;
-        List<String> newCompletions = pluginCommand.tabComplete(event.getSender(), command, args);
-        if(newCompletions == null) return;
-        event.setCompletions(newCompletions);
     }
 
 }
