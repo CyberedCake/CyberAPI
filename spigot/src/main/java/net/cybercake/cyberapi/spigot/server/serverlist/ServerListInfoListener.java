@@ -20,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -29,7 +30,7 @@ public class ServerListInfoListener {
 
         @EventHandler
         public void onJoin(PlayerJoinEvent event) {
-            ServerListInfoListener.users.put(event.getPlayer().getAddress().getAddress(), event.getPlayer());
+            ServerListInfoListener.users.put(Objects.requireNonNull(event.getPlayer().getAddress(), "No address found: " + event.getPlayer().getName()).getAddress(), event.getPlayer());
         }
 
     }
@@ -50,7 +51,7 @@ public class ServerListInfoListener {
 
     private void handlePing(Player player, WrappedServerPing ping) {
         try {
-            InetAddress address = player.getAddress().getAddress();
+            InetAddress address = Objects.requireNonNull(player.getAddress(), "No address found (" + player.getName() + ")").getAddress();
             ServerListInfo info = CyberAPI.getInstance().getServerListInfo();
             ServerListPingEvent serverListPingEvent =
                     new ServerListPingEvent(
