@@ -12,7 +12,7 @@ repositories {
 dependencies {
     // adventure API (https://docs.adventure.kyori.net/)
     implementation "net.kyori:adventure-text-serializer-legacy:4.14.0"
-    implementation "net.kyori:adventure-text-serializer-plain:4.13.1"
+    implementation "net.kyori:adventure-text-serializer-plain:4.14.0"
     implementation "net.kyori:adventure-platform-bungeecord:4.3.0"
 
     compileOnly "net.kyori:adventure-api:4.14.0"
