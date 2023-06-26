@@ -33,11 +33,9 @@ public class ListenerManager {
                 try {
                     listener = (Listener) clazz.getDeclaredConstructors()[0].newInstance();
                 } catch (InvocationTargetException invocationTargetException) {
-                    if(CyberAPI.getInstance().getDescription().getMain().startsWith(clazz.getPackageName())) {
+                    if(CyberAPI.getInstance().getDescription().getMain().startsWith(clazz.getPackageName()))
                         listener = (Listener) CyberAPI.getInstance();
-                    }else{
-                        throw invocationTargetException;
-                    }
+                    else throw new IllegalStateException("Listener failed to load: " + clazz.getCanonicalName() + " - " + clazz.getDeclaredConstructors()[0].getName(), invocationTargetException);
                 }
                 try {
                     if(CyberAPI.getInstance().getSettings().getDisabledAutoRegisteredClasses() != null && Arrays.asList(CyberAPI.getInstance().getSettings().getDisabledAutoRegisteredClasses()).contains(clazz)) continue;
@@ -45,8 +43,7 @@ public class ListenerManager {
                     CyberAPI.getInstance().registerListener(listener);
                     CyberAPI.getInstance().getAPILogger().verbose("Registered listener automatically: " + clazz.getCanonicalName());
                 } catch (Exception exception) {
-                    CyberAPI.getInstance().getAPILogger().error("An error occurred whilst registering listener at " + clazz.getCanonicalName() + " - " + clazz.getConstructors()[0].getName() + ": " + ChatColor.DARK_GRAY + exception);
-                    CyberAPI.getInstance().getAPILogger().verboseException(exception);
+                    throw new IllegalStateException("Listener failed to register automatically: " + clazz.getCanonicalName() + " - " + clazz.getDeclaredConstructors()[0].getName(), exception);
                 }
             }
             if(path == null) {
