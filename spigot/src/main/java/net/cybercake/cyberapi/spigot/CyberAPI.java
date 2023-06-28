@@ -12,6 +12,7 @@ import net.cybercake.cyberapi.common.builders.settings.Settings;
 import net.cybercake.cyberapi.common.server.ConsoleModifiers;
 import net.cybercake.cyberapi.spigot.basic.BetterStackTraces;
 import net.cybercake.cyberapi.spigot.basic.LocationUtils;
+import net.cybercake.cyberapi.spigot.chat.Broadcast;
 import net.cybercake.cyberapi.spigot.chat.Log;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.config.Config;
@@ -689,11 +690,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * Broadcast a message to all online players and logs to console
      * @param message the message to send
      * @since 1
-     * @see UChat#broadcast(String, String)
-     * @see UChat#broadcast(Component, Predicate)
+     * @see Broadcast#chat(String, String)
+     * @see Broadcast#chat(String, Predicate)
      */
     public static void broadcast(String message) {
-        UChat.broadcast(message);
+        Broadcast.chat(message);
     }
 
     /**
@@ -701,11 +702,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param message the message to send
      * @param permission the permission required to see the message
      * @since 1
-     * @see UChat#broadcast(String)
-     * @see UChat#broadcast(String, Predicate)
+     * @see Broadcast#chat(String)
+     * @see Broadcast#chat(String, Predicate)
      */
     public static void broadcast(String message, @Nullable String permission) {
-        UChat.broadcast(message, permission);
+        Broadcast.chat(message, permission);
     }
 
     /**
@@ -713,11 +714,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param message the message to send
      * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
      * @since 126
-     * @see UChat#broadcast(String)
-     * @see UChat#broadcast(String, String)
+     * @see Broadcast#chat(String)
+     * @see Broadcast#chat(String, String)
      */
     public static void broadcast(String message, @Nullable Predicate<? super CommandSender> filter) {
-        UChat.broadcast(message, filter);
+        Broadcast.chat(message, filter);
     }
 
     /**
@@ -725,11 +726,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param message the message to send, as a {@link Component}
      * @since 125
      * @apiNote requires Adventure API support
-     * @see UChat#broadcast(Component, String)
-     * @see UChat#broadcast(Component, Predicate)
+     * @see Broadcast#component(Component, String)
+     * @see Broadcast#component(Component, Predicate)
      */
     public static void broadcast(Component message) {
-        UChat.broadcast(message);
+        Broadcast.component(message);
     }
 
     /**
@@ -738,11 +739,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param permission the permission required to see the message
      * @since 125
      * @apiNote requires Adventure API Support
-     * @see UChat#broadcast(Component)
-     * @see UChat#broadcast(Component, Predicate)
+     * @see Broadcast#component(Component)
+     * @see Broadcast#component(Component, Predicate)
      */
     public static void broadcast(Component message, @Nullable String permission) {
-        UChat.broadcast(message, permission);
+        Broadcast.component(message, permission);
     }
 
     /**
@@ -751,22 +752,22 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
      * @since 126
      * @apiNote requires Adventure API support
-     * @see UChat#broadcast(Component)
-     * @see UChat#broadcast(Component, String)
+     * @see Broadcast#component(Component)
+     * @see Broadcast#component(Component, String)
      */
     public static void broadcast(Component message, @Nullable Predicate<? super CommandSender> filter) {
-        UChat.broadcast(message, filter);
+        Broadcast.component(message, filter);
     }
 
     /**
      * Broadcast a message to all online players and logs to console
      * @param message the message to send, as a {@link BaseComponent}
      * @since 125
-     * @see UChat#broadcast(BaseComponent, String)
-     * @see UChat#broadcast(BaseComponent, Predicate)
+     * @see Broadcast#bComponent(BaseComponent, String)
+     * @see Broadcast#bComponent(BaseComponent, Predicate)
      */
     public static void broadcast(BaseComponent message) {
-        UChat.broadcast(message);
+        Broadcast.bComponent(message);
     }
 
     /**
@@ -774,11 +775,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param message the message to send, as a {@link BaseComponent}
      * @param permission the permission required to see the message
      * @since 125
-     * @see UChat#broadcast(BaseComponent)
-     * @see UChat#broadcast(BaseComponent, Predicate)
+     * @see Broadcast#bComponent(BaseComponent)
+     * @see Broadcast#bComponent(BaseComponent, Predicate)
      */
     public static void broadcast(BaseComponent message, @Nullable String permission) {
-        UChat.broadcast(message, permission);
+        Broadcast.bComponent(message, permission);
     }
 
     /**
@@ -786,11 +787,11 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @param message the message to send, as a {@link BaseComponent}
      * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
      * @since 126
-     * @see UChat#broadcast(BaseComponent)
-     * @see UChat#broadcast(BaseComponent, String)
+     * @see Broadcast#bComponent(BaseComponent)
+     * @see Broadcast#bComponent(BaseComponent, String)
      */
     public static void broadcast(BaseComponent message, @Nullable Predicate<? super CommandSender> filter) {
-        UChat.broadcast(message, filter);
+        Broadcast.bComponent(message, filter);
     }
     
     /**
@@ -1436,7 +1437,8 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             UUID uuid = UUID.fromString("b876ec32-e396-476b-a115-8438d83c67d4"); // Technoblade UUID
             try {
                 CyberPlayer cyberPlayer = new CyberPlayer(uuid);
-                UChat.broadcast(cyberPlayer.getUserHead(
+                Broadcast.chat("&d&lA TRIBUTE TO TECHNOBLADE:");
+                Broadcast.chat(cyberPlayer.getUserHead(
                         UserHeadSettings.builder()
                                 .showHelmet(true)
                                 .character('\u2B1B')

@@ -17,9 +17,26 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Predicate;
 
 public class UChat {
+
+    /**
+     * Formats an input with a certain syntax type, these are how methods in UChat like
+     * {@link UChat#chat(String)}, {@link UChat#component(String)}, {@link UChat#miniMessage(String)},
+     * and {@link UChat#combined(String)} are formatted.
+     * @param formatType the format type to use for the input and how it will be parsed
+     * @param input the input to be parsed, this could be a {@link String} but could be anything else
+     * @return the formatted output, usually the only two options are {@link String a String} or {@link Component a Component} (which requires Adventure API)
+     * @apiNote sometimes requires Adventure API if using any {@link ChatFormatType} requiring it
+     * @since 139
+     */
+    public static <T, R> R format(ChatFormatType<T, R> formatType, T input) {
+        if(formatType.getReturnType().getCanonicalName().toLowerCase(Locale.ROOT).contains("net.kyori.adventure"))
+            Validators.validateAdventureSupport();
+        return formatType.execute(input);
+    }
 
     /**
      * A short-form way of doing {@link ChatColor#translateAlternateColorCodes(char, String)}
@@ -29,7 +46,7 @@ public class UChat {
      * @since 15
      */
     public static String chat(Character character, String message) {
-        return ChatColor.translateAlternateColorCodes(character, message);
+        return ((ChatFormatType.LegacyFormatType<String, String>) ChatFormatType.LEGACY).execute(message, character);
     }
 
     /**
@@ -117,7 +134,9 @@ public class UChat {
      * @return the {@link net.md_5.bungee.api.chat.BaseComponent} containing the formatted message
      * @since 15
      */
-    public static BaseComponent bComponent(Character character, String message) { return new TextComponent(chat(character, message)); }
+    public static BaseComponent bComponent(Character character, String message) {
+        return (((ChatFormatType.LegacyFormatType<String, BaseComponent>)ChatFormatType.BUNGEE_COMPONENT).execute(message, character));
+    }
 
     /**
      * A short-form way of creating a new {@link net.md_5.bungee.api.chat.BaseComponent} with {@link ChatColor#translateAlternateColorCodes(char, String)}.
@@ -162,7 +181,7 @@ public class UChat {
      */
     public static Component component(Character character, String message) {
         Validators.validateAdventureSupport();
-        return LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().character(character).build().deserialize(message).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        return (((ChatFormatType.LegacyFormatType<String, Component>)ChatFormatType.COMPONENT).execute(message, character));
     }
 
     /**
@@ -226,7 +245,7 @@ public class UChat {
      */
     public static Component miniMessage(boolean strict, String message) {
         Validators.validateMiniMessageSupport();
-        return MiniMessage.builder().strict(strict).build().deserialize(message);
+        return miniMessage(MiniMessage.builder().strict(strict).build(), message);
     }
 
     /**
@@ -240,7 +259,7 @@ public class UChat {
      */
     public static Component miniMessage(MiniMessage builder, String message) {
         Validators.validateMiniMessageSupport();
-        return builder.deserialize(message);
+        return ((ChatFormatType.MiniMessageFormatType)ChatFormatType.MINI_MESSAGE).execute(message, builder);
     }
 
     /**
@@ -283,6 +302,61 @@ public class UChat {
         List<Component> returned = new ArrayList<>();
         for(String message : messages) returned.add(miniMessage(builder, message));
         return returned;
+    }
+
+    /**
+     * Returns a {@link Component} from a {@link String}, using both Legacy, using an alternate color code, and MiniMessage systems, using the more modern (and preferred) way of chat parsing.
+     * <br> <br>
+     * This means you can type "{@code &c}" and "{@code <red>}", both of which will parse correctly.
+     * @param character the alternate color code to replace
+     * @param message the message containing the alternate color code and/or MiniMessage syntax
+     * @return the {@link Component} containing the formatted message
+     * @apiNote requires Adventure API support
+     * @since 139
+     */
+    public static Component combined(Character character, String message) {
+        Validators.validateAdventureSupport();
+        return (((ChatFormatType.LegacyFormatType<String, Component>)ChatFormatType.COMPONENT).execute(message, character));
+    }
+
+    /**
+     * Returns a {@link Component} from a {@link String}, using both Legacy, using an alternate color code (assumed to be "{@literal &}" in this case), and MiniMessage systems, using the more modern (and preferred) way of chat parsing.
+     * <br> <br>
+     * This means you can type "{@code &c}" and "{@code <red>}", both of which will parse correctly.
+     * @param message the message containing the alternate color code of '{@literal &}' and/or MiniMessage syntax
+     * @return the {@link Component} containing the formatted message
+     * @apiNote requires Adventure API support
+     * @since 139
+     */
+    public static Component combined(String message) {
+        Validators.validateAdventureSupport();
+        return combined('&', message);
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link UChat#combined(Character, String)}
+     * @param character the alternate color code to replace
+     * @param messages the messages containing the alternate color code and/or MiniMessage syntax
+     * @return the {@link List} of {@link Component}s that are formatted
+     * @since 139
+     * @apiNote requires Adventure API support
+     */
+    public static List<Component> listCombined(Character character, String... messages) {
+        Validators.validateAdventureSupport();
+        List<Component> returned = new ArrayList<>();
+        for(String message : messages) returned.add(UChat.combined(character, message));
+        return returned;
+    }
+
+    /**
+     * A short-form way of creating a list from an array that are all formatted with {@link UChat#combined(String)}
+     * @param messages the messages containing the alternate color code of '{@literal &}' and/or MiniMessage syntax
+     * @return the {@link List} of {@link Component}s that are formatted
+     * @since 139
+     * @apiNote requires Adventure API support
+     */
+    public static List<Component> listCombined(String... messages) {
+        return listCombined('&', messages);
     }
 
     /**
@@ -366,13 +440,19 @@ public class UChat {
         cyberPlayer.getOnlineActions().sendColored(getClearedChat());
     }
 
+
+
+
+
     /**
      * Broadcast a message to all online players and logs to console
      * @param message the message to send
      * @since 1
      * @see UChat#broadcast(String, String)
      * @see UChat#broadcast(Component, Predicate)
+     * @deprecated use the method from {@link Broadcast} instead! This is being removed in the next 30 builds.
      */
+    @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(String message) { broadcast(message, (Predicate<? super CommandSender>) null); }
 
     /**
@@ -382,7 +462,9 @@ public class UChat {
      * @since 1
      * @see UChat#broadcast(String)
      * @see UChat#broadcast(String, Predicate)
+     * @deprecated use the method from {@link Broadcast} instead! This is being removed in the next 30 builds.
      */
+    @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(String message, @org.jetbrains.annotations.Nullable String permission) {
         broadcast(new TextComponent(message), permission);
     }
@@ -394,7 +476,9 @@ public class UChat {
      * @since 126
      * @see UChat#broadcast(String)
      * @see UChat#broadcast(String, String)
+     * @deprecated use the method from {@link Broadcast} instead! This is being removed in the next 30 builds.
      */
+    @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(String message, @org.jetbrains.annotations.Nullable Predicate<? super CommandSender> filter) {
         broadcast(new TextComponent(message), filter);
     }
@@ -406,7 +490,9 @@ public class UChat {
      * @apiNote requires Adventure API support
      * @see UChat#broadcast(Component, String)
      * @see UChat#broadcast(Component, Predicate)
+     * @deprecated use the method from {@link Broadcast} instead! This is being removed in the next 30 builds.
      */
+    @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(Component message) { broadcast(message, (Predicate<? super CommandSender>) null); }
 
     /**
@@ -417,7 +503,9 @@ public class UChat {
      * @apiNote requires Adventure API Support
      * @see UChat#broadcast(Component)
      * @see UChat#broadcast(Component, Predicate)
+     * @deprecated use the method from {@link Broadcast} instead! This is being removed in the next 30 builds.
      */
+    @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(Component message, @org.jetbrains.annotations.Nullable String permission) {
         Validators.validateAdventureSupport();
         broadcast(LegacyComponentSerializer.legacyAmpersand().serialize(message), permission);
@@ -431,7 +519,9 @@ public class UChat {
      * @apiNote requires Adventure API support
      * @see UChat#broadcast(Component)
      * @see UChat#broadcast(Component, String)
+     * @deprecated use the method from {@link Broadcast} instead! This is being removed in the next 30 builds.
      */
+    @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(Component message, @org.jetbrains.annotations.Nullable Predicate<? super CommandSender> filter) {
         Validators.validateAdventureSupport();
         broadcast(LegacyComponentSerializer.legacyAmpersand().serialize(message), filter);
@@ -443,7 +533,9 @@ public class UChat {
      * @since 125
      * @see UChat#broadcast(BaseComponent, String)
      * @see UChat#broadcast(BaseComponent, Predicate)
+     * @deprecated use the method from {@link Broadcast} instead! This is being removed in the next 30 builds.
      */
+    @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(BaseComponent message) { broadcast(message, (Predicate<? super CommandSender>) null); }
 
     /**
@@ -453,7 +545,9 @@ public class UChat {
      * @since 125
      * @see UChat#broadcast(BaseComponent)
      * @see UChat#broadcast(BaseComponent, Predicate)
+     * @deprecated use the method from {@link Broadcast} instead! This is being removed in the next 30 builds.
      */
+    @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(BaseComponent message, @Nullable String permission) {
         broadcast(message, player ->
                 permission == null
@@ -469,7 +563,9 @@ public class UChat {
      * @since 126
      * @see UChat#broadcast(BaseComponent)
      * @see UChat#broadcast(BaseComponent, String)
+     * @deprecated use the method from {@link Broadcast} instead! This is being removed in the next 30 builds.
      */
+    @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(BaseComponent message, @Nullable Predicate<? super CommandSender> filter) {
         for(ProxiedPlayer player : CyberAPI.getInstance().getOnlinePlayers()) {
             if(filter != null && !filter.test(player)) continue;
