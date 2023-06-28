@@ -27,7 +27,7 @@ public class UserHeadSettings {
         public Builder() {
             this.imageScale = 8;
             this.showHelmet = false;
-            this.character = '\u281B';
+            this.character = '\u2588';
             this.lines = new String[]{};
         }
 
@@ -54,7 +54,7 @@ public class UserHeadSettings {
         /**
          * What character should be used for the message in chat
          * <br> <br>
-         * <em>Default Value:</em> {@code ⬛}
+         * <em>Default Value:</em> {@code █}
          * @param character the character that should be used in chat
          */
         public Builder character(Character character) {
