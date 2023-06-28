@@ -3,6 +3,7 @@ package net.cybercake.cyberapi.bungee.chat;
 import net.cybercake.cyberapi.bungee.CyberAPI;
 import net.cybercake.cyberapi.bungee.Validators;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -124,6 +125,49 @@ public class Broadcast {
      */
     public static void bComponent(BaseComponent message, @Nullable Predicate<? super CommandSender> filter) {
         chat(BaseComponent.toLegacyText(message), filter);
+    }
+
+    /**
+     * Broadcast a message to all online players and logs to console
+     * @param message the message to send, as a {@link String}
+     * @since 140
+     * @see Broadcast#combined(String, String)
+     * @see Broadcast#combined(String, Predicate)
+     */
+    public static void combined(String message) { combined(message, (Predicate<? super CommandSender>) null); }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link String}
+     * @param permission the permission required to see the message
+     * @since 140
+     * @see Broadcast#combined(String)
+     * @see Broadcast#combined(String, Predicate)
+     */
+    public static void combined(String message, @Nullable String permission) {
+        combined(message, player ->
+                permission == null
+                        || permission.strip().equalsIgnoreCase("")
+                        || player.hasPermission(permission)
+        );
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link String}
+     * @param filter the filter of command senders that can see this message, note: only {@link ProxiedPlayer players} and {@link CommandSender console} are checked!
+     * @since 140
+     * @see Broadcast#combined(String)
+     * @see Broadcast#combined(String, String)
+     */
+    public static void combined(String message, @Nullable Predicate<? super CommandSender> filter) {
+        Validators.validateAdventureSupport();
+        for(ProxiedPlayer player : CyberAPI.getInstance().getOnlinePlayers()) {
+            if(filter != null && !filter.test(player)) continue;
+            player.sendMessage(UChat.fromJson(GsonComponentSerializer.gson().serialize(UChat.combined(message))));
+        }
+        if(filter == null || filter.test(CyberAPI.getInstance().getProxy().getConsole()))
+            Log.info(message);
     }
 
 }

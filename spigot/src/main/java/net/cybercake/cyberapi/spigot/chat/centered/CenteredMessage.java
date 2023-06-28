@@ -12,9 +12,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * {@link CenteredMessage} handles message centering, including MOTDs and chat
  * @since 136

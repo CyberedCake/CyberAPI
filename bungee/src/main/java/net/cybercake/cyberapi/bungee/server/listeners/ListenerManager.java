@@ -3,7 +3,6 @@ package net.cybercake.cyberapi.bungee.server.listeners;
 import net.cybercake.cyberapi.bungee.CyberAPI;
 import net.cybercake.cyberapi.bungee.Validators;
 import net.cybercake.cyberapi.common.builders.settings.Settings;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Listener;
 
 import java.lang.reflect.InvocationTargetException;

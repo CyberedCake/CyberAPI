@@ -4,7 +4,6 @@ import net.cybercake.cyberapi.bungee.CyberAPI;
 import net.cybercake.cyberapi.bungee.Validators;
 import net.cybercake.cyberapi.bungee.player.CyberPlayer;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
@@ -16,6 +15,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
@@ -308,15 +308,15 @@ public class UChat {
      * Returns a {@link Component} from a {@link String}, using both Legacy, using an alternate color code, and MiniMessage systems, using the more modern (and preferred) way of chat parsing.
      * <br> <br>
      * This means you can type "{@code &c}" and "{@code <red>}", both of which will parse correctly.
-     * @param character the alternate color code to replace
+     * @param miniMessage the Mini Message builder to use
      * @param message the message containing the alternate color code and/or MiniMessage syntax
      * @return the {@link Component} containing the formatted message
      * @apiNote requires Adventure API support
      * @since 139
      */
-    public static Component combined(Character character, String message) {
+    public static Component combined(MiniMessage miniMessage, String message) {
         Validators.validateAdventureSupport();
-        return (((ChatFormatType.LegacyFormatType<String, Component>)ChatFormatType.COMPONENT).execute(message, character));
+        return (((ChatFormatType.MiniMessageFormatType)ChatFormatType.MINI_MESSAGE).execute(message, miniMessage));
     }
 
     /**
@@ -330,21 +330,21 @@ public class UChat {
      */
     public static Component combined(String message) {
         Validators.validateAdventureSupport();
-        return combined('&', message);
+        return combined(MiniMessage.miniMessage(), message);
     }
 
     /**
-     * A short-form way of creating a list from an array that are all formatted with {@link UChat#combined(Character, String)}
-     * @param character the alternate color code to replace
+     * A short-form way of creating a list from an array that are all formatted with {@link UChat#combined(MiniMessage, String)}
+     * @param miniMessage the Mini Message builder to use
      * @param messages the messages containing the alternate color code and/or MiniMessage syntax
      * @return the {@link List} of {@link Component}s that are formatted
      * @since 139
      * @apiNote requires Adventure API support
      */
-    public static List<Component> listCombined(Character character, String... messages) {
+    public static List<Component> listCombined(MiniMessage miniMessage, String... messages) {
         Validators.validateAdventureSupport();
         List<Component> returned = new ArrayList<>();
-        for(String message : messages) returned.add(UChat.combined(character, message));
+        for(String message : messages) returned.add(UChat.combined(miniMessage, message));
         return returned;
     }
 
@@ -356,12 +356,12 @@ public class UChat {
      * @apiNote requires Adventure API support
      */
     public static List<Component> listCombined(String... messages) {
-        return listCombined('&', messages);
+        return listCombined(MiniMessage.miniMessage(), messages);
     }
 
     /**
      * Converts {@link BaseComponent} to legacy bukkit color codes
-     * @param component the component to convert to legacy string
+     * @param component the bungee component to convert to legacy string
      * @return the formatted message
      * @since 15
      */
@@ -371,12 +371,34 @@ public class UChat {
 
     /**
      * Converts {@link String} legacy bukkit color codes to a {@link BaseComponent}
-     * @param string the string to convert to adventure component
-     * @return the component message
+     * @param string the string to convert to bungee component
+     * @return the bungee component message
      * @since 15
      */
     public static BaseComponent fromLegacy(String string) {
         return bComponent(string);
+    }
+
+    /**
+     * Converts {@link BaseComponent} to its JSON content ({@code {"text":"testing text","color":"red","bold":true}})
+     * @param component the component to convert to JSON
+     * @return the formatted message
+     * @since 140
+     */
+    public static String toJson(BaseComponent component) {
+        return ComponentSerializer.toString(component);
+    }
+
+    /**
+     * Converts {@link String a JSON String} (i.e., {@code {"text":"testing text","color":"red","bold":true}}) into to a formatted {@link BaseComponent}
+     * @param string the string to convert to adventure component
+     * @return the component message
+     * @since 140
+     */
+    public static BaseComponent fromJson(String string) {
+        BaseComponent component = new TextComponent();
+        Arrays.stream(ComponentSerializer.parse(string)).forEach(component::addExtra);
+        return component;
     }
 
     /**

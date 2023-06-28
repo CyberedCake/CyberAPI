@@ -793,7 +793,44 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     public static void broadcast(BaseComponent message, @Nullable Predicate<? super CommandSender> filter) {
         Broadcast.bComponent(message, filter);
     }
-    
+
+    /**
+     * Broadcast a message to all online players and logs to console
+     * @param message the message to send, as a {@link String} that combines {@link net.kyori.adventure.text.minimessage.MiniMessage MiniMessage} and {@link net.md_5.bungee.api.ChatColor legacy chat color}
+     * @since 140
+     * @see Broadcast#combined(String, String)
+     * @see Broadcast#combined(String, Predicate)
+     * @apiNote requires Adventure API support
+     */
+    public static void broadcastCombined(String message) {
+        Broadcast.combined(message);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link String} that combines {@link net.kyori.adventure.text.minimessage.MiniMessage MiniMessage} and {@link net.md_5.bungee.api.ChatColor legacy chat color}
+     * @param permission the permission required to see the message
+     * @since 140
+     * @see Broadcast#combined(String)
+     * @see Broadcast#combined(String, Predicate)
+     * @apiNote requires Adventure API support
+     */
+    public static void broadcastCombined(String message, @Nullable String permission) {
+        Broadcast.combined(message, permission);
+    }
+
+    /**
+     * Broadcast a message to all online players if they have a specified permission and logs to console
+     * @param message the message to send, as a {@link String} that combines {@link net.kyori.adventure.text.minimessage.MiniMessage MiniMessage} and {@link net.md_5.bungee.api.ChatColor legacy chat color}
+     * @param filter the filter of command senders that can see this message, note: only {@link Player players} and {@link org.bukkit.command.ConsoleCommandSender console} are checked!
+     * @since 140
+     * @see Broadcast#combined(String)
+     * @see Broadcast#combined(String, String)
+     */
+    public static void broadcastCombined(String message, @Nullable Predicate<? super CommandSender> filter) {
+        Broadcast.combined(message, filter);
+    }
+
     /**
      * Performs a command as a {@link Player} if {@link CommandSender} is not a player. Please include a '/' in your command when typing it here
      * @param sender the {@link CommandSender} to execute the command

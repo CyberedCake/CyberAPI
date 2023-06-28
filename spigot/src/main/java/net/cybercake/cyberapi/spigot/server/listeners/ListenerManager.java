@@ -3,8 +3,6 @@ package net.cybercake.cyberapi.spigot.server.listeners;
 import net.cybercake.cyberapi.common.builders.settings.Settings;
 import net.cybercake.cyberapi.spigot.CyberAPI;
 import net.cybercake.cyberapi.spigot.Validators;
-import net.cybercake.cyberapi.spigot.chat.Log;
-import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 
 import java.lang.reflect.InvocationTargetException;
