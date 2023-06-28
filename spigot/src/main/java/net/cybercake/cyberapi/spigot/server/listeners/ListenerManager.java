@@ -28,19 +28,14 @@ public class ListenerManager {
     public void init(String path) {
         try {
             long mss = System.currentTimeMillis();
-            Log.warn("start");
             for(Class<?> clazz : CyberAPI.getInstance().getPluginClasses()) {
                 if(!(Validators.isSubtype(clazz, SpigotListener.class))) continue;
-                Log.warn("valid->" + clazz.getCanonicalName());
                 Listener listener;
                 try {
                     listener = (Listener) clazz.getDeclaredConstructors()[0].newInstance();
                 } catch (InvocationTargetException invocationTargetException) {
-                    Log.warn("try->alt");
-                    if(CyberAPI.getInstance().getDescription().getMain().startsWith(clazz.getPackageName())) {
-                        Log.warn("try->cast,main");
+                    if(CyberAPI.getInstance().getDescription().getMain().startsWith(clazz.getPackageName()))
                         listener = (Listener) CyberAPI.getInstance();
-                    }
                     else throw new IllegalStateException("Listener failed to load: " + clazz.getCanonicalName() + " - " + clazz.getDeclaredConstructors()[0].getName(), invocationTargetException);
                 }
                 try {
