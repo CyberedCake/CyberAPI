@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.spigot.chat;
 
+import net.cybercake.cyberapi.common.chat.ColorTranslator;
 import net.cybercake.cyberapi.spigot.CyberAPI;
 import net.cybercake.cyberapi.spigot.Validators;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
 
+@SuppressWarnings({"unused"})
 public class UChat {
 
     /**
@@ -47,7 +49,7 @@ public class UChat {
      * @since 1
      */
     public static String chat(Character character, String message) {
-        return ((ChatFormatType.LegacyFormatType<String, String>) ChatFormatType.LEGACY).execute(message, character);
+        return ((FormatType.LegacyInput<String, String>) ChatFormatType.LEGACY).execute(message, character);
     }
 
     /**
@@ -136,7 +138,7 @@ public class UChat {
      * @since 1
      */
     public static BaseComponent bComponent(Character character, String message) {
-        return (((ChatFormatType.LegacyFormatType<String, BaseComponent>)ChatFormatType.BUNGEE_COMPONENT).execute(message, character));
+        return (((FormatType.LegacyInput<String, BaseComponent>)ChatFormatType.BUNGEE_COMPONENT).execute(message, character));
     }
 
     /**
@@ -182,7 +184,7 @@ public class UChat {
      */
     public static Component component(Character character, String message) {
         Validators.validateAdventureSupport();
-        return (((ChatFormatType.LegacyFormatType<String, Component>)ChatFormatType.COMPONENT).execute(message, character));
+        return (((FormatType.LegacyInput<String, Component>)ChatFormatType.COMPONENT).execute(message, character));
     }
 
     /**
@@ -260,7 +262,7 @@ public class UChat {
      */
     public static Component miniMessage(MiniMessage builder, String message) {
         Validators.validateMiniMessageSupport();
-        return ((ChatFormatType.MiniMessageFormatType)ChatFormatType.MINI_MESSAGE).execute(message, builder);
+        return ((FormatType.MiniMessageInput)ChatFormatType.MINI_MESSAGE).execute(message, builder);
     }
 
     /**
@@ -317,7 +319,7 @@ public class UChat {
      */
     public static Component combined(MiniMessage miniMessage, String message) {
         Validators.validateAdventureSupport();
-        return (((ChatFormatType.MiniMessageFormatType)ChatFormatType.COMBINED).execute(message, miniMessage));
+        return (((FormatType.MiniMessageInput)ChatFormatType.COMBINED).execute(message, miniMessage));
     }
 
     /**
@@ -390,7 +392,7 @@ public class UChat {
 
     /**
      * Converts {@link BaseComponent} to legacy bukkit color codes
-     * @param component the bungeee component to convert to legacy string
+     * @param component the bungee component to convert to legacy string
      * @return the formatted message
      * @since 15
      */
@@ -449,9 +451,52 @@ public class UChat {
      * @since 1
      */
     public static String getSeparator(ChatColor color, int characters) {
+        return getSeparator(
+                Arrays.stream(ColorTranslator.values())
+                        .filter(loopColor -> loopColor.getBukkit().equals(color))
+                        .findFirst()
+                        .orElse(null),
+                characters,
+                ChatFormatType.LEGACY
+        );
+    }
+
+    /**
+     * Gets a separator
+     * @param color the {@link ColorTranslator} specific color to make the separator
+     * @param chatFormatType the chat format type that determines the return value, view the following class with possible options: {@link ChatFormatType}
+     * @return the separator
+     * @since 142
+     */
+    public static <T> T getSeparator(ColorTranslator color, ChatFormatType<String, T> chatFormatType) {
+        return getSeparator(color, 80, chatFormatType);
+    }
+
+    /**
+     * Gets a separator
+     * @param color the {@link ColorTranslator} specific color to make the separator
+     * @param characters the amount of characters of "-" to put in
+     * @param chatFormatType the chat format type that determines the return value, view the following class with possible options: {@link ChatFormatType}
+     * @return the separator
+     * @throws IllegalArgumentException when the character amount is less than 1 or greater than 999
+     * @since 142
+     */
+    public static <T> T getSeparator(ColorTranslator color, int characters, ChatFormatType<String, T> chatFormatType) {
         if(characters <= 0) throw new IllegalArgumentException("You cannot have 0 or less characters in a separator!");
         else if(characters >= 1000) throw new IllegalArgumentException("You cannot have 1,000 or more characters in a separator!");
-        return (String.valueOf(color) + ChatColor.STRIKETHROUGH + " ").repeat(characters);
+        String type = chatFormatType.getName();
+        return switch(type) {
+            case "LEGACY", "BUNGEE_COMPONENT", "COMPONENT" ->
+                    chatFormatType.execute(
+                            color.getBungee() + String.valueOf(ColorTranslator.STRIKETHROUGH.getBungee()) + ((" ").repeat(characters))
+                    );
+            default ->
+                    chatFormatType.execute(
+                            color.getMiniMessage().getLiteral() +
+                                    ColorTranslator.STRIKETHROUGH.getMiniMessage().getLiteral() +
+                                    ((" ").repeat(characters))
+                    );
+        };
     }
 
     /**
@@ -474,12 +519,34 @@ public class UChat {
     }
 
     /**
+     * Gets a {@link String} that can be used for chat clearing, as it's just 999 empty lines
+     * @param chatFormatType the chat format type that determines the return value, view the following class with possible options: {@link ChatFormatType}
+     * @return 999 empty lined String
+     * @since 142
+     */
+    public static <T> T getClearedChat(ChatFormatType<String, T> chatFormatType) {
+        return getClearedChat(999, chatFormatType);
+    }
+
+    /**
+     * Gets a {@link String} that can be used for chat clearing, as it's just {@code amount} of empty lines
+     * @param chatFormatType the chat format type that determines the return value, view the following class with possible options: {@link ChatFormatType}
+     * @return {@code amount} of empty lines
+     * @since 142
+     */
+    public static <T> T getClearedChat(int amount, ChatFormatType<String, T> chatFormatType) {
+        return chatFormatType.execute(
+                " \n".repeat(amount)
+        );
+    }
+
+    /**
      * Clears a chat for a specified player by printing a bunch of {@code \n}
      * @param player the player to clear the chat of
      * @since 1
      */
     public static void printClearChat(Player player) {
-        player.sendMessage(getClearedChat());
+        player.sendMessage(getClearedChat(ChatFormatType.LEGACY));
     }
 
     /**
@@ -490,7 +557,7 @@ public class UChat {
      */
     public static void printClearChat(CyberPlayer cyberPlayer) {
         if(cyberPlayer.getOnlineActions() == null) throw new IllegalStateException("Cannot send a cleared chat to an offline player!");
-        cyberPlayer.getOnlineActions().sendColored(getClearedChat());
+        cyberPlayer.getOnlineActions().sendColored(getClearedChat(ChatFormatType.LEGACY));
     }
 
     /**
@@ -525,6 +592,8 @@ public class UChat {
 
 
 
+
+    //region Broadcast: To be removed
     /**
      * Broadcast a message to all online players and logs to console
      * @param message the message to send
@@ -655,5 +724,6 @@ public class UChat {
     public static void broadcast(BaseComponent message, @Nullable Predicate<? super CommandSender> filter) {
         broadcast(BaseComponent.toLegacyText(message), filter);
     }
+    //endregion
 
 }
