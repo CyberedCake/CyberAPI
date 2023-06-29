@@ -1,9 +1,9 @@
 package net.cybercake.cyberapi.spigot.server.serverlist.motd;
 
 import net.cybercake.cyberapi.spigot.chat.UChat;
+import net.cybercake.cyberapi.spigot.chat.centered.CenteredMessage;
 import net.cybercake.cyberapi.spigot.server.ServerProperties;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.ChatColor;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -111,7 +111,8 @@ public class MOTD {
          * @deprecated please use {@link Builder#motdTextFormatter(MOTDTextFormatter)} and define a {@link MOTDTextFormatter} instead
          */
         @Deprecated public Builder shouldUseMiniMessage(boolean useMiniMessage) {
-            this.motdTextFormatter = MOTDTextFormatter.MINIMESSAGE; return this;
+            if(useMiniMessage) this.motdTextFormatter = MOTDTextFormatter.MINIMESSAGE;
+            return this;
         }
 
         /**
@@ -248,7 +249,7 @@ public class MOTD {
         if(centered) {
             List<String> newMOTD = new ArrayList<>();
             for(String str : text.split("\\n"))
-                newMOTD.add(org.apache.commons.lang3.StringUtils.center(ChatColor.stripColor(str), 45));
+                newMOTD.add(new CenteredMessage(str, 45).getString());
             text = String.join("\n", newMOTD);
         }
 

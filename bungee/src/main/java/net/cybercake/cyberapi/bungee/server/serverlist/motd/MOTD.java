@@ -1,10 +1,9 @@
 package net.cybercake.cyberapi.bungee.server.serverlist.motd;
 
 import net.cybercake.cyberapi.bungee.chat.UChat;
+import net.cybercake.cyberapi.bungee.chat.centered.CenteredMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -230,7 +229,7 @@ public class MOTD {
         if(centered) {
             List<String> newMOTD = new ArrayList<>();
             for(String str : text.split("\\n"))
-                newMOTD.add(StringUtils.center(ChatColor.stripColor(str), 45));
+                newMOTD.add(new CenteredMessage(str, 45).getString());
             text = String.join("\n", newMOTD);
         }
 
