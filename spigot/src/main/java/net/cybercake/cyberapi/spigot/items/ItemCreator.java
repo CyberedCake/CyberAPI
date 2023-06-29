@@ -4,12 +4,14 @@ import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -17,6 +19,13 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class ItemCreator {
+
+    /**
+     * The enchantment that allows only the glow on certain items, used in {@link ItemBuilder#showEnchantGlow(boolean)}
+     * @since 141
+     * @apiNote this field should be considered internal, but may be used externally as it will likely never change
+     */
+    static Glow GLOW_ENCHANT = null;
 
     /**
      * Checks for any item stacks (actually {@link Material}s) that are similar by name to strings
@@ -113,7 +122,7 @@ public class ItemCreator {
 
     /**
      * Create a blank item in the item builder
-     * @return the {@link ItemBuilder} instance
+     * @return the {@link ItemBuilder#ItemBuilder() ItemBuilder} instance
      * @since 90
      * @deprecated please do not try to create a blank item instance, see the section below for more options
      * @see ItemCreator#createItem(Material)
@@ -126,7 +135,7 @@ public class ItemCreator {
     /**
      * Creates an item in the item builder using an already-defined {@link Material}
      * @param material the {@link Material} to create the {@link ItemBuilder} (and {@link ItemStack}) with
-     * @return the {@link ItemBuilder} instance
+     * @return the {@link ItemBuilder#ItemBuilder(Material) ItemBuilder} instance
      * @since 90
      */
     public static ItemBuilder createItem(Material material) { return new ItemBuilder(material); }
@@ -134,15 +143,15 @@ public class ItemCreator {
     /**
      * Create an item in the item builder using an already-defined {@link ItemStack}
      * @param item the {@link ItemStack} to create the {@link ItemBuilder} with
-     * @return the {@link ItemBuilder} instance
+     * @return the {@link ItemBuilder#ItemBuilder(ItemStack) ItemBuilder} instance
      * @since 90
      */
     public static ItemBuilder createItem(ItemStack item) { return new ItemBuilder(item); }
 
     /**
-     * Create an item in the item builder using an already-defined {@link ItemMeta} ... note: will create an {@link ItemStack} and apply the set {@link ItemMeta} to it!
+     * Create an item in the item builder using an already-defined {@link ItemMeta} ... note: will create a {@link Material#STONE stone} {@link ItemStack item} and apply the set {@link ItemMeta} to it!
      * @param meta the {@link ItemMeta} to create the {@link ItemBuilder} with
-     * @return the {@link ItemBuilder} instance
+     * @return the {@link ItemBuilder#ItemBuilder(ItemMeta) ItemBuilder} instance
      * @since 90
      */
     public static ItemBuilder createItem(ItemMeta meta) { return new ItemBuilder(meta); }
@@ -193,10 +202,12 @@ public class ItemCreator {
             this.meta = this.item.getItemMeta();
 
             this.itemTextFormatter = ItemTextFormatter.LEGACY;
+
+            loadGlowEnchant();
         }
 
         /**
-         * Create an item in the item builder using an already-defined {@link ItemMeta} ... note: will create an {@link ItemStack} and apply the set {@link ItemMeta} to it!
+         * Create an item in the item builder using an already-defined {@link ItemMeta} ... note: will create a {@link Material#STONE stone} {@link ItemStack item} and apply the set {@link ItemMeta} to it!
          * @param meta the {@link ItemMeta} to create the {@link ItemBuilder} with
          * @since 90
          */
@@ -207,7 +218,15 @@ public class ItemCreator {
             this.item = item;
             this.meta = this.item.getItemMeta();
 
-            this.itemTextFormatter = ItemTextFormatter.PLAIN;
+            this.itemTextFormatter = ItemTextFormatter.LEGACY;
+            loadGlowEnchant();
+        }
+
+        @ApiStatus.Internal
+        @SuppressWarnings({"deprecation"})
+        private void loadGlowEnchant() {
+            if(GLOW_ENCHANT != null) return;
+            GLOW_ENCHANT = new Glow(new NamespacedKey("glow", "glow"));
         }
 
 
@@ -433,6 +452,16 @@ public class ItemCreator {
             return meta(Damageable.class, m -> m.setDamage(durability));
         }
 
+        /**
+         * @param glow whether the item will look like it's enchanted or not
+         * @since 141
+         */
+        public ItemBuilder showEnchantGlow(boolean glow) {
+            return meta(meta -> {
+                if(glow) meta.addEnchant(GLOW_ENCHANT, 1, true);
+                else meta.removeEnchant(GLOW_ENCHANT);
+            });
+        }
 
         /**
          * @return the cloned {@link ItemStack} instance of the item along with the {@link ItemMeta} applied
