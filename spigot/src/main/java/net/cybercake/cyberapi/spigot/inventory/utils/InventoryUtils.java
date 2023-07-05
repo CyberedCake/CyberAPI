@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.spigot.inventory.utils;
 
+import net.cybercake.cyberapi.spigot.basic.base64.Base64Convert;
 import org.bukkit.inventory.Inventory;
 
 import java.util.stream.IntStream;
@@ -42,5 +43,32 @@ public class InventoryUtils {
         return IntStream.range((row*9)-9, (row*9)).toArray();
     }
 
+    /**
+     * Converts an inventory to Base64. <br> <br>
+     * See {@link net.cybercake.cyberapi.spigot.basic.base64.Converters.InventoryConverter#convertToBase64(Inventory) the alternate method} for more documentation.
+     * @since 144
+     * @see InventoryUtils#convertFromBase64(String)
+     */
+    public static String convertToBase64(Inventory inventory) throws IllegalStateException {
+        try {
+            return Base64Convert.BUKKIT_INVENTORY.convertToBase64(inventory);
+        } catch (Exception exception) {
+            throw new IllegalStateException("Failed to convert Inventory to Base64", exception);
+        }
+    }
+
+    /**
+     * Converts Base64 to an inventory object. <br> <br>
+     * See {@link net.cybercake.cyberapi.spigot.basic.base64.Converters.InventoryConverter#convertFromBase64(String) the alternate method} for more documentation.
+     * @since 144
+     * @see InventoryUtils#convertToBase64(Inventory)
+     */
+    public static Inventory convertFromBase64(String base64) throws IllegalStateException {
+        try {
+            return Base64Convert.BUKKIT_INVENTORY.convertFromBase64(base64);
+        } catch (Exception exception) {
+            throw new IllegalStateException("Failed to convert Base64 to Inventory", exception);
+        }
+    }
 
 }
