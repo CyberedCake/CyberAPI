@@ -160,8 +160,10 @@ public class GUISlots extends CustomGUI {
     //<editor-fold desc="inventory events">
     @Override
     public void onInventoryClick(@NotNull InventoryClickEvent event, Player player) {
-        int index = event.getRawSlot();
+        int index = event.getSlot();
         if(System.currentTimeMillis() - lastClickedSlot.getOrDefault(index, 0L) < CLICK_COOLDOWN) return;
+        if(event.getClickedInventory() == null) return;
+        if(!event.getClickedInventory().equals(event.getView().getTopInventory())) return;
 
         ItemStack currentItem = event.getCurrentItem();
         if(currentItem == null) return;
