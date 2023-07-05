@@ -16,6 +16,9 @@ import net.cybercake.cyberapi.spigot.chat.Broadcast;
 import net.cybercake.cyberapi.spigot.chat.Log;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.config.Config;
+import net.cybercake.cyberapi.spigot.inventory.GUIListeners;
+import net.cybercake.cyberapi.spigot.items.Glow;
+import net.cybercake.cyberapi.spigot.items.ItemCreator;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.cybercake.cyberapi.spigot.server.CyberAPIListeners;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
@@ -59,6 +62,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.logging.Level;
+
+import static net.cybercake.cyberapi.spigot.items.ItemCreator.GLOW_ENCHANT;
 
 /**
  * The main class for CyberAPI!
@@ -142,6 +147,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         log.verbose("Loaded all potential supported libraries and classes");
 
         registerListener(new CyberAPIListeners());
+        registerListener(new GUIListeners());
 
         registerLog4jModifiers(); // deprecated because I don't want anyone else using it
         log.verbose("Loaded console modifiers, using " + ConsoleModifiers.class);
@@ -169,6 +175,9 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                 })
                 .toList();
         log.verbose("Found the following classes: [" + String.join(", ", classes) + "]");
+
+        GLOW_ENCHANT = new Glow(new NamespacedKey("glow", "glow"));
+        log.verbose("Created glow enchant for " + ItemCreator.class.getCanonicalName() + ": " + GLOW_ENCHANT.getKey() + " (" + Glow.class.getCanonicalName() + ")");
 
         ListenerManager.listenerManager().init(settings.getMainPackagePath());
         CommandManager.commandManager().init(settings.getMainPackagePath());

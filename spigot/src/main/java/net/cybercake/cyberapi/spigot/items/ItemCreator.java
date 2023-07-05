@@ -25,7 +25,16 @@ public class ItemCreator {
      * @since 141
      * @apiNote this field should be considered internal, but may be used externally as it will likely never change
      */
-    static Glow GLOW_ENCHANT = null;
+    public static Glow GLOW_ENCHANT = null;
+
+    /**
+     * @param material the {@link Material} to convert to {@link ItemStack}
+     * @return the new, essentially blank other than from its {@link Material}, {@link ItemStack}
+     * @since 143
+     */
+    public static ItemStack getItemFrom(Material material) {
+        return ItemCreator.createItem(material).build();
+    }
 
     /**
      * Checks for any item stacks (actually {@link Material}s) that are similar by name to strings
@@ -224,7 +233,7 @@ public class ItemCreator {
 
         @ApiStatus.Internal
         @SuppressWarnings({"deprecation"})
-        private void loadGlowEnchant() {
+        void loadGlowEnchant() {
             if(GLOW_ENCHANT != null) return;
             GLOW_ENCHANT = new Glow(new NamespacedKey("glow", "glow"));
         }
