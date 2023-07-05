@@ -41,7 +41,7 @@ public abstract class FollowUpGUIAction {
      * @param checkClickType check the click type with this predicate
      * @since 143
      */
-    public SpecificClickChecker whenClick(Predicate<ClickType> checkClickType) {
+    public SpecificClickChecker onClick(Predicate<ClickType> checkClickType) {
         return new SpecificClickChecker(this, checkClickType);
     }
 
@@ -50,7 +50,7 @@ public abstract class FollowUpGUIAction {
      * @param consumer called whenever any click of any {@link ClickType type} clicks.
      * @since 143
      */
-    public FollowUpGUIAction whenAnyClick(Consumer<InventoryClickEvent> consumer) {
+    public FollowUpGUIAction onAnyClick(Consumer<InventoryClickEvent> consumer) {
         return newConsumerItem(consumer);
     }
 
@@ -59,7 +59,7 @@ public abstract class FollowUpGUIAction {
      * @param consumer called whenever any click is a <strong>{@link ClickType#isMouseClick() mouse click}</strong>.
      * @since 143
      */
-    public FollowUpGUIAction whenMouseClick(Consumer<InventoryClickEvent> consumer) {
+    public FollowUpGUIAction onMouseClick(Consumer<InventoryClickEvent> consumer) {
         return newConsumerItem(checkClick(consumer, ClickType::isMouseClick));
     }
 
@@ -68,7 +68,7 @@ public abstract class FollowUpGUIAction {
      * @param consumer called whenever any click is a <strong>{@link ClickType#isRightClick() right click}</strong>.
      * @since 143
      */
-    public FollowUpGUIAction whenRightClick(Consumer<InventoryClickEvent> consumer) {
+    public FollowUpGUIAction onRightClick(Consumer<InventoryClickEvent> consumer) {
         return newConsumerItem(checkClick(consumer, ClickType::isRightClick));
     }
 
@@ -77,7 +77,7 @@ public abstract class FollowUpGUIAction {
      * @param consumer called whenever any click is a <strong>{@link ClickType#isLeftClick() left click}</strong>.
      * @since 143
      */
-    public FollowUpGUIAction whenLeftClick(Consumer<InventoryClickEvent> consumer) {
+    public FollowUpGUIAction onLeftClick(Consumer<InventoryClickEvent> consumer) {
         return newConsumerItem(checkClick(consumer, ClickType::isLeftClick));
     }
 
@@ -86,7 +86,7 @@ public abstract class FollowUpGUIAction {
      * @param consumer called whenever any click is a <strong>{@link ClickType#MIDDLE middle click}</strong>.
      * @since 143
      */
-    public FollowUpGUIAction whenMiddleClick(Consumer<InventoryClickEvent> consumer) {
+    public FollowUpGUIAction onMiddleClick(Consumer<InventoryClickEvent> consumer) {
         return newConsumerItem(checkClick(consumer, type -> type == ClickType.MIDDLE));
     }
 
@@ -95,7 +95,7 @@ public abstract class FollowUpGUIAction {
      * @param consumer called whenever the user is clicking <strong>{@link ClickType#isShiftClick() while holding sneak (or 'shift')}</strong>.
      * @since 143
      */
-    public FollowUpGUIAction whenShiftClick(Consumer<InventoryClickEvent> consumer) {
+    public FollowUpGUIAction onShiftClick(Consumer<InventoryClickEvent> consumer) {
         return newConsumerItem(checkClick(consumer, ClickType::isShiftClick));
     }
 
@@ -104,7 +104,7 @@ public abstract class FollowUpGUIAction {
      * @param consumer called whenever the user <strong>{@link ClickType#DROP drops an item} or {@link ClickType#CONTROL_DROP drops an item while holding control}</strong>.
      * @since 143
      */
-    public FollowUpGUIAction whenDrop(Consumer<InventoryClickEvent> consumer) {
+    public FollowUpGUIAction onDrop(Consumer<InventoryClickEvent> consumer) {
         return newConsumerItem(checkClick(consumer, (type) -> List.of(ClickType.DROP, ClickType.CONTROL_DROP).contains(type)));
     }
 
@@ -207,7 +207,7 @@ public abstract class FollowUpGUIAction {
     protected abstract Consumer<InventoryClickEvent> getRealEvent(Consumer<InventoryClickEvent> event);
 
     /**
-     * Represents the next half of the {@link FollowUpGUIAction#whenClick(Predicate) whenClick in FollowUpGUIAction}
+     * Represents the next half of the {@link FollowUpGUIAction#onClick(Predicate) onClickF in FollowUpGUIAction}
      * @since 143
      * @see SpecificClickChecker#then(Consumer)
      */
