@@ -88,7 +88,7 @@ public enum RomanNumeral {
      * @param arabicNumeral the arabic numeral associated with a roman numeral
      * @return the roman numeral if it exists, else null (in {@link Optional} form)
      * @since 146
-     * @see NumeralConverter#convertToRomanNumeral(int)
+     * @see NumeralConverter#toRomanNumeral(int)
      */
     public static Optional<String> find(int arabicNumeral) {
         return Arrays.stream(RomanNumeral.values())
@@ -106,7 +106,7 @@ public enum RomanNumeral {
      * @param romanNumeral the roman numeral associated with an arabic numeral
      * @return the arabic numeral if it exists, else null (in {@link Optional} form)
      * @since 146
-     * @see NumeralConverter#convertToArabicNumeral(String)
+     * @see NumeralConverter#toArabicNumeral(String)
      */
     public static Optional<Integer> find(String romanNumeral) {
         return Arrays.stream(RomanNumeral.values())
