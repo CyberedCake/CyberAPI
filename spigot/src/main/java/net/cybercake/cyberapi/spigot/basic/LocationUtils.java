@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.spigot.basic;
 
+import net.cybercake.cyberapi.spigot.basic.base64.Base64Convert;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.util.NumberConversions;
@@ -103,15 +104,7 @@ public class LocationUtils {
      * @since 135
      */
     public static String encodeBase64(Location location) {
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(location.serialize());
-            objectOutputStream.close();
-            return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
-        } catch (Exception exception) {
-            throw new IllegalStateException("Failed to encode a " + Location.class.getCanonicalName() + " as a (Base64) " + String.class.getCanonicalName() + ": " + exception, exception);
-        }
+        return Base64Convert.LOCATION.convertToBase64(location);
     }
 
     /**
@@ -120,15 +113,7 @@ public class LocationUtils {
      */
     @SuppressWarnings({"all"})
     public static Location decodeBase64(String location) {
-        try {
-            byte[] data = Base64.getDecoder().decode(location);
-            ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(data));
-            HashMap<String, Object> locationHashMap = (HashMap<String, Object>) objectInputStream.readObject();
-            objectInputStream.close();
-            return Location.deserialize(locationHashMap);
-        } catch (Exception exception) {
-            throw new IllegalStateException("Failed to decode a (Base64) " + String.class.getCanonicalName() + " back to a " + Location.class.getCanonicalName() + ": " + exception, exception);
-        }
+        return Base64Convert.LOCATION.convertFromBase64(location);
     }
 
 }

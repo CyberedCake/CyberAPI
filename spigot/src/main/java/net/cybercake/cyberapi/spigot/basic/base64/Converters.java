@@ -2,6 +2,7 @@ package net.cybercake.cyberapi.spigot.basic.base64;
 
 import net.cybercake.cyberapi.common.basic.Pair;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -19,6 +20,45 @@ import java.util.Base64;
  * @see InventoryConverter
  */
 public class Converters {
+
+    /**
+     * A converter that converts {@link Location locations} to Base64 and vice versa
+     * @author CyberedCake
+     * @since 147
+     */
+    public static class LocationConverter implements Base64Convert<Location, String> {
+        @Override public Pair<Class<Location>, Class<String>> getTypes() { return Pair.of(Location.class, String.class); }
+
+        @Override
+        public String convertToBase64(Location location) throws IllegalStateException {
+            try {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+
+                dataOutput.writeObject(location);
+
+                dataOutput.close();
+                return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+            } catch (Exception exception) {
+                throw new IllegalStateException("Failed to convert '" + getTypes().getFirstItem().getCanonicalName() + "' to Base64", exception);
+            }
+        }
+
+        @Override
+        public Location convertFromBase64(String data) throws IllegalStateException {
+            try {
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(data));
+                BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+
+                Location read = (Location) dataInput.readObject();
+
+                dataInput.close();
+                return read;
+            } catch (Exception exception) {
+                throw new IllegalStateException("Failed to convert Base64 to '" + getTypes().getFirstItem().getCanonicalName() + "'", exception);
+            }
+        }
+    }
 
     /**
      * A converter that converts {@link ItemStack items} to Base64 and vice versa
