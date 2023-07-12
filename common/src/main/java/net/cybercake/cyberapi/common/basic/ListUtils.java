@@ -4,7 +4,9 @@ import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * General utilities regarding the usage of {@link List Lists}
@@ -26,19 +28,13 @@ public class ListUtils {
     }
 
     /**
-     * Removes duplicates from an {@link List}
+     * Removes duplicates from a {@link List}
      * @param list the list to remove duplicates from
      * @return the list without duplicates
      * @since 102
      */
-    public static List<String> removeDuplicates(ArrayList<String> list) {
-        List<String> alreadyOver = new ArrayList<>();
-        for(String str : list) {
-            if(!alreadyOver.contains(str)) {
-                alreadyOver.add(str);
-            }
-        }
-        return alreadyOver;
+    public static List<String> removeDuplicates(List<String> list) {
+        return new ArrayList<>(new HashSet<>(list));
     }
 
     /**
