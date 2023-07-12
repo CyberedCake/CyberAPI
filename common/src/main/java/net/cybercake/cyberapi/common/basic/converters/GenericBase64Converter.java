@@ -47,6 +47,30 @@ public interface GenericBase64Converter<I, B> extends GenericConverter<I, B> {
      * Converts an object into Base64
      * @param input the object to convert to Base64
      * @return the, most commonly {@link String string}, representation of the Base64 of the inputted object
+     * @since 146
+     * @see GenericBase64Converter#convertFromBase64(Object)
+     */
+    @Override
+    default B to(I input) {
+        return convertToBase64(input);
+    }
+
+    /**
+     * Converts a Base64 ({@link String string usually}) object into its native Java counterpart
+     * @param output the Base64 to convert back into an object, most commonly {@link String a string}
+     * @return the new object from Base64
+     * @since 146
+     * @see GenericBase64Converter#convertToBase64(Object)
+     */
+    @Override
+    default I from(B output) {
+        return convertFromBase64(output);
+    }
+
+    /**
+     * Converts an object into Base64
+     * @param input the object to convert to Base64
+     * @return the, most commonly {@link String string}, representation of the Base64 of the inputted object
      * @since 144
      * @see GenericBase64Converter#convertFromBase64(Object)
      */

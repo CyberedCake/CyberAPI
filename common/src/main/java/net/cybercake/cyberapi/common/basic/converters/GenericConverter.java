@@ -20,4 +20,20 @@ public interface GenericConverter<I, O> {
      */
     Pair<Class<I>, Class<O>> getTypes();
 
+    /**
+     * Converts the suggested input of type "{@code I}" into the appropriate output of type "{@code O}"
+     * @param input the input object of required type
+     * @return the output object after the conversion
+     * @since 146
+     */
+    O to(I input);
+
+    /**
+     * Converts the suggested output of type "{@code O}" into the appropriate input of type "{@code I}"
+     * @param output the output object of required type
+     * @return the input object from before the conversion
+     * @since 146
+     */
+    I from(O output);
+
 }

@@ -2,10 +2,11 @@ import groovy.json.JsonSlurper
 
 plugins {
     id 'java'
-    id 'maven-publish'
     id 'org.tenne.rest' version '0.4.2'
     id 'com.github.johnrengelman.shadow' version "8.1.1"
 }
+
+apply plugin: 'maven-publish'
 
 static String getGroup() { return "net.cybercake.cyberapi"; }
 static URL getWebsite() { return new URL("https://github.com/CyberedCake/CyberAPI"); }
@@ -57,7 +58,7 @@ def setBasic = {
 setBasic()
 
 group = getGroup()
-version = "v3"
+version = "v3-" + String.valueOf(build)
 
 def actualVersion = version
 
@@ -170,20 +171,18 @@ subprojects { Project subProject ->
         }
     }
 
-    classes {
-        dependsOn createProperties
-    }
-
-    publishing {
+    project.publishing {
         publications {
-            maven(MavenPublication) {
-                groupId project.group
-                artifactId project.name
-                version build
-
+            mavenJava(MavenPublication) {
                 from components.java
+
+                version String.valueOf(build)
             }
         }
+    }
+
+    classes {
+        dependsOn createProperties
     }
 
     // if(!subProject.getName().contains("common")) shadowJar.finalizedBy copyArtifacts

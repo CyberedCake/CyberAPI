@@ -29,4 +29,12 @@ public class Sort {
         return sorted;
     }
 
+    /**
+     * Defines which way a list will be sorted
+     * @since 146
+     */
+    public enum SortType {
+        ASCENDING, DESCENDING;
+    }
+
 }
