@@ -138,17 +138,11 @@ public class StringUtils {
      * @param list the list to remove duplicates from
      * @return the list without duplicates
      * @since 1
-     * @deprecated please use the {@link ListUtils#removeDuplicates(ArrayList) removeDuplicates method in ListUtils} instead
+     * @deprecated please use the {@link ListUtils#removeDuplicates(List) removeDuplicates method in ListUtils} instead
      */
     @Deprecated
-    public static ArrayList<String> removeDuplicates(ArrayList<String> list) {
-        ArrayList<String> alreadyOver = new ArrayList<>();
-        for(String str : list) {
-            if(!alreadyOver.contains(str)) {
-                alreadyOver.add(str);
-            }
-        }
-        return alreadyOver;
+    public static List<String> removeDuplicates(List<String> list) {
+        return ListUtils.removeDuplicates(list);
     }
 
     /**
