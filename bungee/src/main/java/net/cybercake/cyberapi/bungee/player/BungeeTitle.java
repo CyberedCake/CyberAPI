@@ -52,7 +52,7 @@ public class BungeeTitle implements Title {
      * @param text The text to use as the title.
      * @return the {@link BungeeTitle} object
      * @since 15
-     * @deprecated this <b>will</b> thorw a {@link UnsupportedOperationException}
+     * @deprecated this <b>will</b> throw a {@link UnsupportedOperationException}
      * @throws UnsupportedOperationException this method is <b>not</b> supported by CyberAPI
      */
     @Override
@@ -80,7 +80,7 @@ public class BungeeTitle implements Title {
      * @param text The text to use as the subtitle.
      * @return the {@link BungeeTitle} object
      * @since 15
-     * @deprecated this <b>will</b> thorw a {@link UnsupportedOperationException}
+     * @deprecated this <b>will</b> throw a {@link UnsupportedOperationException}
      * @throws UnsupportedOperationException this method is <b>not</b> supported by CyberAPI
      */
     @Override
