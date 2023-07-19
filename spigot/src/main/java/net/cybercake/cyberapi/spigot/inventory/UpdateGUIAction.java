@@ -51,7 +51,7 @@ public abstract class UpdateGUIAction {
      * @since 143
      * @see UpdateGUIAction#convert(Material[])
      */
-    public ItemStack convert(Material material) { return getItemFrom(material); }
+    public static ItemStack convert(Material material) { return getItemFrom(material); }
 
     /**
      * Convert an array of {@link Material Materials} to an array of blank {@link ItemStack ItemStacks}
@@ -60,10 +60,15 @@ public abstract class UpdateGUIAction {
      * @since 143
      * @see UpdateGUIAction#convert(Material)
      */
-    public ItemStack[] convert(Material[] materials) { return Arrays.stream(materials).map(ItemCreator::getItemFrom).toArray(ItemStack[]::new); }
+    public static ItemStack[] convert(Material[] materials) { return Arrays.stream(materials).map(ItemCreator::getItemFrom).toArray(ItemStack[]::new); }
 
-    @ApiStatus.Internal
-    ItemStack addSpecialityDataTo(int[] slots, @NotNull ItemStack old) {
+    @ApiStatus.Internal @ApiStatus.Experimental
+    public static ItemStack addSpecialityDataTo(int slot, @NotNull ItemStack old) {
+        return addSpecialityDataTo(new int[]{slot}, old);
+    }
+
+    @ApiStatus.Internal @ApiStatus.Experimental
+    public static ItemStack addSpecialityDataTo(int[] slots, @NotNull ItemStack old) {
         ItemStack newItem = old.clone();
         ItemMeta meta = newItem.getItemMeta();
         if(meta == null) return newItem;

@@ -3,6 +3,8 @@ package net.cybercake.cyberapi.spigot.inventory.actions;
 import net.cybercake.cyberapi.spigot.inventory.FollowUpGUIAction;
 import net.cybercake.cyberapi.spigot.inventory.UpdateGUIAction;
 import net.cybercake.cyberapi.spigot.inventory.actions.modifiers.ItemAdder;
+import net.cybercake.cyberapi.spigot.inventory.pagination.NaturallyPaginatedGUI;
+import net.cybercake.cyberapi.spigot.inventory.pagination.PaginatedGUI;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,6 +32,19 @@ public class AddGUIAction extends FollowUpGUIAction implements ItemAdder {
         super(action);
 
         this.map = new HashMap<>(this.gui.getInventory().addItem(items));
+    }
+
+    /**
+     * This is called when the addItemsForPagination method is called. This adds items to a hashmap
+     * in an implementation class.
+     * @param gui the parent action
+     * @param items the items to be added
+     * @since 148
+     */
+    public AddGUIAction(PaginatedGUI gui, Map<Integer, ItemStack> items) {
+        super(gui.action());
+
+        this.map = new HashMap<>(items);
     }
 
     @Override
