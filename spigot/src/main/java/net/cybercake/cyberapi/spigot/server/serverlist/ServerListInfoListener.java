@@ -6,6 +6,7 @@ import com.comphenix.protocol.events.ListenerOptions;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftProtocolVersion;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.comphenix.protocol.wrappers.WrappedServerPing;
@@ -42,14 +43,15 @@ public class ServerListInfoListener {
                         Collections.singletonList(PacketType.Status.Server.SERVER_INFO), ListenerOptions.ASYNC) {
                     @Override
                     public void onPacketSending(PacketEvent event) {
-                        handlePing(event.getPlayer(), event.getPacket().getServerPings().read(0));
+                        handlePing(event.getPlayer(), event.getPacket().getServerPings());
                     }
                 }
         );
     }
 
-    private void handlePing(Player player, WrappedServerPing ping) {
+    private void handlePing(Player player, StructureModifier<WrappedServerPing> modifier) {
         try {
+            WrappedServerPing ping = modifier.read(0);
             InetAddress address = Objects.requireNonNull(player.getAddress(), "No address found (" + player.getName() + ")").getAddress();
             ServerListInfo info = CyberAPI.getInstance().getServerListInfo();
             ServerListPingEvent serverListPingEvent =
@@ -110,6 +112,8 @@ public class ServerListInfoListener {
             ping.setVersionProtocol(protocol);
 
             ping.setPlayersVisible(serverListPingEvent.isPlayerListVisible()); // overrides the 'player count' and 'hover over player count' sections
+
+            modifier.write(0, ping);
         } catch (Exception exception){
             CyberAPI.getInstance().getAPILogger().error("An exception occurred whilst sending server ping packet: " + ChatColor.DARK_GRAY + exception);
             CyberAPI.getInstance().getAPILogger().verboseException(exception);

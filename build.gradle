@@ -58,7 +58,7 @@ def setBasic = {
 setBasic()
 
 group = getGroup()
-version = "v3-" + String.valueOf(build)
+version = String.valueOf(build)
 
 def actualVersion = version
 
