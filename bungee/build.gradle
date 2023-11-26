@@ -7,6 +7,10 @@ repositories {
     maven {
         url = uri('https://mvn.exceptionflug.de/repository/exceptionflug-public/')
     }
+    maven {
+        name = "Minecraft Libraries"
+        url = "https://libraries.minecraft.net"
+    }
 }
 
 dependencies {
