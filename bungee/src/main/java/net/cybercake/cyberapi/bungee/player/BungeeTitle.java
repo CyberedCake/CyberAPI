@@ -43,7 +43,7 @@ public class BungeeTitle implements Title {
     public Title title(BaseComponent text) {
         if(title == null)
             title = createPacket(net.md_5.bungee.protocol.packet.Title.Action.TITLE);
-        title.setText(UChat.toLegacy(text));
+        title.setText(UChat.bComponent(UChat.toLegacy(text)));
         return this;
     }
 
@@ -71,7 +71,7 @@ public class BungeeTitle implements Title {
     public Title subTitle(BaseComponent text) {
         if(subtitle == null)
             subtitle = createPacket(net.md_5.bungee.protocol.packet.Title.Action.SUBTITLE);
-        subtitle.setText(UChat.toLegacy(text));
+        subtitle.setText(UChat.bComponent(UChat.toLegacy(text)));
         return this;
     }
 
