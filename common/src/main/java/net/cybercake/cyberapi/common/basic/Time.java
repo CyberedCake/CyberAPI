@@ -382,6 +382,7 @@ public class Time {
      * @since 15
      */
     public static String formatBasicSeconds(long number) {
+        number = number * 1000L;
 
         long hours   = (number / ONE_HOUR);
         long minutes = ((number % ONE_HOUR) / ONE_MINUTE);
@@ -397,6 +398,7 @@ public class Time {
      * @since 15
      */
     public static String formatBasicSecondsColons(long number) {
+        number = number * 1000L;
 
         long hours   = (number / ONE_SECOND);
         long minutes = ((number % ONE_HOUR) / ONE_MINUTE);
