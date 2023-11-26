@@ -382,12 +382,13 @@ public class Time {
      * @since 15
      */
     public static String formatBasicSeconds(long number) {
+        number = number * 1000L;
 
-        long hours   = (number / ONE_HOUR);
-        long minutes = ((number % ONE_HOUR) / ONE_MINUTE);
-        long seconds = ((number % ONE_MINUTE) / ONE_SECOND);
+        long hours   = (number / Time.ONE_HOUR);
+        long minutes = ((number % Time.ONE_HOUR) / Time.ONE_MINUTE);
+        long seconds = ((number % Time.ONE_MINUTE) / Time.ONE_SECOND);
 
-        return hours + "h, " + minutes + "m, " + seconds + "s";
+        return (hours != 0 ? hours + "h, " : "") + (minutes != 0 ? minutes + "m, " : "") + seconds + "s";
     }
 
     /**
@@ -397,12 +398,13 @@ public class Time {
      * @since 15
      */
     public static String formatBasicSecondsColons(long number) {
+        number = number * 1000L;
 
-        long hours   = (number / ONE_SECOND);
-        long minutes = ((number % ONE_HOUR) / ONE_MINUTE);
-        long seconds = ((number % ONE_MINUTE) / ONE_SECOND);
+        long hours   = (number / Time.ONE_HOUR);
+        long minutes = ((number % Time.ONE_HOUR) / Time.ONE_MINUTE);
+        long seconds = ((number % Time.ONE_MINUTE) / Time.ONE_SECOND);
 
-        return (hours != 0 ? hours + ":" : "") + (NumberUtils.isBetweenEquals(minutes, 0, 9) ? "0" : "") + minutes + ":" + (NumberUtils.isBetweenEquals(seconds, 0, 9) ? "0" : "") + seconds + "";
+        return (hours != 0 ? hours + ":" : "") + (NumberUtils.isBetweenEquals(minutes, 0, 9) ? "0" : "") + minutes + ":" + (NumberUtils.isBetweenEquals(seconds, 0, 9) ? "0" : "") + seconds;
     }
 
     /**
