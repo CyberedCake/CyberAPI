@@ -2,6 +2,7 @@ package net.cybercake.cyberapi.spigot.items;
 
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -19,13 +20,6 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class ItemCreator {
-
-    /**
-     * The enchantment that allows only the glow on certain items, used in {@link ItemBuilder#showEnchantGlow(boolean)}
-     * @since 141
-     * @apiNote this field should be considered internal, but may be used externally as it will likely never change
-     */
-    public static Glow GLOW_ENCHANT = null;
 
     /**
      * @param material the {@link Material} to convert to {@link ItemStack}
@@ -211,8 +205,6 @@ public class ItemCreator {
             this.meta = this.item.getItemMeta();
 
             this.itemTextFormatter = ItemTextFormatter.LEGACY;
-
-            loadGlowEnchant();
         }
 
         /**
@@ -228,14 +220,6 @@ public class ItemCreator {
             this.meta = this.item.getItemMeta();
 
             this.itemTextFormatter = ItemTextFormatter.LEGACY;
-            loadGlowEnchant();
-        }
-
-        @ApiStatus.Internal
-        @SuppressWarnings({"deprecation"})
-        void loadGlowEnchant() {
-            if(GLOW_ENCHANT != null) return;
-            GLOW_ENCHANT = new Glow();
         }
 
 
@@ -466,9 +450,10 @@ public class ItemCreator {
          * @since 141
          */
         public ItemBuilder showEnchantGlow(boolean glow) {
+            // using luck because for some god-damn reason my old glow class broke CyberAPI, maybe I'll try to fix it at a later date
             return meta(meta -> {
-                if(glow) meta.addEnchant(GLOW_ENCHANT, 1, true);
-                else meta.removeEnchant(GLOW_ENCHANT);
+                if(glow) meta.addEnchant(Enchantment.LUCK, 1, true);
+                else meta.removeEnchant(Enchantment.LUCK);
             });
         }
 

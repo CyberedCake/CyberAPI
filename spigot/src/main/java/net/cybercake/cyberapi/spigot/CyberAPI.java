@@ -17,7 +17,6 @@ import net.cybercake.cyberapi.spigot.chat.Log;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.config.Config;
 import net.cybercake.cyberapi.spigot.inventory.GUIListeners;
-import net.cybercake.cyberapi.spigot.items.Glow;
 import net.cybercake.cyberapi.spigot.items.ItemCreator;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.cybercake.cyberapi.spigot.server.CyberAPIListeners;
@@ -175,9 +174,6 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                 })
                 .toList();
         log.verbose("Found the following classes: [" + String.join(", ", classes) + "]");
-
-        GLOW_ENCHANT = new Glow();
-        log.verbose("Created glow enchant for " + ItemCreator.class.getCanonicalName() + ": " + GLOW_ENCHANT.getKey() + " (" + Glow.class.getCanonicalName() + ")");
 
         ListenerManager.listenerManager().init(settings.getMainPackagePath());
         CommandManager.commandManager().init(settings.getMainPackagePath());
