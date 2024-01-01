@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.spigot.items;
 
+import net.cybercake.cyberapi.spigot.CyberAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -12,9 +13,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Glow extends Enchantment {
 
-    public Glow(NamespacedKey key) {
-        super(key);
-    }
+    public static NamespacedKey NAMESPACED_KEY = new NamespacedKey(CyberAPI.getInstance(), "pseudo_glow_enchant");
 
     @NotNull
     @Override
@@ -59,4 +58,5 @@ public class Glow extends Enchantment {
     }
 
 
+    @NotNull @Override public NamespacedKey getKey() { return NAMESPACED_KEY; }
 }

@@ -235,7 +235,7 @@ public class ItemCreator {
         @SuppressWarnings({"deprecation"})
         void loadGlowEnchant() {
             if(GLOW_ENCHANT != null) return;
-            GLOW_ENCHANT = new Glow(new NamespacedKey("glow", "glow"));
+            GLOW_ENCHANT = new Glow();
         }
 
 
