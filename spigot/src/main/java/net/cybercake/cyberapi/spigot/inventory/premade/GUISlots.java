@@ -171,6 +171,8 @@ public class GUISlots extends CustomGUI {
         ItemMeta meta = currentItem.getItemMeta();
         if(meta == null) return;
 
+        event.setCancelled(true);
+
         List<String> lore = meta.getLore();
         if(lore == null) lore = Collections.emptyList();
 
