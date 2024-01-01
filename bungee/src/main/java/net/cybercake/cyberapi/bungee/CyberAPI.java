@@ -105,7 +105,7 @@ public class CyberAPI extends Plugin implements CommonManager {
 
         log = new APILog(); // for private use only
 
-        if(settings == null) settings = Settings.builder().build();
+        if (settings == null) settings = Settings.builder().build();
         this.settings = settings;
         log.verbose("Starting CyberAPI...");
 
@@ -130,7 +130,7 @@ public class CyberAPI extends Plugin implements CommonManager {
         this.classes = (mainPackagePath == null ? new Reflections() : new Reflections(mainPackagePath)).getAll(new SubTypesScanner(false))
                 .stream()
                 .filter(clazz -> {
-                    if(mainPackagePath == null) return true;
+                    if (mainPackagePath == null) return true;
                     return clazz.startsWith(mainPackagePath);
                 })
                 .map(clazz -> {
@@ -140,7 +140,7 @@ public class CyberAPI extends Plugin implements CommonManager {
                     } catch (ClassNotFoundException | NoClassDefFoundError exception) {
                         log.verbose(ChatColor.RED + "Failed to find class despite being included in package scan: " + clazz);
                         log.verbose(ChatColor.RED + "|-> Related exception: " + exception);
-                        if(mainPackagePath != null && clazz.startsWith(mainPackagePath))
+                        if (mainPackagePath != null && clazz.startsWith(mainPackagePath))
                             throw new IllegalArgumentException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI", exception);
                         return null;
                     }
@@ -151,7 +151,7 @@ public class CyberAPI extends Plugin implements CommonManager {
         CommandManager.commandManager().init(settings.getMainPackagePath());
         ListenerManager.listenerManager().init(settings.getMainPackagePath());
 
-        if(mainPackagePath == null) {
+        if (mainPackagePath == null) {
             try {
                 Method method = CyberAPI.class.getDeclaredMethod("startCyberAPI", Settings.class);
                 CyberAPI.getInstance().getAPILogger().warn("Please specify a main package to speed up CyberAPI start time in " + method.getDeclaringClass().getCanonicalName() + "." + method.getName() + "(" + Settings.class.getCanonicalName() + ")! (registering took " + (System.currentTimeMillis()-timedPackageSearcher) + "ms!)");
@@ -163,12 +163,12 @@ public class CyberAPI extends Plugin implements CommonManager {
 
         CyberAPISpecific specific = getCyberAPISpecific();
 
-        if(!settings.shouldMuteStartMessage()) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
-        if(getSettings().isVerbose() && !settings.shouldMuteStartMessage()) specific.printBuildInformation();
+        if (!settings.shouldMuteStartMessage()) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
+        if (getSettings().isVerbose() && !settings.shouldMuteStartMessage()) specific.printBuildInformation();
 
         specific.checkForUpdates();
 
-        if(this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
+        if (this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
             try {
                 BungeeAudiences audience = BungeeAudiences.create(this);
                 this.consoleAudience = audience.console();
@@ -216,7 +216,7 @@ public class CyberAPI extends Plugin implements CommonManager {
     @Override
     public Logs createOrGetLogs(String id, String fileNameWithoutExtension) {
         File logs = new File(getDataFolder(), "logs");
-        if(!logs.exists()) logs.mkdirs();
+        if (!logs.exists()) logs.mkdirs();
         return createOrGetLogs(id, new File(logs, fileNameWithoutExtension + ".log"));
     }
 
@@ -294,7 +294,7 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 15
      */
     public Config getMainConfig() {
-        if(mainConfig == null) mainConfig = new Config();
+        if (mainConfig == null) mainConfig = new Config();
         return mainConfig;
     }
 
@@ -316,7 +316,7 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 15
      */
     public Config getConfig(String fileName) {
-        if(!configs.containsKey(fileName)) configs.put(fileName, new Config(fileName));
+        if (!configs.containsKey(fileName)) configs.put(fileName, new Config(fileName));
         return configs.get(fileName);
     }
 
@@ -437,13 +437,13 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 60
      */
     private void checkPluginDependsFor(String plugin) {
-        if(this.getDescription().getDepends()
+        if (this.getDescription().getDepends()
                 .stream()
                 .map(String::toLowerCase)
                 .toList()
                 .contains(plugin.toLowerCase(Locale.ROOT))
         ) return;
-        if(this.getDescription().getSoftDepends()
+        if (this.getDescription().getSoftDepends()
                 .stream()
                 .map(String::toLowerCase)
                 .toList()
@@ -458,10 +458,10 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 73
      */
     public FeatureSupport getAdventureAPISupport() {
-        if(adventureAPISupport == null) {
+        if (adventureAPISupport == null) {
             adventureAPISupport = settings.supportsAdventureAPI();
 
-            if(adventureAPISupport.equals(FeatureSupport.AUTO)) {
+            if (adventureAPISupport.equals(FeatureSupport.AUTO)) {
                 try {
                     Class.forName("net.kyori.adventure.text.Component");
                     this.adventureAPISupport = FeatureSupport.SUPPORTED;
@@ -480,10 +480,10 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 73
      */
     public FeatureSupport getMiniMessageSupport() {
-        if(miniMessageSupport == null) {
+        if (miniMessageSupport == null) {
             miniMessageSupport = settings.supportsMiniMessage();
 
-            if(miniMessageSupport.equals(FeatureSupport.AUTO)) {
+            if (miniMessageSupport.equals(FeatureSupport.AUTO)) {
                 try {
                     Class.forName("net.kyori.adventure.text.minimessage.MiniMessage");
                     this.miniMessageSupport = FeatureSupport.SUPPORTED;
@@ -502,10 +502,10 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 15
      */
     public FeatureSupport getLuckPermsSupport() {
-        if(luckPermsSupport == null) {
+        if (luckPermsSupport == null) {
             luckPermsSupport = settings.supportsLuckPerms();
 
-            if(luckPermsSupport.equals(FeatureSupport.AUTO)) {
+            if (luckPermsSupport.equals(FeatureSupport.AUTO)) {
                 try {
                     checkPluginDependsFor("LuckPerms");
                     Class.forName("net.luckperms.api.LuckPermsProvider");
@@ -525,7 +525,7 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 25
      */
     public FeatureSupport getProtocolLibSupport() {
-        if(this.protocolLibSupport == null) this.protocolLibSupport = FeatureSupport.UNSUPPORTED;
+        if (this.protocolLibSupport == null) this.protocolLibSupport = FeatureSupport.UNSUPPORTED;
         return this.protocolLibSupport;
     }
 
@@ -535,10 +535,10 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @since 28
      */
     public FeatureSupport getProtocolizeSupport() {
-        if(protocolizeSupport == null) {
+        if (protocolizeSupport == null) {
             protocolizeSupport = settings.supportsProtocolize();
 
-            if(protocolizeSupport.equals(FeatureSupport.AUTO)) {
+            if (protocolizeSupport.equals(FeatureSupport.AUTO)) {
                 try {
                     checkPluginDependsFor("Protocolize");
                     Class.forName("dev.simplix.protocolize");
@@ -858,7 +858,7 @@ public class CyberAPI extends Plugin implements CommonManager {
      * @return the API logger
      */
     public APILog getAPILogger() {
-        if(log == null) log = new APILog();
+        if (log == null) log = new APILog();
         return log;
     }
 
@@ -879,7 +879,7 @@ public class CyberAPI extends Plugin implements CommonManager {
 
         public void verbose(String message) { verbose(StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass().getCanonicalName(), message); }
         public void verbose(String canonical, String message) {
-            if(getSettings().isVerbose())
+            if (getSettings().isVerbose())
                 log(Level.INFO, ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + "VERBOSE/" + canonical + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message);
         }
 
@@ -888,7 +888,7 @@ public class CyberAPI extends Plugin implements CommonManager {
         }
 
         public void log(Level level, String message) {
-            if(Boolean.TRUE.equals(CyberAPI.this.settings.isSilenced())) return;
+            if (Boolean.TRUE.equals(CyberAPI.this.settings.isSilenced())) return;
             Log.log(level, ChatColor.LIGHT_PURPLE + "[CyberAPI]" + ChatColor.RESET + " " + message, Thread.currentThread().getStackTrace()[2]);
         }
     }
@@ -979,7 +979,7 @@ public class CyberAPI extends Plugin implements CommonManager {
          * @since 15
          */
         public void checkForUpdates() {
-            if(!getSettings().shouldCheckForUpdates()) return;
+            if (!getSettings().shouldCheckForUpdates()) return;
 
             ProxyServer.getInstance().getScheduler().runAsync(CyberAPI.getInstance(), () -> {
                 log.verbose("Checking for updates...");
@@ -1002,8 +1002,8 @@ public class CyberAPI extends Plugin implements CommonManager {
                 }
 
                 net.md_5.bungee.api.ChatColor DEFAULT_WARN_LOG = net.md_5.bungee.api.ChatColor.of(new java.awt.Color(249, 241, 165));
-                if(getBuild() != latestBuild) {
-                    if(latestBuild - getBuild() > 0) {
+                if (getBuild() != latestBuild) {
+                    if (latestBuild - getBuild() > 0) {
                         log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest build is #" + ChatColor.GREEN + latestBuild + DEFAULT_WARN_LOG + ", using #" + ChatColor.RED + getBuild() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
                         log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
                     }
@@ -1200,7 +1200,7 @@ public class CyberAPI extends Plugin implements CommonManager {
             StringBuilder builder = new StringBuilder();
             BuildInformation info = getBuildInformation();
 
-            if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------").append("\n&f");
+            if (separators) builder.append("&9---------------------------------------------------------------------------------------------------------").append("\n&f");
             builder.append("&5CyberAPI Version String: &f").append(getVersionString()).append("\n");
             builder.append("&5Running on Server: &f")
                     .append("\n\t&c\u250D &fServer Type: &6").append(getServerType())
@@ -1224,7 +1224,7 @@ public class CyberAPI extends Plugin implements CommonManager {
                     .append("\n");
             builder.append(" ").append("\n&f");
             builder.append("&fPlugin &3").append(getPluginName()).append(" &b(").append(getDescription().getVersion()).append("&b) &fhas requested this build information!").append("\n");
-            if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------");
+            if (separators) builder.append("&9---------------------------------------------------------------------------------------------------------");
 
             return UChat.chat(builder.toString());
         }

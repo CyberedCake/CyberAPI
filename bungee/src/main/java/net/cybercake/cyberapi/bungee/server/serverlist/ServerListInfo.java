@@ -21,7 +21,7 @@ public class ServerListInfo {
      * @since 28
      */
     public static ServerListInfo serverListInfo() {
-        if(serverListInfo == null) serverListInfo = new ServerListInfo();
+        if (serverListInfo == null) serverListInfo = new ServerListInfo();
         return new ServerListInfo();
     }
 

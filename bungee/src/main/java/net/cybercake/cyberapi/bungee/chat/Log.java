@@ -47,7 +47,7 @@ public class Log {
      * @since 15
      */
     public static void log(Level level, String message, StackTraceElement stackTraceElement) {
-        if(
+        if (
                 CyberAPI.getInstance() == null // make sure CyberAPI is enabled
                         || Arrays.stream(Thread.currentThread().getStackTrace()).anyMatch(element -> element.getMethodName().equalsIgnoreCase("onDisable")) // fix the onDisable glitch where it would not work while being disabled (this mainly affected Spigot but here it is anyway)
         ) {
@@ -60,7 +60,7 @@ public class Log {
                 ProxyServer.getInstance().getPluginManager().callEvent(logEvent);
                 if (logEvent.isCancelled()) return;
                 String realContent = (logEvent.getPrefix() == null ? "" : logEvent.getPrefix()) + logEvent.getMessage();
-                if(CyberAPI.getInstance().getAdventureAPISupport() == FeatureSupport.SUPPORTED && CyberAPI.getInstance().getConsoleAudience() != null) {
+                if (CyberAPI.getInstance().getAdventureAPISupport() == FeatureSupport.SUPPORTED && CyberAPI.getInstance().getConsoleAudience() != null) {
                     CyberAPI.getInstance().getConsoleAudience().sendMessage(UChat.component("LEVEL_" + (javaLevelTo4jLevel(level)) + CommonAdapter.THREE_SEPARATION_CHARACTERS + realContent));
                     return;
                 }
@@ -77,7 +77,7 @@ public class Log {
     @Deprecated(forRemoval = true)
     @SuppressWarnings({"all"}) // remove the "deprecated member is still in use" as the deprecation is just for effect
     private static void verbose(StackTraceElement stackTraceElement, String message) {
-        if(CyberAPI.getInstance().isPluginVerbose())
+        if (CyberAPI.getInstance().isPluginVerbose())
             log(Level.INFO, ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "VERBOSE/" + stackTraceElement.getClassName() + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message, stackTraceElement);
     }
 

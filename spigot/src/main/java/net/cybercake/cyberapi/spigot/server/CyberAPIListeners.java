@@ -21,7 +21,7 @@ public class CyberAPIListeners implements Listener {
         String command = event.getMessage().split(" ")[0];
         String args = (event.getMessage().substring(command.length()).isEmpty() ? null : (event.getMessage().substring((command + " ").length())));
         String fakeCommand = CommandManager.getFakeCommands().get(command.substring(1)); // substring because we don't want the slash
-        if(fakeCommand == null) return;
+        if (fakeCommand == null) return;
         event.setCancelled(true);
         event.getPlayer().performCommand(fakeCommand.replace("remove:", "") + (args == null ? "" : " " + args));
     }
@@ -42,11 +42,11 @@ public class CyberAPIListeners implements Listener {
             String command = event.getBuffer().split(" ")[0];
             String argsTogether = event.getBuffer().substring((command + " ").length());
             String[] args = argsTogether.split(" ");
-            if(argsTogether.endsWith(" ")) {
+            if (argsTogether.endsWith(" ")) {
                 char[] characters = argsTogether.toCharArray();
                 int totalIncrease = 0;
                 for(int i = characters.length-1; i>0; i--) {
-                    if(Character.isSpaceChar(characters[i])) break;
+                    if (Character.isSpaceChar(characters[i])) break;
                     totalIncrease++;
                 }
                 List<String> newArgs = new ArrayList<>(List.of(args));
@@ -54,9 +54,9 @@ public class CyberAPIListeners implements Listener {
                 args = newArgs.toArray(String[]::new);
             }
             String fakeCommandActual = CommandManager.getFakeCommands().get(command.substring(1));
-            if(fakeCommandActual == null) return;
+            if (fakeCommandActual == null) return;
             PluginCommand pluginCommand = Bukkit.getPluginCommand(fakeCommandActual);
-            if(pluginCommand == null) return;
+            if (pluginCommand == null) return;
             List<String> newCompletions = pluginCommand.tabComplete(event.getSender(), command, args);
             event.setCompletions(newCompletions);
         } catch (Exception exception) {

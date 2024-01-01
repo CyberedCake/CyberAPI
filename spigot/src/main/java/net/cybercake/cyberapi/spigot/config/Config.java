@@ -81,7 +81,7 @@ public class Config {
      * @since 1
      */
     public void saveDefaults() {
-        if(file.exists()) return;
+        if (file.exists()) return;
         CyberAPI.getInstance().saveResource(name + ".yml", false);
     }
 
@@ -110,9 +110,9 @@ public class Config {
      * @since 116
      */
     public void copyDefaults() throws IOException {
-        if(this.config.getDefaults() == null) {
+        if (this.config.getDefaults() == null) {
             InputStream stream = CyberAPI.getInstance().getResource(name + ".yml");
-            if(stream == null) return;
+            if (stream == null) return;
             FileConfiguration defaults = YamlConfiguration.loadConfiguration(
                     new InputStreamReader(stream, StandardCharsets.UTF_8)
             );
@@ -129,7 +129,7 @@ public class Config {
         config = YamlConfiguration.loadConfiguration(file);
 
         final InputStream configStream = CyberAPI.getInstance().getResource(name);
-        if(configStream != null) config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(configStream, Charsets.UTF_8)));
+        if (configStream != null) config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(configStream, Charsets.UTF_8)));
     }
 
     /**
@@ -152,7 +152,7 @@ public class Config {
      * @since 1
      */
     public FileConfiguration values() {
-        if(config == null) reload();
+        if (config == null) reload();
         return config;
     }
 

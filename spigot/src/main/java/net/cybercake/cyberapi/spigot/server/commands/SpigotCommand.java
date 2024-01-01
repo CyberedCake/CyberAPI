@@ -40,7 +40,7 @@ public abstract class SpigotCommand implements CommandExecutor, TabCompleter {
      * @since 41
      */
     public SpigotCommand(CommandInformation... information) {
-        if(information.length < 1) throw new IllegalArgumentException("There must be at least **one** " + information.getClass().getCanonicalName() + " provided for constructor in " + SpigotCommand.class.getCanonicalName() + "!");
+        if (information.length < 1) throw new IllegalArgumentException("There must be at least **one** " + information.getClass().getCanonicalName() + " provided for constructor in " + SpigotCommand.class.getCanonicalName() + "!");
         this.information = List.of(information);
     }
 
@@ -50,7 +50,7 @@ public abstract class SpigotCommand implements CommandExecutor, TabCompleter {
      * @since 41
      */
     public SpigotCommand(CommandInformation.Builder... information) {
-        if(information.length < 1) throw new IllegalArgumentException("There must be at least **one** " + information.getClass().getCanonicalName() + " provided for constructor in " + SpigotCommand.class.getCanonicalName() + "!");
+        if (information.length < 1) throw new IllegalArgumentException("There must be at least **one** " + information.getClass().getCanonicalName() + " provided for constructor in " + SpigotCommand.class.getCanonicalName() + "!");
         List<CommandInformation> builtInformations = new ArrayList<>();
         List.of(information).forEach(info -> builtInformations.add(info.build()));
         this.information = builtInformations;
@@ -86,7 +86,7 @@ public abstract class SpigotCommand implements CommandExecutor, TabCompleter {
      */
     public @Nullable CommandInformation getCommand(String name) {
         for(CommandInformation info : getCommands()) {
-            if(
+            if (
                     info.getName().equalsIgnoreCase(name)
                     || Arrays.stream(info.getAliases()).anyMatch(info1 -> info1.equalsIgnoreCase(name))
             )
@@ -128,22 +128,22 @@ public abstract class SpigotCommand implements CommandExecutor, TabCompleter {
     @Override
     public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
         CommandInformation info = getCommand(s);
-        if(info != null && info.getCooldown() != null) {
+        if (info != null && info.getCooldown() != null) {
             ActiveCooldown cooldown = ActiveCooldown.getCooldownFor(commandSender, info);
-            if(cooldown != null && cooldown.getExpiration() > System.currentTimeMillis()  && (info.getCooldown().getBypassPermission() == null || (info.getCooldown().getBypassPermission() != null && !commandSender.hasPermission(info.getCooldown().getBypassPermission())))) { // if the user currently has a cooldown active
+            if (cooldown != null && cooldown.getExpiration() > System.currentTimeMillis()  && (info.getCooldown().getBypassPermission() == null || (info.getCooldown().getBypassPermission() != null && !commandSender.hasPermission(info.getCooldown().getBypassPermission())))) { // if the user currently has a cooldown active
                 long timeLeft = TimeUnit.SECONDS.convert(cooldown.getExpiration(), TimeUnit.MILLISECONDS)-TimeUnit.SECONDS.convert(System.currentTimeMillis(), TimeUnit.MILLISECONDS);
 
                 String timeDuration = Time.getBetterTimeDisplay(timeLeft, true).replace(" and ", ", ");
                 String timeDurationSimplified = Time.getBetterTimeDisplay(timeLeft, false);
                 String timeDurationMilliseconds = Time.formatBasicMs(cooldown.getExpiration()-System.currentTimeMillis(), false);
 
-                if(info.getCooldown().getMessage() != null) {
+                if (info.getCooldown().getMessage() != null) {
                     commandSender.sendMessage(info.getCooldown().getMessage()
                             .replace("%remaining_time%", timeDuration)
                             .replace("%remaining_time_simplified%", timeDurationSimplified)
                             .replace("%remaining_time_ms%", timeDurationMilliseconds)
                     );
-                }else if(info.getCooldown().getMessage() == null) {
+                }else if (info.getCooldown().getMessage() == null) {
                     commandSender.sendMessage(UChat.chat("&cYou cannot use this command for another &6" + timeDuration + "&c!"));
                 }
 
@@ -151,7 +151,7 @@ public abstract class SpigotCommand implements CommandExecutor, TabCompleter {
             }
 
             // sets a new cooldown since the execution of the command is about to occur
-            if((info.getCooldown().getBypassPermission() != null && !commandSender.hasPermission(info.getCooldown().getBypassPermission())) || info.getCooldown().getBypassPermission() == null) {
+            if ((info.getCooldown().getBypassPermission() != null && !commandSender.hasPermission(info.getCooldown().getBypassPermission())) || info.getCooldown().getBypassPermission() == null) {
                 cancelCooldown(commandSender, info);
                 ActiveCooldown.setNewCooldown(info, commandSender, TimeUnit.MILLISECONDS.convert(Time.getUnix(info.getCooldown().getUnit())+info.getCooldown().getTime(), info.getCooldown().getUnit()));
             }
@@ -163,7 +163,7 @@ public abstract class SpigotCommand implements CommandExecutor, TabCompleter {
     @Override
     public final List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String s, @NotNull String[] strings) {
         List<String> tab = tab(commandSender, s, getCommand(s), strings);
-        if(tab == null) return UTabComp.emptyList;
+        if (tab == null) return UTabComp.emptyList;
         return UTabComp.tabCompletions(getMainCommand().getTabCompleteType(), List.of(strings).get(strings.length-1), tab);
     }
 }

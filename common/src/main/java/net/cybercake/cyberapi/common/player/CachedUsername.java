@@ -31,7 +31,7 @@ public class CachedUsername {
     @Deprecated
     @SuppressWarnings({"all"})
     public CachedUsername(@NotNull UUID uuid) {
-        if(cachedUsernames.containsKey(uuid)) throw new IllegalArgumentException("That UUID is already stored in cached usernames!");
+        if (cachedUsernames.containsKey(uuid)) throw new IllegalArgumentException("That UUID is already stored in cached usernames!");
 
         this.uuid = uuid;
         this.lastCached = 0L;
@@ -50,7 +50,7 @@ public class CachedUsername {
      * @since 15
      */
     public static CachedUsername cachedUsername(@NotNull UUID uuid) {
-        if(cachedUsernames.containsKey(uuid)) return cachedUsernames.get(uuid);
+        if (cachedUsernames.containsKey(uuid)) return cachedUsernames.get(uuid);
         return new CachedUsername(uuid);
     }
 
@@ -84,7 +84,7 @@ public class CachedUsername {
      * @since 15
      */
     public long getSecondsSinceLastCache() {
-        if(lastCached == 0L) return -1L;
+        if (lastCached == 0L) return -1L;
         return (Time.getUnix()-lastCached);
     }
 
@@ -94,7 +94,7 @@ public class CachedUsername {
      * @since 15
      */
     public String getUsername() {
-        if(getSecondsSinceLastCache() == -1 || getSecondsSinceLastCache() >= (30*60)) forceRecache();
+        if (getSecondsSinceLastCache() == -1 || getSecondsSinceLastCache() >= (30*60)) forceRecache();
         return username;
     }
 

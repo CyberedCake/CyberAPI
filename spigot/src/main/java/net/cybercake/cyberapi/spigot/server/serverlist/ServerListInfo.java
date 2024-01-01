@@ -24,7 +24,7 @@ public class ServerListInfo {
      */
     public static ServerListInfo serverListInfo() {
         Validators.validateProtocolLibHook();
-        if(serverListInfo == null) serverListInfo = new ServerListInfo();
+        if (serverListInfo == null) serverListInfo = new ServerListInfo();
         return new ServerListInfo();
     }
 

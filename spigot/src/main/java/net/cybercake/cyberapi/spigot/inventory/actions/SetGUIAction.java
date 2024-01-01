@@ -42,7 +42,7 @@ public class SetGUIAction extends FollowUpGUIAction implements ItemAdder {
     public Consumer<InventoryClickEvent> getRealEvent(Consumer<InventoryClickEvent> event) {
         return (e) -> {
             int clickedItem = e.getSlot();
-            if(Arrays.stream(indices).noneMatch(integer -> integer == clickedItem)) return;
+            if (Arrays.stream(indices).noneMatch(integer -> integer == clickedItem)) return;
             event.accept(e);
         };
     }

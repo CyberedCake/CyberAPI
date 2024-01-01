@@ -35,7 +35,7 @@ public class UChat {
      * @since 139
      */
     public static <T, R> R format(ChatFormatType<T, R> formatType, T input) {
-        if(formatType.getReturnType().getCanonicalName().toLowerCase(Locale.ROOT).contains("net.kyori.adventure"))
+        if (formatType.getReturnType().getCanonicalName().toLowerCase(Locale.ROOT).contains("net.kyori.adventure"))
             Validators.validateAdventureSupport();
         return formatType.execute(input);
     }
@@ -451,8 +451,8 @@ public class UChat {
      * @since 142
      */
     public static <T> T getSeparator(ColorTranslator color, int characters, ChatFormatType<String, T> chatFormatType) {
-        if(characters <= 0) throw new IllegalArgumentException("You cannot have 0 or less characters in a separator!");
-        else if(characters >= 1000) throw new IllegalArgumentException("You cannot have 1,000 or more characters in a separator!");
+        if (characters <= 0) throw new IllegalArgumentException("You cannot have 0 or less characters in a separator!");
+        else if (characters >= 1000) throw new IllegalArgumentException("You cannot have 1,000 or more characters in a separator!");
         String type = chatFormatType.getName();
         return switch(type) {
             case "LEGACY", "BUNGEE_COMPONENT", "COMPONENT" ->
@@ -525,7 +525,7 @@ public class UChat {
      * @since 15
      */
     public static void printClearChat(CyberPlayer cyberPlayer) {
-        if(cyberPlayer.getOnlineActions() == null) throw new IllegalStateException("Cannot send a cleared chat to an offline player!");
+        if (cyberPlayer.getOnlineActions() == null) throw new IllegalStateException("Cannot send a cleared chat to an offline player!");
         cyberPlayer.getOnlineActions().sendColored(getClearedChat(ChatFormatType.LEGACY));
     }
 
@@ -658,10 +658,10 @@ public class UChat {
     @Deprecated(forRemoval = true, since = "139")
     public static void broadcast(BaseComponent message, @Nullable Predicate<? super CommandSender> filter) {
         for(ProxiedPlayer player : CyberAPI.getInstance().getOnlinePlayers()) {
-            if(filter != null && !filter.test(player)) continue;
+            if (filter != null && !filter.test(player)) continue;
             player.sendMessage(message);
         }
-        if(filter == null || filter.test(CyberAPI.getInstance().getProxy().getConsole()))
+        if (filter == null || filter.test(CyberAPI.getInstance().getProxy().getConsole()))
             Log.info(BaseComponent.toLegacyText(message));
     }
     //endregion

@@ -36,7 +36,7 @@ public class AddGUIAction extends FollowUpGUIAction implements ItemAdder {
     protected Consumer<InventoryClickEvent> getRealEvent(Consumer<InventoryClickEvent> event) {
         return (e) -> {
             int clickedItem = e.getSlot();
-            if(map.keySet().stream().noneMatch(slot -> clickedItem == slot)) return;
+            if (map.keySet().stream().noneMatch(slot -> clickedItem == slot)) return;
             event.accept(e);
         };
     }

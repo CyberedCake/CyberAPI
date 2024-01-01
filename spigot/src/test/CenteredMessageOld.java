@@ -30,7 +30,7 @@
 //     * @return the centered message
 //     */
 //    public static String get(String message, int lineLength) {
-//        if(message == null || message.equals("")) { return ""; }
+//        if (message == null || message.equals("")) { return ""; }
 //        char[] chars = message.toCharArray(); // Get a list of all characters in text
 //        boolean isBold = false;
 //        double length = 0;
@@ -76,7 +76,7 @@
 //     */
 //    public static Component get(Component message, int lineLength) {
 //        Validators.validateAdventureSupport();
-//        if(message == null) { return Component.empty(); }
+//        if (message == null) { return Component.empty(); }
 //        String componentString = LegacyComponentSerializer.legacyAmpersand().serialize(message);
 //
 //        char[] chars = componentString.toCharArray(); // Get a list of all characters in text

@@ -26,7 +26,7 @@ public class Config {
      * @since 15
      */
     public Config() {
-        if(!CyberAPI.getInstance().getDataFolder().exists())
+        if (!CyberAPI.getInstance().getDataFolder().exists())
             CyberAPI.getInstance().getDataFolder().mkdir();
 
         this.name = "config";
@@ -40,7 +40,7 @@ public class Config {
      * @since 15
      */
     public Config(String fileName) {
-        if(!CyberAPI.getInstance().getDataFolder().exists())
+        if (!CyberAPI.getInstance().getDataFolder().exists())
             CyberAPI.getInstance().getDataFolder().mkdir();
 
         this.name = fileName;
@@ -54,7 +54,7 @@ public class Config {
      * @since 92
      */
     public Config(File file) {
-        if(!CyberAPI.getInstance().getDataFolder().exists())
+        if (!CyberAPI.getInstance().getDataFolder().exists())
             CyberAPI.getInstance().getDataFolder().mkdir();
 
         this.name = file.getName();
@@ -69,7 +69,7 @@ public class Config {
      * @since 92
      */
     public Config(File parent, String fileName) {
-        if(!CyberAPI.getInstance().getDataFolder().exists())
+        if (!CyberAPI.getInstance().getDataFolder().exists())
             CyberAPI.getInstance().getDataFolder().mkdir();
 
         this.name = fileName;
@@ -99,9 +99,9 @@ public class Config {
      */
     public void saveDefaults() {
         try {
-            if(!CyberAPI.getInstance().getDataFolder().exists())
+            if (!CyberAPI.getInstance().getDataFolder().exists())
                 CyberAPI.getInstance().getDataFolder().mkdir();
-            if(file.exists()) return;
+            if (file.exists()) return;
 
             FileOutputStream outputStream = new FileOutputStream(file);
             InputStream inputStream = CyberAPI.getInstance().getResourceAsStream(name + ".yml");
@@ -141,7 +141,7 @@ public class Config {
      */
     public void copyDefaults(boolean shouldCopyDefaults) {
         this.copyDefaults = shouldCopyDefaults;
-        if(this.copyDefaults) copyDefaults();
+        if (this.copyDefaults) copyDefaults();
     }
 
     /**

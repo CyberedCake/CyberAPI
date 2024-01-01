@@ -118,8 +118,8 @@ public abstract class FollowUpGUIAction {
         gui.clickEvents.stream()
                 .filter(consumer -> consumer.getObjectHashCode() != null && consumer.getObjectHashCode() == this.hashCode())
                 .forEach(consumer -> consumer.setConsumer((e) -> {
-                    if(!(e.getWhoClicked() instanceof Player player)) throw new HaltConsumerListException();
-                    if(!predicate.test(player)) throw new HaltConsumerListException();
+                    if (!(e.getWhoClicked() instanceof Player player)) throw new HaltConsumerListException();
+                    if (!predicate.test(player)) throw new HaltConsumerListException();
                  }));
         return this;
     }
@@ -133,7 +133,7 @@ public abstract class FollowUpGUIAction {
         gui.clickEvents.stream()
                 .filter(consumer -> consumer.getObjectHashCode() != null && consumer.getObjectHashCode() == this.hashCode())
                 .forEach(consumer -> consumer.setConsumer((e) -> {
-                    if(!predicate.test(e.getRawSlot())) throw new HaltConsumerListException();
+                    if (!predicate.test(e.getRawSlot())) throw new HaltConsumerListException();
                 }));
         return this;
     }
@@ -161,7 +161,7 @@ public abstract class FollowUpGUIAction {
      * @param active a {@link Boolean primitive boolean} object to determine if the previous Consumers will run
      * @since 143
      */
-    public FollowUpGUIAction onlyIf(boolean active) {
+    public FollowUpGUIAction onlyif (boolean active) {
         gui.clickEvents.stream()
                 .filter(consumer -> consumer.getObjectHashCode() != null && consumer.getObjectHashCode() == this.hashCode())
                 .forEach(consumer -> consumer.setActive(active));
@@ -174,7 +174,7 @@ public abstract class FollowUpGUIAction {
     private Consumer<InventoryClickEvent> checkClick(Consumer<InventoryClickEvent> consumer, Predicate<ClickType> type) {
         return (e) -> {
             ClickType click = e.getClick();
-            if(!type.test(click)) return;
+            if (!type.test(click)) return;
             consumer.accept(e);
         };
     }

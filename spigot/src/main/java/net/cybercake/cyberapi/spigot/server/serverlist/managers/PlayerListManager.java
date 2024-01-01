@@ -28,7 +28,7 @@ public class PlayerListManager {
 
     private static PlayerListManager playerListManager = null;
     public static PlayerListManager playerListManager() {
-        if(PlayerListManager.playerListManager == null) PlayerListManager.playerListManager = new PlayerListManager();
+        if (PlayerListManager.playerListManager == null) PlayerListManager.playerListManager = new PlayerListManager();
         return PlayerListManager.playerListManager;
     }
 
@@ -173,7 +173,7 @@ public class PlayerListManager {
     public int getOnlinePlayers() {
         int onlinePlayers = CyberAPI.getInstance().getOnlinePlayers().size();
         String newCurrentPlayersString = String.valueOf(newCurrentPlayers);
-        if(getOnlinePlayersType() == null) return onlinePlayers;
+        if (getOnlinePlayersType() == null) return onlinePlayers;
         return switch(getOnlinePlayersType()) {
             case STAY_AT -> Integer.parseInt(newCurrentPlayersString);
             case CONSTANT -> onlinePlayers+Integer.parseInt(newCurrentPlayersString);
@@ -228,28 +228,28 @@ public class PlayerListManager {
      * @since 9
      */
     private void validateSetCurrentPlayerCountArgs(NewPlayerCountType newPlayerCountType, Object newCurrentPlayers) {
-        if(newPlayerCountType == NewPlayerCountType.KEEP_SAME) return;
+        if (newPlayerCountType == NewPlayerCountType.KEEP_SAME) return;
 
-        if(newPlayerCountType.getType() != null && !(newCurrentPlayers.getClass() == newPlayerCountType.getType()))
+        if (newPlayerCountType.getType() != null && !(newCurrentPlayers.getClass() == newPlayerCountType.getType()))
             throw new IllegalArgumentException("newCurrentPlayers must be a " + newPlayerCountType.getType().getCanonicalName() + " (currently " + newCurrentPlayers.getClass().getCanonicalName() + ") because newPlayerCountType is set to " + newPlayerCountType.name() + "!");
 
         switch(newPlayerCountType) {
 //            case CONSTANT -> {
-//                if(!NumberUtils.isInteger(String.valueOf(newCurrentPlayers))) throw validateSetCurrentPlayerCountArgsIllegalArgument("The constant number must be an integer!", null);
+//                if (!NumberUtils.isInteger(String.valueOf(newCurrentPlayers))) throw validateSetCurrentPlayerCountArgsIllegalArgument("The constant number must be an integer!", null);
 //            }
             case PERCENT -> {
-//                if(!NumberUtils.isDouble(String.valueOf(newCurrentPlayers))) throw validateSetCurrentPlayerCountArgsIllegalArgument("The percent number must be a double!", null);
-                if(NumberUtils.isBetweenEquals(Double.parseDouble(String.valueOf(newCurrentPlayers)), 0.0, 1.0)) throw validateSetCurrentPlayerCountArgsIllegalArgument("The percent number must be between 0.0 and 1.0!", null);
+//                if (!NumberUtils.isDouble(String.valueOf(newCurrentPlayers))) throw validateSetCurrentPlayerCountArgsIllegalArgument("The percent number must be a double!", null);
+                if (NumberUtils.isBetweenEquals(Double.parseDouble(String.valueOf(newCurrentPlayers)), 0.0, 1.0)) throw validateSetCurrentPlayerCountArgsIllegalArgument("The percent number must be between 0.0 and 1.0!", null);
             }
             case RANDOM_BETWEEN -> {
                 String newCurrentPlayersString = String.valueOf(newCurrentPlayers);
-                if(newCurrentPlayersString.split(":").length != 1) throw validateSetCurrentPlayerCountArgsIllegalArgument("Must contain a ':' to separate values!", null);
+                if (newCurrentPlayersString.split(":").length != 1) throw validateSetCurrentPlayerCountArgsIllegalArgument("Must contain a ':' to separate values!", null);
                 String firstValue = newCurrentPlayersString.split(":")[0];
                 String secondValue = newCurrentPlayersString.split(":")[1];
-                if(!(NumberUtils.isInteger(firstValue)) || !(NumberUtils.isInteger(secondValue))) throw validateSetCurrentPlayerCountArgsIllegalArgument("Both values on either side of the colon ':' must be integers!", null);
+                if (!(NumberUtils.isInteger(firstValue)) || !(NumberUtils.isInteger(secondValue))) throw validateSetCurrentPlayerCountArgsIllegalArgument("Both values on either side of the colon ':' must be integers!", null);
                 int firstInt = Integer.parseInt(firstValue);
                 int secondInt = Integer.parseInt(secondValue);
-                if(firstInt > secondInt) throw validateSetCurrentPlayerCountArgsIllegalArgument("The first integer must be smaller than the second integer!", null);
+                if (firstInt > secondInt) throw validateSetCurrentPlayerCountArgsIllegalArgument("The first integer must be smaller than the second integer!", null);
                 // this means that what CyberAPI is going to use in setCurrentPlayerCount() can be safely assumed to be correct
             }
         }
@@ -261,7 +261,7 @@ public class PlayerListManager {
      */
     private IllegalArgumentException validateSetCurrentPlayerCountArgsIllegalArgument(String why, Throwable cause) {
         String reason = "Failed to parse newCurrentPlayers: " + why;
-        if(cause != null) return new IllegalArgumentException(why, cause);
+        if (cause != null) return new IllegalArgumentException(why, cause);
         return new IllegalArgumentException(reason);
     }
 

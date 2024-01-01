@@ -29,7 +29,7 @@ public class Placeholders extends PlaceholderExpansion {
      */
     public static Placeholders placeholders() {
         Validators.validatePlaceholderAPIHook();
-        if(placeholders == null) placeholders = new Placeholders();
+        if (placeholders == null) placeholders = new Placeholders();
         return placeholders;
     }
 
@@ -179,7 +179,7 @@ public class Placeholders extends PlaceholderExpansion {
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
         for(StoredPlaceholder placeholder : placeholderList) {
-            if(!placeholder.parameters().contains(params)) continue;
+            if (!placeholder.parameters().contains(params)) continue;
             return placeholder.placeholder().run(player);
         }
         return null;

@@ -20,16 +20,16 @@ public class GUIListeners implements Listener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event){
-        if(!(event.getPlayer() instanceof Player player)) return;
-        if(!(event.getInventory().getHolder() instanceof CustomGUI gui)) return;
+        if (!(event.getPlayer() instanceof Player player)) return;
+        if (!(event.getInventory().getHolder() instanceof CustomGUI gui)) return;
 
         gui.open(event, player);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if(!(event.getWhoClicked() instanceof Player player)) return;
-        if(!(event.getInventory().getHolder() instanceof CustomGUI gui)) return;
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+        if (!(event.getInventory().getHolder() instanceof CustomGUI gui)) return;
 
         event.setCancelled(true);
         gui.click(event, player);
@@ -37,8 +37,8 @@ public class GUIListeners implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if(!(event.getPlayer() instanceof Player player)) return;
-        if(!(event.getInventory().getHolder() instanceof CustomGUI gui)) return;
+        if (!(event.getPlayer() instanceof Player player)) return;
+        if (!(event.getInventory().getHolder() instanceof CustomGUI gui)) return;
 
         gui.close(event, player);
     }

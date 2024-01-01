@@ -266,11 +266,11 @@ public class NumeralConverter {
                     index = 0,
                     subtractionRule = digits;
             while ((subtractionRule > 0) && (index < numerals.size())) {
-                if(loopAmount > loopMaximum)
+                if (loopAmount > loopMaximum)
                     throw new ExcessiveLoopsException("Failed to convert arabic numeral -> roman numeral within sufficient loops (" + loopAmount + "). Maybe the input isn't convertable");
                 loopAmount++;
                 RomanNumeral currentNumeral = numerals.get(index);
-                if(currentNumeral.getArabicNumeral() <= subtractionRule) {
+                if (currentNumeral.getArabicNumeral() <= subtractionRule) {
                     roman.append(currentNumeral.getRomanNumeral());
                     subtractionRule -= currentNumeral.getArabicNumeral();
                 }else index++;
@@ -288,11 +288,11 @@ public class NumeralConverter {
             int loopAmount = 0;
             String modificationRule = roman.toUpperCase(Locale.ROOT);
             while (modificationRule.length() > 0) {
-                if(loopAmount > loopMaximum)
+                if (loopAmount > loopMaximum)
                     throw new ExcessiveLoopsException("Failed to convert roman numeral -> arabic numeral within sufficient loops (" + loopAmount + "). Maybe the input isn't convertable?");
                 loopAmount++;
                 for(RomanNumeral numeral : numerals) {
-                    if(!modificationRule.startsWith(numeral.getRomanNumeral())) continue;
+                    if (!modificationRule.startsWith(numeral.getRomanNumeral())) continue;
                     value += numeral.getArabicNumeral();
                     modificationRule = modificationRule.substring(numeral.getRomanNumeral().length());
                 }

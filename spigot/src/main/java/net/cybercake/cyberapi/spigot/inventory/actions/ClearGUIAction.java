@@ -32,7 +32,7 @@ public class ClearGUIAction extends FollowUpGUIAction implements ItemRemover {
     public ClearGUIAction(UpdateGUIAction action, @Nullable ItemStack... items) {
         super(action);
 
-        if(items == null) { // CLEARS EVERYTHING
+        if (items == null) { // CLEARS EVERYTHING
             this.map = new HashMap<>(this.gui.getContents()); // literally removing everything so just put this lol
             this.gui.getInventory().clear();
             $clearClickEvents((consumer) -> true);

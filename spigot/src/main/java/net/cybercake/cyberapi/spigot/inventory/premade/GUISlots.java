@@ -77,7 +77,7 @@ public class GUISlots extends CustomGUI {
      */
     public GUISlots(@NotNull Player player, @IntRange(from = 1, to = 6) int rows, @Nullable @IntRange(from = 0, to = 53) Integer highlight) {
         super(9 * rows, rows + " " + StringUtils.pluralize("row!s", rows) + ", size of " + (9 * rows));
-        if(highlight != null)
+        if (highlight != null)
             Preconditions.checkArgument(IntStream.range(0, 9*rows).anyMatch(slot -> slot == highlight), "Highlight must be within the GUI range. Must be between 0 - " + (9*rows) + ".");
         this.player = player;
 
@@ -132,11 +132,11 @@ public class GUISlots extends CustomGUI {
                     );
 
         // show highlight
-        if(highlight != null) {
+        if (highlight != null) {
             final ItemStack originalItem = this.getItemAt(highlight).clone();
             final Material originalMaterial = originalItem.getType();
             ItemMeta meta = originalItem.getItemMeta();
-            if(meta == null) Bukkit.getItemFactory().getItemMeta(originalMaterial);
+            if (meta == null) Bukkit.getItemFactory().getItemMeta(originalMaterial);
             final String originalName = (Objects.requireNonNull(meta).hasDisplayName() ? meta.getDisplayName() : meta.getLocalizedName());
             CustomGUI gui = this;
             this.task = new BukkitRunnable() {
@@ -161,20 +161,20 @@ public class GUISlots extends CustomGUI {
     @Override
     public void onInventoryClick(@NotNull InventoryClickEvent event, Player player) {
         int index = event.getSlot();
-        if(System.currentTimeMillis() - lastClickedSlot.getOrDefault(index, 0L) < CLICK_COOLDOWN) return;
-        if(event.getClickedInventory() == null) return;
-        if(!event.getClickedInventory().equals(event.getView().getTopInventory())) return;
+        if (System.currentTimeMillis() - lastClickedSlot.getOrDefault(index, 0L) < CLICK_COOLDOWN) return;
+        if (event.getClickedInventory() == null) return;
+        if (!event.getClickedInventory().equals(event.getView().getTopInventory())) return;
 
         ItemStack currentItem = event.getCurrentItem();
-        if(currentItem == null) return;
+        if (currentItem == null) return;
 
         ItemMeta meta = currentItem.getItemMeta();
-        if(meta == null) return;
+        if (meta == null) return;
 
         event.setCancelled(true);
 
         List<String> lore = meta.getLore();
-        if(lore == null) lore = Collections.emptyList();
+        if (lore == null) lore = Collections.emptyList();
 
         TextComponent component = new TextComponent(UChat.bComponent("&6You clicked &aSlot #" + index));
         component.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(index)));
@@ -191,7 +191,7 @@ public class GUISlots extends CustomGUI {
 
     @Override
     public void onInventoryClose(@NotNull InventoryCloseEvent event, Player player) {
-        if(this.task != null)
+        if (this.task != null)
             this.task.cancel(); // task for highlighted item
     }
     //</editor-fold>

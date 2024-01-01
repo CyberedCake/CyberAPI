@@ -17,7 +17,6 @@ import net.cybercake.cyberapi.spigot.chat.Log;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.config.Config;
 import net.cybercake.cyberapi.spigot.inventory.GUIListeners;
-import net.cybercake.cyberapi.spigot.items.ItemCreator;
 import net.cybercake.cyberapi.spigot.player.CyberPlayer;
 import net.cybercake.cyberapi.spigot.server.CyberAPIListeners;
 import net.cybercake.cyberapi.spigot.server.commands.CommandManager;
@@ -128,7 +127,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
         log = new APILog(); // for private use only
 
-        if(settings == null) settings = Settings.builder().build(); // use default values
+        if (settings == null) settings = Settings.builder().build(); // use default values
         this.settings = settings;
         log.verbose("Starting CyberAPI...");
 
@@ -155,7 +154,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         this.classes = (mainPackagePath == null ? new Reflections() : new Reflections(mainPackagePath)).getAll(new SubTypesScanner(false))
                 .stream()
                 .filter(clazz -> {
-                    if(mainPackagePath == null) return true;
+                    if (mainPackagePath == null) return true;
                     return clazz.startsWith(mainPackagePath);
                 })
                 .map(clazz -> {
@@ -165,7 +164,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                     } catch (ClassNotFoundException | NoClassDefFoundError exception) {
                         log.verbose(ChatColor.RED + "Failed to find class despite being included in package scan: " + clazz);
                         log.verbose(ChatColor.RED + "|-> Related exception: " + exception);
-                        if(mainPackagePath != null && clazz.startsWith(mainPackagePath))
+                        if (mainPackagePath != null && clazz.startsWith(mainPackagePath))
                             throw new IllegalStateException("Class not found, despite it being included in the package scan! This is likely not your fault, please report to CyberAPI: https://github.com/CyberedCake/CyberAPI/issues (unable to find '" + clazz + "')", exception);
                         return null;
                     }
@@ -176,7 +175,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         ListenerManager.listenerManager().init(settings.getMainPackagePath());
         CommandManager.commandManager().init(settings.getMainPackagePath());
 
-        if(mainPackagePath == null) {
+        if (mainPackagePath == null) {
             try {
                 Method method = CyberAPI.class.getDeclaredMethod("startCyberAPI", Settings.class);
                 CyberAPI.getInstance().getAPILogger().warn("Please specify a main package to speed up CyberAPI start time in " + method.getDeclaringClass().getCanonicalName() + "." + method.getName() + "(" + Settings.class.getCanonicalName() + ")! (registering took " + (System.currentTimeMillis()-timedPackageSearcher) + "ms!)");
@@ -188,12 +187,12 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
         CyberAPISpecific specific = getCyberAPISpecific();
 
-        if(!settings.shouldMuteStartMessage()) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
-        if(getSettings().isVerbose() && !settings.shouldMuteStartMessage()) specific.printBuildInformation();
+        if (!settings.shouldMuteStartMessage()) log.info(specific.getVersionString()); // print version string and print build information if user set CyberAPI to be verbose
+        if (getSettings().isVerbose() && !settings.shouldMuteStartMessage()) specific.printBuildInformation();
 
         specific.checkForUpdates(); // check for CyberAPI updates
 
-        if(this.getPlaceholderAPISupport() == FeatureSupport.SUPPORTED) {
+        if (this.getPlaceholderAPISupport() == FeatureSupport.SUPPORTED) {
             Placeholders placeholders = new Placeholders();
             placeholders.register();
             log.verbose("Loaded " + placeholders.getPlaceholderList().size() + " placeholders with PlaceholderAPI and registered expansion under name=" + placeholders.getName()
@@ -205,12 +204,12 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             );
         }
 
-        if(this.getProtocolLibSupport() == FeatureSupport.SUPPORTED) {
+        if (this.getProtocolLibSupport() == FeatureSupport.SUPPORTED) {
             new ServerListInfoListener().init();
             registerListener(new ServerListInfoListener.JoinListener());
         }
 
-        if(this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
+        if (this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
             try {
                 BukkitAudiences audience = BukkitAudiences.create(this);
                 this.consoleAudience = audience.console();
@@ -260,7 +259,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     @SuppressWarnings({"resultignored"})
     public Logs createOrGetLogs(String id, String fileNameWithoutExtension) {
         File logs = new File(getDataFolder(), "logs");
-        if(!logs.exists()) logs.mkdirs();
+        if (!logs.exists()) logs.mkdirs();
         return createOrGetLogs(id, new File(logs, fileNameWithoutExtension + ".log"));
     }
 
@@ -366,7 +365,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public Config getMainConfig() {
-         if(mainConfig == null) mainConfig = new Config();
+         if (mainConfig == null) mainConfig = new Config();
          return mainConfig;
     }
 
@@ -377,7 +376,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public Config getConfig(String fileName) {
-        if(!configs.containsKey(fileName)) configs.put(fileName, new Config(fileName));
+        if (!configs.containsKey(fileName)) configs.put(fileName, new Config(fileName));
         return configs.get(fileName);
     }
 
@@ -515,13 +514,13 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 60
      */
     private void checkPluginDependsFor(String plugin) {
-        if(this.getDescription().getDepend()
+        if (this.getDescription().getDepend()
                 .stream()
                 .map(String::toLowerCase)
                 .toList()
                 .contains(plugin.toLowerCase(Locale.ROOT))
         ) return;
-        if(this.getDescription().getSoftDepend()
+        if (this.getDescription().getSoftDepend()
                 .stream()
                 .map(String::toLowerCase)
                 .toList()
@@ -536,10 +535,10 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public FeatureSupport getAdventureAPISupport() {
-        if(adventureAPISupport == null) {
+        if (adventureAPISupport == null) {
             adventureAPISupport = settings.supportsAdventureAPI();
 
-            if(adventureAPISupport.equals(FeatureSupport.AUTO)) {
+            if (adventureAPISupport.equals(FeatureSupport.AUTO)) {
                 try {
                     Class.forName("net.kyori.adventure.text.Component");
                     this.adventureAPISupport = FeatureSupport.SUPPORTED;
@@ -558,10 +557,10 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public FeatureSupport getMiniMessageSupport() {
-        if(miniMessageSupport == null) {
+        if (miniMessageSupport == null) {
             miniMessageSupport = settings.supportsMiniMessage();
 
-            if(miniMessageSupport.equals(FeatureSupport.AUTO)) {
+            if (miniMessageSupport.equals(FeatureSupport.AUTO)) {
                 try {
                     Class.forName("net.kyori.adventure.text.minimessage.MiniMessage");
                     this.miniMessageSupport = FeatureSupport.SUPPORTED;
@@ -580,10 +579,10 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public FeatureSupport getLuckPermsSupport() {
-        if(luckPermsSupport == null) {
+        if (luckPermsSupport == null) {
             luckPermsSupport = settings.supportsLuckPerms();
 
-            if(luckPermsSupport.equals(FeatureSupport.AUTO)) {
+            if (luckPermsSupport.equals(FeatureSupport.AUTO)) {
                 try {
                     checkPluginDependsFor("LuckPerms");
                     Class.forName("net.luckperms.api.LuckPermsProvider");
@@ -603,10 +602,10 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 9
      */
     public FeatureSupport getProtocolLibSupport() {
-        if(protocolLibSupport == null) {
+        if (protocolLibSupport == null) {
             protocolLibSupport = settings.supportsProtocolLib();
 
-            if(protocolLibSupport.equals(FeatureSupport.AUTO)) {
+            if (protocolLibSupport.equals(FeatureSupport.AUTO)) {
                 try {
                     checkPluginDependsFor("ProtocolLib");
                     Class.forName("com.comphenix.protocol.ProtocolManager");
@@ -626,10 +625,10 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 52
      */
     public FeatureSupport getPlaceholderAPISupport() {
-        if(placeholderAPISupport == null) {
+        if (placeholderAPISupport == null) {
             placeholderAPISupport = settings.supportsPlaceholderAPI();
 
-            if(placeholderAPISupport.equals(FeatureSupport.AUTO)) {
+            if (placeholderAPISupport.equals(FeatureSupport.AUTO)) {
                 try {
                     checkPluginDependsFor("PlaceholderAPI");
                     Class.forName("me.clip.placeholderapi.PlaceholderAPI");
@@ -649,7 +648,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 46
      */
     public FeatureSupport getProtocolizeSupport() {
-        if(this.protocolizeSupport == null) this.protocolizeSupport = FeatureSupport.UNSUPPORTED;
+        if (this.protocolizeSupport == null) this.protocolizeSupport = FeatureSupport.UNSUPPORTED;
         return this.protocolizeSupport;
     }
 
@@ -841,7 +840,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public void performCommand(CommandSender sender, String command) {
-        if(!(sender instanceof Player player)) {
+        if (!(sender instanceof Player player)) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.substring(1)); return;
         }
         player.performCommand(command);
@@ -917,7 +916,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
      * @since 1
      */
     public void playSound(CommandSender sender, Sound sound, float volume, float pitch) {
-        if(!(sender instanceof Player player)) return;
+        if (!(sender instanceof Player player)) return;
 
         player.playSound(player.getLocation(), sound, volume, pitch);
     }
@@ -985,9 +984,9 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
     public List<NamespacedKey> getAllRegisteredRecipes() {
         List<NamespacedKey> keys = new ArrayList<>();
         getServer().recipeIterator().forEachRemaining(recipe -> {
-            if(recipe instanceof ShapedRecipe shaped) {
+            if (recipe instanceof ShapedRecipe shaped) {
                 keys.add(shaped.getKey());
-            }else if(recipe instanceof ShapelessRecipe shapeless) {
+            }else if (recipe instanceof ShapelessRecipe shapeless) {
                 keys.add(shapeless.getKey());
             }
         });
@@ -1108,7 +1107,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
         public void verbose(String message) { verbose(StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass().getCanonicalName(), message);}
         public void verbose(String canonical, String message) {
-            if(getSettings().isVerbose())
+            if (getSettings().isVerbose())
                 log(Level.INFO, ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "VERBOSE/" + canonical + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + message);
         }
 
@@ -1117,7 +1116,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
         }
 
         public void log(Level level, String message) {
-            if(Boolean.TRUE.equals(CyberAPI.this.settings.isSilenced())) return;
+            if (Boolean.TRUE.equals(CyberAPI.this.settings.isSilenced())) return;
             Log.log(level, ChatColor.LIGHT_PURPLE + "[CyberAPI]" + ChatColor.RESET + " " + message, Thread.currentThread().getStackTrace()[2]); }
     }
 
@@ -1211,7 +1210,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
          * @since 1
          */
         public void checkForUpdates() {
-            if(!getSettings().shouldCheckForUpdates()) return;
+            if (!getSettings().shouldCheckForUpdates()) return;
 
             Bukkit.getScheduler().runTaskAsynchronously(CyberAPI.getInstance(), () -> {
                 log.verbose("Checking for updates...");
@@ -1235,7 +1234,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                     log.error("Failed version checking for CyberAPI build #" + getBuild() + "! " + ChatColor.DARK_GRAY + exception); getAPILogger().verboseException(exception);return;
                 }
 
-                if(getBuild() != latestBuild && latestBuild - getBuild() > 0) {
+                if (getBuild() != latestBuild && latestBuild - getBuild() > 0) {
                     log.warn(DEFAULT_WARN_LOG + "CyberAPI is outdated! The latest build is #" + ChatColor.GREEN + latestBuild + DEFAULT_WARN_LOG + ", using #" + ChatColor.RED + getBuild() + ChatColor.GRAY + " (" + (latestBuild -  getBuild()) + " version(s) behind!)" + DEFAULT_WARN_LOG + "!");
                     log.warn(DEFAULT_WARN_LOG + "Notify author of " + ChatColor.GOLD + getPluginName() + DEFAULT_WARN_LOG + " to download latest CyberAPI at " + ChatColor.LIGHT_PURPLE + getWebsite().replace("https://", ""));
                 }
@@ -1432,7 +1431,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
             BuildInformation info = getBuildInformation();
 
             try {
-                if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------").append("\n&f");
+                if (separators) builder.append("&9---------------------------------------------------------------------------------------------------------").append("\n&f");
                 builder.append("&5CyberAPI Version String: &f").append(getVersionString()).append("\n");
                 builder.append("&5Running on Server: &f")
                         .append("\n\t&c\u250D &fServer Type: &6").append(getServerType())
@@ -1456,7 +1455,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                         .append("\n");
                 builder.append(" ").append("\n&f");
                 builder.append("&fPlugin &3").append(getPluginName()).append(" &b(").append(getDescription().getVersion()).append("&b) &fhas requested this build information!").append("\n");
-                if(separators) builder.append("&9---------------------------------------------------------------------------------------------------------");
+                if (separators) builder.append("&9---------------------------------------------------------------------------------------------------------");
             } catch (Exception exception) {
                 getAPILogger().verbose("Failed to print start information that comes with 'verbose=true'");
                 getAPILogger().verboseException(exception);
@@ -1516,7 +1515,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                     }
                     ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
                     SkullMeta meta = (SkullMeta) skull.getItemMeta();
-                    if(meta == null) continue;
+                    if (meta == null) continue;
                     meta.setOwnerProfile(Bukkit.createPlayerProfile(uuid, "Technoblade"));
                     meta.setDisplayName(UChat.chat("&d[PIG&b+++&d] Technoblade"));
                     meta.setLore(UChat.listChat(ChatPaginator.paginate(

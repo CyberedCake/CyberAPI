@@ -2,17 +2,14 @@ package net.cybercake.cyberapi.spigot.items;
 
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -39,7 +36,7 @@ public class ItemCreator {
     public static List<ItemStack> getSimilarItemStacks(String... strings) {
         List<ItemStack> returned = new ArrayList<>();
         for(Material material : Material.values()) {
-            if(!Arrays.asList(strings).contains(material.toString().toLowerCase(Locale.ROOT))) continue;
+            if (!Arrays.asList(strings).contains(material.toString().toLowerCase(Locale.ROOT))) continue;
 
             returned.add(new ItemStack(material));
         }
@@ -334,7 +331,7 @@ public class ItemCreator {
          * @since 90
          */
         public <T extends ItemMeta> ItemBuilder meta(Class<T> metaClass, Consumer<T> metaConsumer) {
-            if(metaClass.isInstance(this.meta))
+            if (metaClass.isInstance(this.meta))
                 metaConsumer.accept(metaClass.cast(this.meta));
             return this;
         }
@@ -392,7 +389,7 @@ public class ItemCreator {
         public ItemBuilder addLore(List<String> lines) {
             List<String> lore = this.meta.getLore();
 
-            if(lore == null)
+            if (lore == null)
                 return lore(lines);
 
             lore.addAll(lines.stream().map(this::formatString).toList());
@@ -454,7 +451,7 @@ public class ItemCreator {
         public ItemBuilder showEnchantGlow(boolean glow) {
             // using luck because for some god-damn reason my old glow class broke CyberAPI, maybe I'll try to fix it at a later date
             return meta(meta -> {
-                if(glow) {
+                if (glow) {
                     meta.addEnchant(Enchantment.LUCK, 1, true);
                     addFlags(ItemFlag.HIDE_ENCHANTS);
                 }

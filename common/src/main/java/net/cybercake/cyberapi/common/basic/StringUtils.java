@@ -24,7 +24,7 @@ public class StringUtils {
      * @author LukeIThink
      */
     public static String capitalize(String string) {
-        if(string == null || string.isEmpty()) return string;
+        if (string == null || string.isEmpty()) return string;
 
         return string.substring(0, 1).toUpperCase(Locale.ROOT) + string.substring(1);
     }
@@ -62,11 +62,11 @@ public class StringUtils {
      * @since 1
      */
     public static String getCharacters(int beginCharacter, int endCharacter, String string) {
-        if(beginCharacter < 0) {
+        if (beginCharacter < 0) {
             return null;
         }
 
-        if(endCharacter > string.length()) {
+        if (endCharacter > string.length()) {
             return null;
         } else {
             return string.substring(beginCharacter, endCharacter);
@@ -93,22 +93,22 @@ public class StringUtils {
         for(String str : strings) {
             switch (checkType) {
                 case equals:
-                    if(str.equals(checkAgainst)) {
+                    if (str.equals(checkAgainst)) {
                         return true;
                     }
                     break;
                 case contains:
-                    if(str.contains(checkAgainst)) {
+                    if (str.contains(checkAgainst)) {
                         return true;
                     }
                     break;
                 case startsWith:
-                    if(str.startsWith(checkAgainst)) {
+                    if (str.startsWith(checkAgainst)) {
                         return true;
                     }
                     break;
                 case equalsIgnoreCase:
-                    if(str.equalsIgnoreCase(checkAgainst)) {
+                    if (str.equalsIgnoreCase(checkAgainst)) {
                         return true;
                     }
                     break;
@@ -197,10 +197,10 @@ public class StringUtils {
      * @since 9
      */
     public static boolean isAlphanumeric(final CharSequence sequence) {
-        if(sequence == null) return false;
+        if (sequence == null) return false;
         for(int i =0; i < sequence.length(); i++) {
             final char currentCharacter = sequence.charAt(i);
-            if(!Character.isLetterOrDigit(currentCharacter)) {
+            if (!Character.isLetterOrDigit(currentCharacter)) {
                 return false;
             }
         }
@@ -214,10 +214,10 @@ public class StringUtils {
      * @since 9
      */
     public static boolean isAlphanumericSpace(final CharSequence sequence) {
-        if(sequence == null) return false;
+        if (sequence == null) return false;
         for(int i =0; i < sequence.length(); i++) {
             final char currentCharacter = sequence.charAt(i);
-            if(currentCharacter != ' ' && !Character.isLetterOrDigit(currentCharacter)) {
+            if (currentCharacter != ' ' && !Character.isLetterOrDigit(currentCharacter)) {
                 return false;
             }
         }

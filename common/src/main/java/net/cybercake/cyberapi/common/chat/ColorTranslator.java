@@ -241,15 +241,15 @@ public enum ColorTranslator {
 
     @ApiStatus.Internal
     private @Nullable TextFormat retrieveTextFormat(@Nullable String input) {
-        if(input == null) return null;
+        if (input == null) return null;
         Map<String, NamedTextColor> map = new HashMap<>(NamedTextColor.NAMES.keyToValue());
-        if(!map.containsKey(input.toLowerCase(Locale.ROOT))) return TextDecoration.valueOf(input.toUpperCase(Locale.ROOT));
+        if (!map.containsKey(input.toLowerCase(Locale.ROOT))) return TextDecoration.valueOf(input.toUpperCase(Locale.ROOT));
         return map.get(input.toLowerCase(Locale.ROOT));
     }
 
     @ApiStatus.Internal
     private <T> T tryValue(Class<T> output, @Nullable T potentialInput) {
-        if(potentialInput == null) return null;
+        if (potentialInput == null) return null;
         try {
             Class.forName(output.getCanonicalName());
             return potentialInput;

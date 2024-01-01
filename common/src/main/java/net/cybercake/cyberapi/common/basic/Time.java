@@ -117,7 +117,7 @@ public class Time {
             temp = duration / ONE_YEAR;
             if (temp > 0) {
                 duration -= temp * ONE_YEAR;
-                if(!showAll) return temp + " year" + (temp != 1 ? "s" : "");
+                if (!showAll) return temp + " year" + (temp != 1 ? "s" : "");
                 durationBuilder.append(temp).append(" year").append(temp != 1 ? "s" : "")
                         .append(duration >= ONE_MINUTE ? ", " : "");
             }
@@ -125,7 +125,7 @@ public class Time {
             temp = duration / ONE_MONTH;
             if (temp > 0) {
                 duration -= temp * ONE_MONTH;
-                if(!showAll) return temp + " month" + (temp != 1 ? "s" : "");
+                if (!showAll) return temp + " month" + (temp != 1 ? "s" : "");
                 durationBuilder.append(temp).append(" month").append(temp != 1 ? "s" : "")
                         .append(duration >= ONE_MINUTE ? ", " : "");
             }
@@ -133,7 +133,7 @@ public class Time {
             temp = duration / ONE_WEEK;
             if (temp > 0) {
                 duration -= temp * ONE_WEEK;
-                if(!showAll) return temp + " week" + (temp != 1 ? "s" : "");
+                if (!showAll) return temp + " week" + (temp != 1 ? "s" : "");
                 durationBuilder.append(temp).append(" week").append(temp != 1 ? "s" : "")
                         .append(duration >= ONE_MINUTE ? ", " : "");
             }
@@ -141,7 +141,7 @@ public class Time {
             temp = duration / ONE_DAY;
             if (temp > 0) {
                 duration -= temp * ONE_DAY;
-                if(!showAll) return temp + " day" + (temp != 1 ? "s" : "");
+                if (!showAll) return temp + " day" + (temp != 1 ? "s" : "");
                 durationBuilder.append(temp).append(" day").append(temp != 1 ? "s" : "")
                         .append(duration >= ONE_MINUTE ? ", " : "");
             }
@@ -149,7 +149,7 @@ public class Time {
             temp = duration / ONE_HOUR;
             if (temp > 0) {
                 duration -= temp * ONE_HOUR;
-                if(!showAll) return temp + " hour" + (temp != 1 ? "s" : "");
+                if (!showAll) return temp + " hour" + (temp != 1 ? "s" : "");
                 durationBuilder.append(temp).append(" hour").append(temp != 1 ? "s" : "")
                         .append(duration >= ONE_MINUTE ? ", " : "");
             }
@@ -157,7 +157,7 @@ public class Time {
             temp = duration / ONE_MINUTE;
             if (temp > 0) {
                 duration -= temp * ONE_MINUTE;
-                if(!showAll) return temp + " minute" + (temp != 1 ? "s" : "");
+                if (!showAll) return temp + " minute" + (temp != 1 ? "s" : "");
                 durationBuilder.append(temp).append(" minute").append(temp != 1 ? "s" : "");
             }
 
@@ -168,7 +168,7 @@ public class Time {
             temp = duration / ONE_SECOND;
             if (temp > 0) {
                 durationBuilder.append(temp).append(" second").append(temp != 1 ? "s" : "");
-                if(!showAll) return temp + " second" + (temp != 1 ? "s" : "");
+                if (!showAll) return temp + " second" + (temp != 1 ? "s" : "");
             }
             return durationBuilder.toString();
         } else {

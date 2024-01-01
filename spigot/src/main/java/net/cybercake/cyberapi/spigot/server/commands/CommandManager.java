@@ -27,7 +27,7 @@ public class CommandManager {
 
     private static CommandManager commandManager = null;
     public static CommandManager commandManager() {
-        if(commandManager == null) commandManager = new CommandManager();
+        if (commandManager == null) commandManager = new CommandManager();
         return commandManager;
     }
 
@@ -41,12 +41,12 @@ public class CommandManager {
         try {
             long mss = System.currentTimeMillis();
             for(Class<?> clazz : CyberAPI.getInstance().getPluginClasses()) {
-                if(!(Validators.isSubtype(clazz, SpigotCommand.class)) && !(Validators.isSubtype(clazz, Command.class))) continue;
+                if (!(Validators.isSubtype(clazz, SpigotCommand.class)) && !(Validators.isSubtype(clazz, Command.class))) continue;
                 SpigotCommand command = (SpigotCommand) clazz.getDeclaredConstructors()[0].newInstance();
                 try {
                     for(CommandInformation information : command.getCommands()) {
-                        if(!information.shouldAutoRegister()) continue;
-                        if(CyberAPI.getInstance().getSettings().getDisabledAutoRegisteredClasses() != null && Arrays.asList(CyberAPI.getInstance().getSettings().getDisabledAutoRegisteredClasses()).contains(clazz)) continue;
+                        if (!information.shouldAutoRegister()) continue;
+                        if (CyberAPI.getInstance().getSettings().getDisabledAutoRegisteredClasses() != null && Arrays.asList(CyberAPI.getInstance().getSettings().getDisabledAutoRegisteredClasses()).contains(clazz)) continue;
                         autoRegisteredCommands++;
                         resolveInformationAndRegister(command, information);
                         CyberAPI.getInstance().getAPILogger().verbose("Registered command automatically: " + clazz.getCanonicalName() + " -> /" + command.getMainCommand().getName() + " (with aliases: " + String.join(", ", Arrays.stream(information.getAliases()).map(alias -> "/" + alias).toArray(String[]::new)) + ")");
@@ -56,7 +56,7 @@ public class CommandManager {
                     CyberAPI.getInstance().getAPILogger().verboseException(exception);
                 }
             }
-            if(path == null) {
+            if (path == null) {
                 Method method = CyberAPI.class.getDeclaredMethod("startCyberAPI", Settings.class);
                 CyberAPI.getInstance().getAPILogger().warn("Please specify a main package to speed up command registering in " + method.getDeclaringClass().getCanonicalName() + "." + method.getName() + "(" + Settings.class.getCanonicalName() + ")! (registering took " + (System.currentTimeMillis()-mss) + "ms!)");
             }
@@ -66,7 +66,7 @@ public class CommandManager {
     }
 
     public void resolveInformationAndRegister(SpigotCommand command, CommandInformation information) {
-        if(information.getName().chars().anyMatch(Character::isUpperCase)) { // (for name) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
+        if (information.getName().chars().anyMatch(Character::isUpperCase)) { // (for name) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
             String upperCaseInclusiveString = information.getName();
 
             try { // reflection methods
@@ -87,10 +87,10 @@ public class CommandManager {
                 CyberAPI.getInstance().getAPILogger().verboseException(reflectionException);
             }
         }
-        if(Arrays.stream(information.getAliases()).anyMatch(alias -> alias.chars().anyMatch(Character::isUpperCase))) { // (for aliases) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
+        if (Arrays.stream(information.getAliases()).anyMatch(alias -> alias.chars().anyMatch(Character::isUpperCase))) { // (for aliases) if an uppercase letter exists, kick into "create alias to simulate uppercase letters" mode
             for(String alias : information.getAliases()) {
-                if(alias.equalsIgnoreCase(information.getName())) continue; // don't wanna re-do what we already did for prev
-                if(alias.chars().noneMatch(Character::isUpperCase)) continue; // no uppercase letters in that alias :(
+                if (alias.equalsIgnoreCase(information.getName())) continue; // don't wanna re-do what we already did for prev
+                if (alias.chars().noneMatch(Character::isUpperCase)) continue; // no uppercase letters in that alias :(
                 fakeCommandsList.put(alias, information.getName());
             }
         }
@@ -102,13 +102,13 @@ public class CommandManager {
 
         pluginCommand.setExecutor(command);
         pluginCommand.setTabCompleter(command);
-        if(info.getAliases().length > 0) pluginCommand.setAliases(List.of(info.getAliases()));
-        if(!info.getDescription().strip().equals("")) pluginCommand.setDescription(UChat.chat(info.getDescription()));
-        if(!info.getPermission().strip().equals("")) pluginCommand.setPermission(info.getPermission());
-        if(!info.getPermissionMessage().strip().equals("")) pluginCommand.setPermissionMessage(UChat.chat(info.getPermissionMessage()));
-        if(!info.getUsage().strip().equals("")) pluginCommand.setUsage(UChat.chat(info.getUsage()));
-        if(commodoreSupported && info.shouldUseFolderCommodore()) registerCommodore(pluginCommand, info.getName());
-        if(commodoreSupported && info.getCommodoreNode() != null) registerCommodore(pluginCommand, info.getCommodoreNode());
+        if (info.getAliases().length > 0) pluginCommand.setAliases(List.of(info.getAliases()));
+        if (!info.getDescription().strip().equals("")) pluginCommand.setDescription(UChat.chat(info.getDescription()));
+        if (!info.getPermission().strip().equals("")) pluginCommand.setPermission(info.getPermission());
+        if (!info.getPermissionMessage().strip().equals("")) pluginCommand.setPermissionMessage(UChat.chat(info.getPermissionMessage()));
+        if (!info.getUsage().strip().equals("")) pluginCommand.setUsage(UChat.chat(info.getUsage()));
+        if (commodoreSupported && info.shouldUseFolderCommodore()) registerCommodore(pluginCommand, info.getName());
+        if (commodoreSupported && info.getCommodoreNode() != null) registerCommodore(pluginCommand, info.getCommodoreNode());
 
         getCommandMap().register(CyberAPI.getInstance().getDescription().getName(), pluginCommand);
     }
@@ -116,7 +116,7 @@ public class CommandManager {
     public void registerCommodore(PluginCommand pluginCommand, String fileName) {
         try {
             @Nullable InputStream resource = CyberAPI.getInstance().getResource("commodore/" + fileName + ".commodore");
-            if(resource == null) {
+            if (resource == null) {
                 CyberAPI.getInstance().getAPILogger().warn("Failed to register commodore for '/" + pluginCommand.getName() + "': File '" + pluginCommand.getName() + ".commodore' does not exist in 'commodore' folder in " + CyberAPI.getInstance().getPluginName() + "'s resource folder!");
                 return;
             }
@@ -152,7 +152,7 @@ public class CommandManager {
     public CommandMap getCommandMap() {
         CommandMap map = null;
         try {
-            if(Bukkit.getPluginManager() instanceof SimplePluginManager) {
+            if (Bukkit.getPluginManager() instanceof SimplePluginManager) {
                 Field field = SimplePluginManager.class.getDeclaredField("commandMap");
                 field.setAccessible(true);
                 map = (CommandMap) field.get(Bukkit.getPluginManager());

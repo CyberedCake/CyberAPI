@@ -21,7 +21,7 @@ public class MOTDManager {
 
     private static MOTDManager motdManager = null;
     public static MOTDManager motdManager() {
-        if(MOTDManager.motdManager == null) MOTDManager.motdManager = new MOTDManager();
+        if (MOTDManager.motdManager == null) MOTDManager.motdManager = new MOTDManager();
         return MOTDManager.motdManager;
     }
 
@@ -44,7 +44,7 @@ public class MOTDManager {
      */
     public MOTD getMOTDFromID(String id) {
         for(MOTD motd : motds) {
-            if(motd.getID().equals(id)) return motd;
+            if (motd.getID().equals(id)) return motd;
         } return null;
     }
 
@@ -56,7 +56,7 @@ public class MOTDManager {
     public MOTD getRandomMOTD() {
         MOTD returned;
         try {
-            if(motds.size() == 1) returned = motds.get(0);
+            if (motds.size() == 1) returned = motds.get(0);
             else {
                 int number = NumberUtils.randomInt(0, motds.size()-1);
                 returned = motds.get(number);

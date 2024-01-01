@@ -35,7 +35,7 @@ public abstract class UpdateGUIAction {
     @ApiStatus.Internal
     @ApiStatus.Obsolete /* only marked to deter usage */
     protected void setInstance(@NotNull CustomGUI gui) throws IllegalStateException {
-        if(this.gui != null)
+        if (this.gui != null)
             throw new IllegalStateException("Cannot access this method as it has already been called - " + UpdateGUIAction.class.getCanonicalName() + ".setInstance(" + CustomGUI.class.getCanonicalName() + ")");
         this.gui = gui;
         this.inventory = this.gui.getInventory();
@@ -66,7 +66,7 @@ public abstract class UpdateGUIAction {
     ItemStack addSpecialityDataTo(int[] slots, @NotNull ItemStack old) {
         ItemStack newItem = old.clone();
         ItemMeta meta = newItem.getItemMeta();
-        if(meta == null) return newItem;
+        if (meta == null) return newItem;
         meta.getPersistentDataContainer().set(new NamespacedKey(CyberAPI.getInstance(), instance().getClass().getCanonicalName()),
                 PersistentDataType.INTEGER_ARRAY,
                 slots

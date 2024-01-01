@@ -110,7 +110,7 @@ public enum SpecialSlots {
      */
     SEPARATOR_HORIZONTAL((size) -> {
         int rows = getRowFromIndex(size, false);
-        if(rows % 2 == 0) { // even
+        if (rows % 2 == 0) { // even
             int[] row = getIndicesFromRow(rows/2);
             int[] rowPlusOne = getIndicesFromRow((rows/2)+1);
             int[] result = new int[row.length + rowPlusOne.length];

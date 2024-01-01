@@ -65,7 +65,7 @@ public class Logs {
      */
     public static Logs getFromFile(File file) {
         for(Logs log : logs) {
-            if(log.getFile().equals(file)) return log;
+            if (log.getFile().equals(file)) return log;
         }
         return null;
     }
@@ -78,7 +78,7 @@ public class Logs {
      */
     public static Logs getFromID(String id) {
         for(Logs log : logs) {
-            if(log.getID().equalsIgnoreCase(id)) return log;
+            if (log.getID().equalsIgnoreCase(id)) return log;
         }
         return null;
     }
@@ -101,7 +101,7 @@ public class Logs {
     @Deprecated
     @SuppressWarnings({"all"})
     public Logs(String id, File file) {
-        if(getFromID(id) != null || getFromFile(file) != null)
+        if (getFromID(id) != null || getFromFile(file) != null)
             throw new IllegalArgumentException("A " + Logs.class.getCanonicalName() + " instance with that ID/" + File.class.getCanonicalName() + " already exists! (id=" + id + ", file=" + file.getAbsolutePath() + ")");
         this.id = id;
         this.file = file;
@@ -126,7 +126,7 @@ public class Logs {
      */
     public void write(LogLevel logLevel, String logged, String... extras) {
         try {
-            if(file.exists()) file.createNewFile();
+            if (file.exists()) file.createNewFile();
             this.requireRecache = true;
 
             FileWriter fileWriter = new FileWriter(file, true);
@@ -178,7 +178,7 @@ public class Logs {
      */
     public @Nullable List<String> getLogs() {
         try {
-            if(this.requireRecache)
+            if (this.requireRecache)
                 this.cachedLogs = Files.readAllLines(file.toPath());
             return cachedLogs;
         } catch (Exception exception) {

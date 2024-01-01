@@ -30,7 +30,7 @@ public class ServerListInfoListener implements Listener {
     @EventHandler
     public void onPing(ProxyPingEvent event) {
         ServerPing ping = handlePing(event.getConnection(), event.getResponse());
-        if(ping == null) return;
+        if (ping == null) return;
         event.setResponse(ping);
     }
 
@@ -50,29 +50,29 @@ public class ServerListInfoListener implements Listener {
                             info.getPlayerListManager().getOnlinePlayers(),
                             info.getPlayerListManager().getCustomOnlinePlayers()
                     );
-            if(serverListPingEvent.isCancelled()) return null;
+            if (serverListPingEvent.isCancelled()) return null;
             ProxyServer.getInstance().getPluginManager().callEvent(serverListPingEvent);
 
             // MOTD
             MOTD motd = serverListPingEvent.getMOTD();
-            if(motd == null) motd = MOTD.builder("_default").build();
+            if (motd == null) motd = MOTD.builder("_default").build();
             ping.setDescription(motd.getFormattedMOTD());
             try {
                 Favicon image = null;
                 switch(motd.getMOTDIconType()) {
                     case FILE -> {
                         // image = Favicon.create(Base64.getEncoder().encodeToString(Files.readAllBytes(motd.getFileIcon().toPath())));
-                        if(motd.getFileIcon() != null && faviconsFromFile.get(motd.getFileIcon()) == null) {
+                        if (motd.getFileIcon() != null && faviconsFromFile.get(motd.getFileIcon()) == null) {
                             CyberAPI.getInstance().getAPILogger().verbose("New icon found (type=FILE)! Caching into temporary storage...");
                             CyberAPI.getInstance().getAPILogger().verbose("This may take a second, and Bungee will likely provide a 'Listener took <x>ms...', just ignore it!");
                             image = Favicon.create(ImageIO.read(motd.getFileIcon()));
                             faviconsFromFile.put(motd.getFileIcon(), image);
-                        } else if(faviconsFromFile.get(motd.getFileIcon()) != null) {
+                        } else if (faviconsFromFile.get(motd.getFileIcon()) != null) {
                             image = faviconsFromFile.get(motd.getFileIcon());
                         }
                     }
                     case URL -> {
-                        if(motd.getURLIcon() != null && faviconsFromURL.get(motd.getURLIcon()) == null) {
+                        if (motd.getURLIcon() != null && faviconsFromURL.get(motd.getURLIcon()) == null) {
                             CyberAPI.getInstance().getAPILogger().verbose("New icon found (type=URL)! Caching into temporary storage...");
                             CyberAPI.getInstance().getAPILogger().verbose("This may take a second, and Bungee will likely provide a 'Listener took <x>ms...', just ignore it!");
                             HttpURLConnection connection = (HttpURLConnection) motd.getURLIcon().openConnection();
@@ -81,12 +81,12 @@ public class ServerListInfoListener implements Listener {
                             connection.disconnect();
                             image = Favicon.create(bufferedImage);
                             faviconsFromURL.put(motd.getURLIcon(), image);
-                        } else if(faviconsFromURL.get(motd.getURLIcon()) != null) {
+                        } else if (faviconsFromURL.get(motd.getURLIcon()) != null) {
                             image = faviconsFromURL.get(motd.getURLIcon());
                         }
                     }
                 }
-                if(image != null) ping.setFavicon(image);
+                if (image != null) ping.setFavicon(image);
             } catch (Exception exception) {
                 CyberAPI.getInstance().getAPILogger().error("An exception occurred whilst creating the Favicon for the server: " + ChatColor.DARK_GRAY + exception);
                 CyberAPI.getInstance().getAPILogger().verboseException(exception);
@@ -98,7 +98,7 @@ public class ServerListInfoListener implements Listener {
                 profiles.add(new ServerPing.PlayerInfo(name, UUID.randomUUID()));
             }
 
-            if(serverListPingEvent.isPlayerListVisible()) ping.setPlayers(new ServerPing.Players(serverListPingEvent.getMaxPlayers(), serverListPingEvent.getOnlinePlayerCount(), (serverListPingEvent.isPlayerListVisible() ? profiles.toArray(new ServerPing.PlayerInfo[]{}) : null)));
+            if (serverListPingEvent.isPlayerListVisible()) ping.setPlayers(new ServerPing.Players(serverListPingEvent.getMaxPlayers(), serverListPingEvent.getOnlinePlayerCount(), (serverListPingEvent.isPlayerListVisible() ? profiles.toArray(new ServerPing.PlayerInfo[]{}) : null)));
             else ping.setPlayers(null);
 
             int protocol = switch(serverListPingEvent.getVersionVisibility()) {

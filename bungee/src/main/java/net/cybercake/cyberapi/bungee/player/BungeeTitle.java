@@ -25,7 +25,7 @@ public class BungeeTitle implements Title {
     public static net.md_5.bungee.protocol.packet.Title createPacket(net.md_5.bungee.protocol.packet.Title.Action action) {
         net.md_5.bungee.protocol.packet.Title title = new net.md_5.bungee.protocol.packet.Title();
         title.setAction(action);
-        if(action == net.md_5.bungee.protocol.packet.Title.Action.TIMES) {
+        if (action == net.md_5.bungee.protocol.packet.Title.Action.TIMES) {
             title.setFadeIn(20);
             title.setStay(100);
             title.setFadeOut(20);
@@ -41,7 +41,7 @@ public class BungeeTitle implements Title {
      */
     @Override
     public Title title(BaseComponent text) {
-        if(title == null)
+        if (title == null)
             title = createPacket(net.md_5.bungee.protocol.packet.Title.Action.TITLE);
         title.setText(UChat.bComponent(UChat.toLegacy(text)));
         return this;
@@ -69,7 +69,7 @@ public class BungeeTitle implements Title {
      */
     @Override
     public Title subTitle(BaseComponent text) {
-        if(subtitle == null)
+        if (subtitle == null)
             subtitle = createPacket(net.md_5.bungee.protocol.packet.Title.Action.SUBTITLE);
         subtitle.setText(UChat.bComponent(UChat.toLegacy(text)));
         return this;
@@ -97,7 +97,7 @@ public class BungeeTitle implements Title {
      */
     @Override
     public Title fadeIn(int ticks) {
-        if(times == null)
+        if (times == null)
             times = createPacket(net.md_5.bungee.protocol.packet.Title.Action.TIMES);
         times.setFadeIn(ticks);
         return this;
@@ -111,7 +111,7 @@ public class BungeeTitle implements Title {
      */
     @Override
     public Title stay(int ticks) {
-        if(times == null)
+        if (times == null)
             times = createPacket(net.md_5.bungee.protocol.packet.Title.Action.TIMES);
         times.setStay(ticks);
         return this;
@@ -125,7 +125,7 @@ public class BungeeTitle implements Title {
      */
     @Override
     public Title fadeOut(int ticks) {
-        if(times == null)
+        if (times == null)
             times = createPacket(net.md_5.bungee.protocol.packet.Title.Action.TIMES);
         times.setFadeOut(ticks);
         return this;
@@ -138,7 +138,7 @@ public class BungeeTitle implements Title {
      */
     @Override
     public Title clear() {
-        if(clear == null)
+        if (clear == null)
             clear = createPacket(net.md_5.bungee.protocol.packet.Title.Action.TIMES);
         title = null; // No need to send a title if we clear it after that again anyway
         subtitle = null;
@@ -152,7 +152,7 @@ public class BungeeTitle implements Title {
      */
     @Override
     public Title reset() {
-        if(reset == null)
+        if (reset == null)
             reset = createPacket(net.md_5.bungee.protocol.packet.Title.Action.RESET);
         // No need to send these packets if we are going to reset them later
         title = null;
@@ -169,7 +169,7 @@ public class BungeeTitle implements Title {
      */
     public void sendPacket(ProxiedPlayer player, DefinedPacket... packets) {
         for(DefinedPacket packet : packets) {
-            if(packet == null) continue;
+            if (packet == null) continue;
             player.unsafe().sendPacket(packet);
         }
     }

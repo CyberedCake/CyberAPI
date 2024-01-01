@@ -109,11 +109,11 @@ public class UTabComp {
      */
     public static List<String> getIntegers(String integerArgument, int lowest, int highest) {
         List<String> integers = new ArrayList<>();
-        if(!NumberUtils.isInteger(integerArgument)) { return integers; }
-        if(!NumberUtils.isBetweenEquals(Integer.parseInt(integerArgument), lowest, highest)) { return integers; }
+        if (!NumberUtils.isInteger(integerArgument)) { return integers; }
+        if (!NumberUtils.isBetweenEquals(Integer.parseInt(integerArgument), lowest, highest)) { return integers; }
 
         for(int i=1; i<10; i++) {
-            if(!NumberUtils.isBetweenEquals(Integer.parseInt(integerArgument + i), lowest, highest)) continue;
+            if (!NumberUtils.isBetweenEquals(Integer.parseInt(integerArgument + i), lowest, highest)) continue;
 
             integers.add(integerArgument + i + "");
         }

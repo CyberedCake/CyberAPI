@@ -20,7 +20,7 @@ public class ProtocolManager {
 
     private static ProtocolManager protocolManager = null;
     public static ProtocolManager protocolManager() {
-        if(ProtocolManager.protocolManager == null) ProtocolManager.protocolManager = new ProtocolManager();
+        if (ProtocolManager.protocolManager == null) ProtocolManager.protocolManager = new ProtocolManager();
         return ProtocolManager.protocolManager;
     }
 

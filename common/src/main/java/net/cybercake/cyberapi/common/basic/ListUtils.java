@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * General utilities regarding the usage of {@link List Lists}
@@ -61,7 +60,7 @@ public class ListUtils {
      * @see ListUtils#addToList(List, Object) same method with the default list automatically set to null
      */
     public static <T> List<T> addToList(List<T> originalList, T addition, @Nullable List<T> def) {
-        if(originalList == null || originalList.size() < 1) {
+        if (originalList == null || originalList.size() < 1) {
             Preconditions.checkNotNull(def, "The default list is set to null, cannot add to a non-existent list!");
             originalList = def;
         }

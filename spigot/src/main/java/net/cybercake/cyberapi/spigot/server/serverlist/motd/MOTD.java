@@ -43,13 +43,13 @@ public class MOTD {
          * @since 10
          */
         public Builder(String id) {
-            if(!net.cybercake.cyberapi.common.basic.StringUtils.isAlphanumericSpace(id.replace("_", "").replace("-", "")))
+            if (!net.cybercake.cyberapi.common.basic.StringUtils.isAlphanumericSpace(id.replace("_", "").replace("-", "")))
                 throw parseError("The 'id' must be alpha-numeric space (only contains A-Za-z0-9 _-)");
-            if(id.isEmpty())
+            if (id.isEmpty())
                 throw parseError("The 'id' cannot be empty!");
-            if(id.length() > 20)
+            if (id.length() > 20)
                 throw parseError("The 'id' must be less than or equal to 20 characters!");
-            if(id.length() < 3)
+            if (id.length() < 3)
                 throw parseError("The 'id' must be more than or equal to 3 characters!");
 
             this.id = id;
@@ -111,7 +111,7 @@ public class MOTD {
          * @deprecated please use {@link Builder#motdTextFormatter(MOTDTextFormatter)} and define a {@link MOTDTextFormatter} instead
          */
         @Deprecated public Builder shouldUseMiniMessage(boolean useMiniMessage) {
-            if(useMiniMessage) this.motdTextFormatter = MOTDTextFormatter.MINIMESSAGE;
+            if (useMiniMessage) this.motdTextFormatter = MOTDTextFormatter.MINIMESSAGE;
             return this;
         }
 
@@ -219,7 +219,7 @@ public class MOTD {
      * @since 10
      */
     public File getFileIcon() {
-        if(builder.iconFile != null && getMOTDIconType().equals(MOTDIconType.FILE)) {
+        if (builder.iconFile != null && getMOTDIconType().equals(MOTDIconType.FILE)) {
             return builder.iconFile;
         }
         return null;
@@ -231,7 +231,7 @@ public class MOTD {
      * @since 10
      */
     public URL getURLIcon() {
-        if(builder.iconURL != null && getMOTDIconType().equals(MOTDIconType.URL)) {
+        if (builder.iconURL != null && getMOTDIconType().equals(MOTDIconType.URL)) {
             return builder.iconURL;
         }
         return null;
@@ -246,7 +246,7 @@ public class MOTD {
         boolean centered = isCentered();
         String text = getStringMOTD();
 
-        if(centered) {
+        if (centered) {
             List<String> newMOTD = new ArrayList<>();
             for(String str : text.split("\\n"))
                 newMOTD.add(new CenteredMessage(str, 45).getString());

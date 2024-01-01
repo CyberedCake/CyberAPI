@@ -57,7 +57,7 @@ public class GUI {
             meta.setDisplayName(UChat.chat(name));
             List<String> blankLore = new ArrayList<>();
             for(String loreActual : lore) {
-                if(!loreActual.startsWith("paginate:")) {
+                if (!loreActual.startsWith("paginate:")) {
                     blankLore.add(UChat.chat(loreActual));
                 }else{
                     String color = loreActual.substring(loreActual.length()-2);
@@ -67,11 +67,11 @@ public class GUI {
                     }
                 }
             }
-            if(shiny) {
+            if (shiny) {
                 meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, false);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
-            if(hideNbt) {
+            if (hideNbt) {
                 meta.addItemFlags(ItemFlag.values());
             }
             meta.setLore(blankLore);

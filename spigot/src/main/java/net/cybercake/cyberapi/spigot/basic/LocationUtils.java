@@ -7,12 +7,6 @@ import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -45,7 +39,7 @@ public class LocationUtils {
      * @since 135
      */
     public static double get2DDistance(Location location1, Location location2) {
-        if(!Objects.requireNonNull(location1.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getName().equals(Objects.requireNonNull(location2.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getName()))
+        if (!Objects.requireNonNull(location1.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getName().equals(Objects.requireNonNull(location2.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getName()))
             throw new IllegalArgumentException(REQUIRE_SAME_WORLD);
         return Math.sqrt(NumberConversions.square(location1.getX() - location2.getX()) + NumberConversions.square(location1.getZ() - location2.getZ()));
     }
@@ -60,7 +54,7 @@ public class LocationUtils {
      * @since 135
      */
     public static double getDistance(Location location1, Location location2) {
-        if(!Objects.requireNonNull(location1.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getName().equals(Objects.requireNonNull(location2.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getName()))
+        if (!Objects.requireNonNull(location1.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getName().equals(Objects.requireNonNull(location2.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getName()))
             throw new IllegalArgumentException(REQUIRE_SAME_WORLD);
         return location1.distance(location2);
     }
@@ -86,9 +80,9 @@ public class LocationUtils {
         location = location.clone();
         location.setY(yStartChecking);
         for(int y=0; y<yStartChecking; y++) {
-            if(Objects.requireNonNull(location.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getBlockAt(location).isEmpty() || !(location.getWorld().getBlockAt(location.clone().add(0, 1, 0)).isEmpty())) {
+            if (Objects.requireNonNull(location.getWorld(), WORLD_SHOULD_NOT_BE_NULL).getBlockAt(location).isEmpty() || !(location.getWorld().getBlockAt(location.clone().add(0, 1, 0)).isEmpty())) {
                 location.setY(location.getY() - 1);
-            }else if(!location.getWorld().getBlockAt(location).isEmpty()) {
+            }else if (!location.getWorld().getBlockAt(location).isEmpty()) {
                 location = location.add(0, 1, 0);
                 return location;
             }

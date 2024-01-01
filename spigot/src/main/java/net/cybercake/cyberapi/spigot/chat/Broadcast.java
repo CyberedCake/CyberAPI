@@ -49,10 +49,10 @@ public class Broadcast {
      */
     public static void chat(String message, @Nullable Predicate<? super CommandSender> filter) {
         for(Player player : CyberAPI.getInstance().getOnlinePlayers()) {
-            if(filter != null && !filter.test(player)) continue;
+            if (filter != null && !filter.test(player)) continue;
             player.sendMessage(UChat.chat(message));
         }
-        if(filter == null || filter.test(CyberAPI.getInstance().getServer().getConsoleSender()))
+        if (filter == null || filter.test(CyberAPI.getInstance().getServer().getConsoleSender()))
             Log.info(message);
     }
 
@@ -163,10 +163,10 @@ public class Broadcast {
     public static void combined(String message, @Nullable Predicate<? super CommandSender> filter) {
         Validators.validateAdventureSupport();
         for(Player player : CyberAPI.getInstance().getOnlinePlayers()) {
-            if(filter != null && !filter.test(player)) continue;
+            if (filter != null && !filter.test(player)) continue;
             player.spigot().sendMessage(UChat.fromJsonBungee(GsonComponentSerializer.gson().serialize(UChat.combined(message))));
         }
-        if(filter == null || filter.test(CyberAPI.getInstance().getServer().getConsoleSender()))
+        if (filter == null || filter.test(CyberAPI.getInstance().getServer().getConsoleSender()))
             Log.info(message);
     }
 

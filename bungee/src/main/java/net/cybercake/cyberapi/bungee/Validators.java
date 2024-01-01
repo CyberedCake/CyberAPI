@@ -22,7 +22,7 @@ public class Validators {
     }
 
     public static void validateIsNotAuto(FeatureSupport featureSupport) {
-        if(featureSupport.equals(FeatureSupport.AUTO)) throw new IllegalStateException("Feature Support cannot be set to auto in CyberAPI instance. Maybe it hasn't finished loading yet? (" + featureSupport.getFeature() + ")");
+        if (featureSupport.equals(FeatureSupport.AUTO)) throw new IllegalStateException("Feature Support cannot be set to auto in CyberAPI instance. Maybe it hasn't finished loading yet? (" + featureSupport.getFeature() + ")");
     }
 
     public static @Nullable String getCaller() { return getCaller(Thread.currentThread()); }
@@ -45,7 +45,7 @@ public class Validators {
                 "net.minecraft"
         );
         for(StackTraceElement element : elements) {
-            if(PACKAGES_TO_AVOID.stream()
+            if (PACKAGES_TO_AVOID.stream()
                     .filter(clazz -> element.getClassName().startsWith(clazz))
                     .findFirst()
                     .orElse(null)
@@ -77,7 +77,7 @@ public class Validators {
      */
     public static void validateAdventureSupport() {
         validateIsNotAuto(CyberAPI.getInstance().getAdventureAPISupport());
-        if(!CyberAPI.getInstance().getAdventureAPISupport().equals(FeatureSupport.SUPPORTED)) throw dependency("Adventure API");
+        if (!CyberAPI.getInstance().getAdventureAPISupport().equals(FeatureSupport.SUPPORTED)) throw dependency("Adventure API");
     }
 
     /**
@@ -88,7 +88,7 @@ public class Validators {
     public static void validateMiniMessageSupport() {
         validateIsNotAuto(CyberAPI.getInstance().getMiniMessageSupport());
         validateAdventureSupport();
-        if(!CyberAPI.getInstance().getMiniMessageSupport().equals(FeatureSupport.SUPPORTED)) throw dependency("MiniMessage");
+        if (!CyberAPI.getInstance().getMiniMessageSupport().equals(FeatureSupport.SUPPORTED)) throw dependency("MiniMessage");
     }
 
     /**
@@ -98,7 +98,7 @@ public class Validators {
      */
     public static void validateLuckPermsHook() {
         validateIsNotAuto(CyberAPI.getInstance().getLuckPermsSupport());
-        if(!CyberAPI.getInstance().getLuckPermsSupport().equals(FeatureSupport.SUPPORTED)) throw serverHook("LuckPerms");
+        if (!CyberAPI.getInstance().getLuckPermsSupport().equals(FeatureSupport.SUPPORTED)) throw serverHook("LuckPerms");
     }
 
     /**
@@ -108,7 +108,7 @@ public class Validators {
      */
     public static void validateProtocolizeHook() {
         validateIsNotAuto(CyberAPI.getInstance().getProtocolizeSupport());
-        if(!CyberAPI.getInstance().getProtocolizeSupport().equals(FeatureSupport.SUPPORTED)) throw serverHook("Protocolize");
+        if (!CyberAPI.getInstance().getProtocolizeSupport().equals(FeatureSupport.SUPPORTED)) throw serverHook("Protocolize");
     }
 
 }

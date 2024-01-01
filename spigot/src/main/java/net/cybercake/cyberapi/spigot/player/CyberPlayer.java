@@ -104,13 +104,13 @@ public class CyberPlayer {
      * @since 1
      */
     public String getUserHead(@Nullable UserHeadSettings settings) throws IOException {
-        if(settings == null) settings = UserHeadSettings.builder().build();
+        if (settings == null) settings = UserHeadSettings.builder().build();
 
         UUID uuid = player.getUniqueId();
         String trimmedUUID = uuid.toString().replace("-", "");
 
         URL url = new URL("https://minotar.net/avatar/" + trimmedUUID + "/" + settings.getImageScale() + ".png");
-        if(settings.shouldShowHelmet()) {
+        if (settings.shouldShowHelmet()) {
             url = new URL("https://minotar.net/helm/" + trimmedUUID + "/" + settings.getImageScale() + ".png");
         }
 
@@ -169,8 +169,8 @@ public class CyberPlayer {
      * @since 1
      */
     public String getUsername(boolean recache) {
-        if(recache) recacheUsername();
-        if(getOnlineActions() != null) return getOnlineActions().getPlayer().getName();
+        if (recache) recacheUsername();
+        if (getOnlineActions() != null) return getOnlineActions().getPlayer().getName();
         return CachedUsername.cachedUsername(player.getUniqueId()).getUsername();
     }
 
@@ -190,7 +190,7 @@ public class CyberPlayer {
      */
     @Nullable public LuckPermsData getLuckPermsData() {
         Validators.validateLuckPermsHook();
-        if(!CyberAPI.getInstance().getLuckPermsSupport().equals(FeatureSupport.SUPPORTED)) return null;
+        if (!CyberAPI.getInstance().getLuckPermsSupport().equals(FeatureSupport.SUPPORTED)) return null;
         UserManager manager = LuckPermsProvider.get().getUserManager();
         return new LuckPermsData(manager.getUser(getUniqueID()));
     }
@@ -388,7 +388,7 @@ public class CyberPlayer {
          * @since 1
          */
         public String getColoredPing(@Nullable PingSettings settings) {
-            if(settings == null) settings = PingSettings.builder().build();
+            if (settings == null) settings = PingSettings.builder().build();
             String coloredPing = getColorFromPing(player.getPing(), settings) + String.valueOf(player.getPing()) + (settings.shouldShowMS() ? "ms" : "");
             return (player.getPing() <= settings.getLoadingMaximum() ? ChatColor.DARK_GRAY + "Loading..." : coloredPing);
         }
@@ -408,13 +408,13 @@ public class CyberPlayer {
          * @since 1
          */
         public ChatColor getColorFromPing(int ping, @Nullable PingSettings settings) {
-            if(settings == null) settings = PingSettings.builder().build();
+            if (settings == null) settings = PingSettings.builder().build();
 
-            if(ping <= settings.getLoadingMaximum()) return ChatColor.DARK_GRAY;
-            else if(NumberUtils.isBetweenEquals(ping, settings.getGreenMinimum(), settings.getGreenMaximum())) return ChatColor.GREEN;
-            else if(NumberUtils.isBetweenEquals(ping, settings.getYellowMinimum(), settings.getYellowMaximum())) return ChatColor.YELLOW;
-            else if(NumberUtils.isBetweenEquals(ping, settings.getRedMinimum(), settings.getRedMaximum())) return ChatColor.RED;
-            else if(ping >= settings.getDarkRedMinimum()) return ChatColor.DARK_RED;
+            if (ping <= settings.getLoadingMaximum()) return ChatColor.DARK_GRAY;
+            else if (NumberUtils.isBetweenEquals(ping, settings.getGreenMinimum(), settings.getGreenMaximum())) return ChatColor.GREEN;
+            else if (NumberUtils.isBetweenEquals(ping, settings.getYellowMinimum(), settings.getYellowMaximum())) return ChatColor.YELLOW;
+            else if (NumberUtils.isBetweenEquals(ping, settings.getRedMinimum(), settings.getRedMaximum())) return ChatColor.RED;
+            else if (ping >= settings.getDarkRedMinimum()) return ChatColor.DARK_RED;
             throw new IllegalArgumentException("An error occurred with the " + PingSettings.class.getCanonicalName() + " for " + CyberAPI.getInstance().getPluginName() + " -> a value was somehow missed in the " + PingSettings.class.getPackageName() + " (" + ping + ")");
         }
 
@@ -442,7 +442,7 @@ public class CyberPlayer {
          * @since 1
          */
         public boolean give(ItemStack item) {
-            if(player.getInventory().firstEmpty() == -1) {
+            if (player.getInventory().firstEmpty() == -1) {
                 dropItem(item); return false;
             }
 

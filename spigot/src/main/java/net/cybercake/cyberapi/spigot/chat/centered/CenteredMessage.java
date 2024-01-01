@@ -94,7 +94,7 @@ public class CenteredMessage {
      * @since 136
      */
     public String getString() {
-        if(TextType.CHAT.getLength() == length) return getString(Method.TWO);
+        if (TextType.CHAT.getLength() == length) return getString(Method.TWO);
         return getString(Method.ONE);
     }
 
@@ -109,7 +109,7 @@ public class CenteredMessage {
             // METHOD ONE
             // (TYPICALLY BETTER FOR ANYTHING OTHER THAN CHAT)
             case ONE -> {
-                if(message == null || message.equals("")) { return ""; }
+                if (message == null || message.equals("")) { return ""; }
                 char[] chars = message.toCharArray(); // Get a list of all characters in text
                 boolean isBold = false;
                 double length = 0;
@@ -145,13 +145,13 @@ public class CenteredMessage {
             // METHOD TWO
             // (TYPICALLY BETTER FOR CHAT)
             case TWO -> {
-                if(TextType.CHAT.getLength() != length) CyberAPI.getInstance().getAPILogger().warn("The CenteredMessage method, 'Method.TWO', recommends using it only for Chat Options, as the 'length' is not used in method two!");
+                if (TextType.CHAT.getLength() != length) CyberAPI.getInstance().getAPILogger().warn("The CenteredMessage method, 'Method.TWO', recommends using it only for Chat Options, as the 'length' is not used in method two!");
 
                 String[] lines = (this.message.contains("\n") ? this.message.split("\n") : new String[]{this.message});
                 StringBuilder centeredLines = new StringBuilder();
                 for(String line : lines) {
-                    if(line == null || line.equals("")) continue;
-                    if(!centeredLines.isEmpty()) centeredLines.append("\n");
+                    if (line == null || line.equals("")) continue;
+                    if (!centeredLines.isEmpty()) centeredLines.append("\n");
 
                     line = UChat.chat(line);
 
@@ -160,9 +160,9 @@ public class CenteredMessage {
                     boolean isBold = false;
 
                     for(char c : line.toCharArray()){
-                        if(c == '\u00A7'){
+                        if (c == '\u00A7'){
                             previousCode = true;
-                        }else if(previousCode){
+                        }else if (previousCode){
                             previousCode = false;
                             isBold = c == 'l' || c == 'L';
                         }else{
@@ -197,7 +197,7 @@ public class CenteredMessage {
      * @since 136
      */
     public Component getComponent() {
-        if(TextType.CHAT.getLength() == length) return getComponent(Method.TWO);
+        if (TextType.CHAT.getLength() == length) return getComponent(Method.TWO);
         return getComponent(Method.ONE);
     }
 
@@ -219,7 +219,7 @@ public class CenteredMessage {
      * @since 136
      */
     public BaseComponent[] getBaseComponent() {
-        if(TextType.CHAT.getLength() == length) return getBaseComponent(Method.TWO);
+        if (TextType.CHAT.getLength() == length) return getBaseComponent(Method.TWO);
         return getBaseComponent(Method.ONE);
     }
 
@@ -253,7 +253,7 @@ public class CenteredMessage {
      * @since 136
      */
     public void send(CyberPlayer cyberPlayer) {
-        if(cyberPlayer.getOnlineActions() == null) throw new IllegalStateException("That Cyber Player (" + cyberPlayer.getUniqueID() + "), must be online to send them a " + this.getClass().getCanonicalName() + "!");
+        if (cyberPlayer.getOnlineActions() == null) throw new IllegalStateException("That Cyber Player (" + cyberPlayer.getUniqueID() + "), must be online to send them a " + this.getClass().getCanonicalName() + "!");
         cyberPlayer.getOnlineActions().sendColored(getString());
     }
 

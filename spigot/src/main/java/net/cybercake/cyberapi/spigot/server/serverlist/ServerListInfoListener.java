@@ -67,25 +67,25 @@ public class ServerListInfoListener {
                             info.getPlayerListManager().getOnlinePlayers(),
                             info.getPlayerListManager().getCustomOnlinePlayers()
                     );
-            if(serverListPingEvent.isCancelled()) return;
+            if (serverListPingEvent.isCancelled()) return;
             Bukkit.getPluginManager().callEvent(serverListPingEvent);
 
             // MOTD
             MOTD motd = serverListPingEvent.getMOTD();
-            if(motd == null) motd = MOTD.builder("_default").build();
+            if (motd == null) motd = MOTD.builder("_default").build();
             ping.setMotD(motd.getFormattedMOTD());
             WrappedServerPing.CompressedImage image = null;
             switch(motd.getMOTDIconType()) {
                 case FILE -> {
-                    if(motd.getFileIcon() != null)
+                    if (motd.getFileIcon() != null)
                         image = WrappedServerPing.CompressedImage.fromBase64Png(Base64.getEncoder().encodeToString(Files.readAllBytes(motd.getFileIcon().toPath())));
                 }
                 case URL -> {
-                    if(motd.getURLIcon() != null)
+                    if (motd.getURLIcon() != null)
                         image = WrappedServerPing.CompressedImage.fromPng(motd.getURLIcon().openStream());
                 }
             }
-            if(image != null) ping.setFavicon(image);
+            if (image != null) ping.setFavicon(image);
 
             // player count
             ping.setPlayersMaximum(serverListPingEvent.getMaxPlayers());
