@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.common.builders.settings;
 
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -180,9 +181,9 @@ public class Settings {
          * <br> <br>
          * <em>Default Value:</em> *your project's group ID*
          * @param commandsPath set this to the path where all your commands are located (usually like 'net.cybercake.myplugin.commands')
-         * @deprecated please use {@link Builder#mainPackage(String)} instead, as the other method will define the actual package rather than just the commands path
+         * @deprecated please use {@link Builder#mainPackage(String)} instead, as the other method will define the actual package rather than just the commands path. This method will be removed after build 160 or later.
          */
-        @Deprecated
+        @Deprecated(forRemoval = true)
         public Builder commandsPath(String commandsPath) { this.mainPackage = commandsPath; return this; }
 
         /**
@@ -190,7 +191,9 @@ public class Settings {
          * <br> <br>
          * <em>Default Value:</em> **your project's group ID*
          * @param mainPackage set this to the path where your package is located (usually like 'net.cybercake.myplugin')
+         * @deprecated please use {@link Builder#build(String)} to build your {@link Settings}, which is direct drop-in replacement for this
          */
+        @Deprecated
         public Builder mainPackage(String mainPackage) { this.mainPackage = mainPackage; return this; }
 
         public Builder disableAutoRegistering(Class<?>... disableAutoRegisterFor) { this.disableAutoRegisterFor = disableAutoRegisterFor; return this; }
@@ -199,8 +202,24 @@ public class Settings {
          * Builds the builder into an {@link Settings} instance
          * @return the {@link Settings} instance
          * @since 15
+         * @deprecated please use {@link Builder#build(String) the other build method} because CyberAPI requires a main package
          */
+        @Deprecated
         public Settings build() {
+            return new Settings(this);
+        }
+
+        /**
+         * Builds the builder into an {@link Settings} instance
+         * <br> <br>
+         * The main package is defined as the package in which all your classes are saved at. This is also known as a group ID and, at least for
+         * CyberAPI's Spigot edition, it looks like "net.cybercake.cyberapi.spigot", or for bungee, "net.cybercake.cyberapi.bungee"
+         * @param mainPackage the main package of your plugin. This is a <strong>requirement</strong> for CyberAPI to function correctly.
+         * @return the {@link Settings} instance built from this builder class
+         * @since 155
+         */
+        public Settings build(String mainPackage) {
+            this.mainPackage = mainPackage;
             return new Settings(this);
         }
     }
@@ -212,7 +231,10 @@ public class Settings {
      * @param builder the builder that can then be transformed into {@link Settings} and read by {@code CyberAPI}
      * @since 15
      */
-    public Settings(Builder builder) { this.builder = builder; }
+    public Settings(Builder builder) {
+        Preconditions.checkArgument(builder.mainPackage != null, "The main package CANNOT be null in CyberAPI, please define one or use the alternate build method.");
+        this.builder = builder;
+    }
 
     /**
      * Gets whether CyberAPI should print verbose information
