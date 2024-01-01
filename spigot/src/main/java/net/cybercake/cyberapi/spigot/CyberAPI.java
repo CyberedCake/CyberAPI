@@ -176,7 +176,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
                 .toList();
         log.verbose("Found the following classes: [" + String.join(", ", classes) + "]");
 
-        GLOW_ENCHANT = new Glow(new NamespacedKey("glow", "glow"));
+        GLOW_ENCHANT = new Glow();
         log.verbose("Created glow enchant for " + ItemCreator.class.getCanonicalName() + ": " + GLOW_ENCHANT.getKey() + " (" + Glow.class.getCanonicalName() + ")");
 
         ListenerManager.listenerManager().init(settings.getMainPackagePath());
