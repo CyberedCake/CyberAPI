@@ -62,8 +62,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 
-import static net.cybercake.cyberapi.spigot.items.ItemCreator.GLOW_ENCHANT;
-
 /**
  * The main class for CyberAPI!
  * <br> <br>

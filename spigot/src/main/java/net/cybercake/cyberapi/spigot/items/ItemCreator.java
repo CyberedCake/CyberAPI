@@ -173,6 +173,8 @@ public class ItemCreator {
 
         private ItemTextFormatter itemTextFormatter;
 
+        private boolean hideEnchantsIsFromSystem = true;
+
         /**
          * Creates a blank item in the item builder
          * @since 90
@@ -402,7 +404,7 @@ public class ItemCreator {
          * @since 90
          */
         public ItemBuilder addFlags(ItemFlag... flags) {
-            this.meta.addItemFlags(flags); return this;
+            this.meta.addItemFlags(flags); this.hideEnchantsIsFromSystem = false; return this;
         }
 
         /**
@@ -418,7 +420,7 @@ public class ItemCreator {
          * @since 90
          */
         public ItemBuilder removeFlags(ItemFlag... flags) {
-            this.meta.removeItemFlags(flags); return this;
+            this.meta.removeItemFlags(flags); this.hideEnchantsIsFromSystem = false; return this;
         }
 
         /**
@@ -452,8 +454,15 @@ public class ItemCreator {
         public ItemBuilder showEnchantGlow(boolean glow) {
             // using luck because for some god-damn reason my old glow class broke CyberAPI, maybe I'll try to fix it at a later date
             return meta(meta -> {
-                if(glow) meta.addEnchant(Enchantment.LUCK, 1, true);
-                else meta.removeEnchant(Enchantment.LUCK);
+                if(glow) {
+                    meta.addEnchant(Enchantment.LUCK, 1, true);
+                    addFlags(ItemFlag.HIDE_ENCHANTS);
+                }
+                else {
+                    meta.removeEnchant(Enchantment.LUCK);
+                    if (hideEnchantsIsFromSystem)
+                        addFlags(ItemFlag.HIDE_ENCHANTS);
+                }
             });
         }
 
