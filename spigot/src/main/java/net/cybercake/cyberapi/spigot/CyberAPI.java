@@ -26,7 +26,6 @@ import net.cybercake.cyberapi.spigot.server.placeholderapi.Placeholders;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfo;
 import net.cybercake.cyberapi.spigot.server.serverlist.ServerListInfoListener;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.*;
@@ -43,6 +42,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.ChatPaginator;
@@ -211,9 +211,12 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
         if (this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
             try {
-                BukkitAudiences audience = BukkitAudiences.create(this);
-                this.consoleAudience = audience.console();
-                log.verbose("Created " + BukkitAudiences.class.getCanonicalName() + " for CONSOLE in " + Bukkit.getLogger().getClass().getCanonicalName());
+                Class<?> audienceClass = Class.forName("net.kyori.adventure.platform.bukkit.BukkitAudiences");
+                Object audience = audienceClass.getDeclaredMethod("create", Plugin.class).invoke(null, this);
+                Method method = audienceClass.getMethod("console");
+                method.setAccessible(true);
+                this.consoleAudience = (Audience) method.invoke(audience);
+                log.verbose("Created " + audienceClass.getCanonicalName() + " for CONSOLE in " + Bukkit.getLogger().getClass().getCanonicalName());
             } catch (Exception ex) {
                 log.verbose("BukkitAudiences not available in Adventure: " + ex);
                 this.consoleAudience = null; // BukkitAudiences does not exist
