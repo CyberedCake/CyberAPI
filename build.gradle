@@ -79,6 +79,7 @@ subprojects { Project subProject ->
 
     group = getGroup()
     version = this.version
+    String fileName = "cyberapi-" + getProject().getName() + "-b" + build.toString();
 
     java {
         withJavadocJar()
@@ -163,30 +164,11 @@ subprojects { Project subProject ->
         }
     }
 
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-
-                pom {
-                    name = "cyberapi-" + subProject.getName()
-                    version = String.valueOf(build)
-                    url = "https://github.com/CyberedCake/CyberAPI"
-                    developers {
-                        developer {
-                            id = "cybered"
-                            name = "CyberedCake"
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     jar {
-        dependsOn(shadowJar)
         sourcesJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
         javadocJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
+
+        setArchiveFileName("-- DO NOT USE --")
 
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
@@ -201,6 +183,28 @@ subprojects { Project subProject ->
 
     // if(!subProject.getName().contains("common")) shadowJar.finalizedBy copyArtifacts
 
+    publishing {
+        publications.create("shadow", MavenPublication.class) {
+            from(components["java"])
+
+            groupId = group
+            artifactId = subProject.getName()
+            version = String.valueOf(build)
+
+            pom {
+                name = "cyberapi-" + subProject.getName()
+                version = String.valueOf(build)
+                url = "https://github.com/CyberedCake/CyberAPI"
+                developers {
+                    developer {
+                        id = "cybered"
+                        name = "CyberedCake"
+                    }
+                }
+            }
+        }
+    }
+
     dependencies {
         if(!subProject.getName().contains("common")) {
             // cyberapi
@@ -212,7 +216,8 @@ subprojects { Project subProject ->
         dependsOn javadocJar
         dependsOn sourcesJar
 
-        archiveFileName.set("cyberapi-" + getProject().getName() + "-b" + build.toString() + ".jar")
+        archiveFileName.set(fileName + ".jar")
+        archiveClassifier.set(fileName)
 
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
