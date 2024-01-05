@@ -2,6 +2,7 @@ import groovy.json.JsonSlurper
 
 plugins {
     id 'java'
+    id 'maven-publish'
     id 'org.tenne.rest' version '0.4.2'
     id 'com.github.johnrengelman.shadow' version "8.1.1"
 }
@@ -133,6 +134,12 @@ subprojects { Project subProject ->
         }
     }
 
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+        archives shadowJar
+    }
+
     repositories {
         mavenLocal()
         mavenCentral()
@@ -140,12 +147,6 @@ subprojects { Project subProject ->
             name = 'sonatype'
             url = 'https://oss.sonatype.org/content/groups/public/'
         }
-    }
-
-    artifacts {
-        archives sourcesJar
-        archives javadocJar
-        archives shadowJar
     }
 
     javadoc {
@@ -159,6 +160,26 @@ subprojects { Project subProject ->
         }
     }
 
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+
+                pom {
+                    name = "cyberapi-" + subProject.getName()
+                    version = String.valueOf(build)
+                    url = "https://github.com/CyberedCake/CyberAPI"
+                    developers {
+                        developer {
+                            id = "cybered"
+                            name = "CyberedCake"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     jar {
         dependsOn(shadowJar)
         sourcesJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
@@ -168,16 +189,6 @@ subprojects { Project subProject ->
         manifest {
             attributes 'version': String.valueOf(actualVersion)
             attributes 'buildNumber': String.valueOf(build)
-        }
-    }
-
-    project.publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-
-                version String.valueOf(build)
-            }
         }
     }
 
