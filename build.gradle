@@ -48,7 +48,10 @@ def setBasic = {
     try {
         build = currentBuild()
         String username = System.getProperty("user.name")
-        if(username == "runner") { // check if github is building the plugin
+        if (username == "runner") { // check if github is building the plugin
+
+            if (build <= 1) throw new RuntimeException("Provided build information is incorrect, will not allow build since using GitHub Runner!")
+
             build = build+1
             println '> Found using GitHub Runner, going to increment build (' + String.valueOf(build-1) + ' -> ' + String.valueOf(build) + ')'
         }
