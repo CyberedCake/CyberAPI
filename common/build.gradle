@@ -24,7 +24,7 @@ dependencies {
     // adventure API (https://docs.adventure.kyori.net/)
     compileOnly "net.kyori:adventure-api:4.15.0"
     compileOnly "net.kyori:adventure-text-serializer-legacy:4.15.0"
-    compileOnly "net.kyori:adventure-text-minimessage:4.14.0"
+    compileOnly "net.kyori:adventure-text-minimessage:4.15.0"
 
     // log4j
     compileOnly 'org.apache.logging.log4j:log4j-api:2.22.1'
