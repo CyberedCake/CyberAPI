@@ -2,5 +2,4 @@ jdk:
   - openjdk17
 install:
   - echo "Building CyberAPI (custom installation)"
-  - ./gradlew clean
   - ./gradlew publishToMavenLocal --stacktrace
