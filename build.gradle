@@ -187,7 +187,7 @@ subprojects { Project subProject ->
         publications.create("shadow", MavenPublication.class) {
             from(components["java"])
 
-            groupId = group
+            groupId = "net.cybercake.cyberapi"
             artifactId = subProject.getName()
             version = String.valueOf(build)
 
@@ -200,6 +200,17 @@ subprojects { Project subProject ->
                         id = "cybered"
                         name = "CyberedCake"
                     }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'sonatype'
+                url = 'https://repo.prorickey.xyz/repository/maven-releases/'
+                credentials {
+                    username = System.getenv("NEXUS_USERNAME")
+                    password = System.getenv("NEXUS_PASSWORD")
                 }
             }
         }
