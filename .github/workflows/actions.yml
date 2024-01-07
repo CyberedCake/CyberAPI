@@ -34,6 +34,13 @@ jobs:
         uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: shadowJar --stacktrace
+      - name: Release CyberAPI to Nexus
+        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25
+        with:
+          arguments: publish
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
       - name: Read Version
         id: version
         uses: christian-draeger/read-properties@1.0.1
@@ -66,10 +73,3 @@ jobs:
             
             If you really want to though, you can [click here](https://jitpack.io/#${{ github.event.repository.full_name }}/${{ steps.build.outputs.value }}) for the JitPack link!
           generateReleaseNotes: true
-      - name: Release CyberAPI to Nexus
-        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25
-        with:
-          arguments: publish
-        env:
-          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
