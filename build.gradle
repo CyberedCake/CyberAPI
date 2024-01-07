@@ -187,12 +187,12 @@ subprojects { Project subProject ->
         publications.create("shadow", MavenPublication.class) {
             from(components["java"])
 
-            groupId = "net.cybercake.cyberapi"
+            groupId = getGroup()
             artifactId = subProject.getName()
             version = String.valueOf(build)
 
             pom {
-                name = "cyberapi-" + subProject.getName()
+                name = "cyberapi-" + subProject.getName() + "-b" + build
                 version = String.valueOf(build)
                 url = "https://github.com/CyberedCake/CyberAPI"
                 developers {
