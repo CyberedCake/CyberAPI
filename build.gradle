@@ -195,7 +195,6 @@ subprojects { Project subProject ->
             artifact javadocJar
 
             pom {
-                name = "cyberapi-" + subProject.getName() + "-b" + build
                 version = String.valueOf(build)
                 url = "https://github.com/CyberedCake/CyberAPI"
                 developers {
@@ -229,9 +228,6 @@ subprojects { Project subProject ->
     shadowJar {
         dependsOn javadocJar
         dependsOn sourcesJar
-
-        archiveFileName.set(fileName + ".jar")
-        archiveClassifier.set(fileName)
 
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
