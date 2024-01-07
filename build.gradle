@@ -185,11 +185,11 @@ subprojects { Project subProject ->
 
     publishing {
         publications.create("shadow", MavenPublication.class) {
-            from(components["java"])
-
-            groupId = group
+            groupId = getGroup()
             artifactId = subProject.getName()
             version = String.valueOf(build)
+
+            artifact sourcesJar
 
             pom {
                 name = "cyberapi-" + subProject.getName()
