@@ -186,7 +186,7 @@ subprojects { Project subProject ->
     publishing {
         publications.create("shadow", MavenPublication.class) {
 		
-            groupId = getGroup()
+            groupId = this.getGroup()
             artifactId = subProject.getName()
             version = String.valueOf(build)
 
