@@ -168,6 +168,14 @@ public class CyberAPI extends Plugin implements CommonManager {
 
         specific.checkForUpdates();
 
+        if (specific.getBuildInformation().getBuildUser().contains("jitpack")) { // old jitpack system
+            log.warn("-".repeat(40));
+            log.warn("CyberAPI has recently updated to a Nexus-based repository publishing system.");
+            log.warn("If you see this, you're still using the old Jitpack build on plugin " + getPluginName());
+            log.warn("Find more details on how to upgrade at &dleave-jitpack.cybercake.net");
+            log.warn("-".repeat(40));
+        }
+
         if (this.getAdventureAPISupport() == FeatureSupport.SUPPORTED) {
             try {
                 BungeeAudiences audience = BungeeAudiences.create(this);

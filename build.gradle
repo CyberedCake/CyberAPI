@@ -185,6 +185,7 @@ subprojects { Project subProject ->
 
     publishing {
         publications.create("shadow", MavenPublication.class) {
+		
             groupId = getGroup()
             artifactId = subProject.getName()
             version = String.valueOf(build)
@@ -192,7 +193,7 @@ subprojects { Project subProject ->
             artifact sourcesJar
 
             pom {
-                name = "cyberapi-" + subProject.getName()
+                name = "cyberapi-" + subProject.getName() + "-b" + build
                 version = String.valueOf(build)
                 url = "https://github.com/CyberedCake/CyberAPI"
                 developers {
@@ -200,6 +201,17 @@ subprojects { Project subProject ->
                         id = "cybered"
                         name = "CyberedCake"
                     }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'sonatype'
+                url = 'https://repo.prorickey.xyz/repository/maven-releases/'
+                credentials {
+                    username = System.getenv("NEXUS_USERNAME")
+                    password = System.getenv("NEXUS_PASSWORD")
                 }
             }
         }
