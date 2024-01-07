@@ -190,7 +190,9 @@ subprojects { Project subProject ->
             artifactId = subProject.getName()
             version = String.valueOf(build)
 
+            artifact shadowJar
             artifact sourcesJar
+            artifact javadocJar
 
             pom {
                 name = "cyberapi-" + subProject.getName() + "-b" + build
