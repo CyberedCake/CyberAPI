@@ -184,13 +184,13 @@ subprojects { Project subProject ->
     // if(!subProject.getName().contains("common")) shadowJar.finalizedBy copyArtifacts
 
     publishing {
-        publications.create("shadow", MavenPublication.class) {
+        publications.create("shadow", MavenPublication.class) { publication ->
 		
             groupId = this.getGroup()
             artifactId = subProject.getName()
             version = String.valueOf(build)
 
-            from components.java
+            project.shadow.component(publication)
 
             pom {
                 version = String.valueOf(build)
