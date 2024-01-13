@@ -190,9 +190,7 @@ subprojects { Project subProject ->
             artifactId = subProject.getName()
             version = String.valueOf(build)
 
-            artifact shadowJar
-            artifact sourcesJar
-            artifact javadocJar
+            from components.java
 
             pom {
                 version = String.valueOf(build)
