@@ -187,6 +187,9 @@ subprojects { Project subProject ->
         publications.create("shadow", MavenPublication.class) { publication ->
 
             project.shadow.component(publication)
+            
+            artifact sourcesJar
+            artifact javadocJar
 
             groupId = this.getGroup()
             artifactId = subProject.getName()
