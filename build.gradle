@@ -184,15 +184,16 @@ subprojects { Project subProject ->
     // if(!subProject.getName().contains("common")) shadowJar.finalizedBy copyArtifacts
 
     publishing {
-        publications.create("shadow", MavenPublication.class) { publication ->
-		
+        publications.create("shadow", MavenPublication.class) {
+
+            from(components["java"])
+
             groupId = this.getGroup()
             artifactId = subProject.getName()
             version = String.valueOf(build)
 
-            project.shadow.component(publication)
-
             pom {
+                name = subProject.getName()
                 version = String.valueOf(build)
                 url = "https://github.com/CyberedCake/CyberAPI"
                 developers {
@@ -207,7 +208,7 @@ subprojects { Project subProject ->
         repositories {
             maven {
                 name = 'sonatype'
-                url = 'https://repo.prorickey.xyz/repository/maven-releases/'
+                url = 'https://repo.cybercake.net/repository/maven-releases/'
                 credentials {
                     username = System.getenv("NEXUS_USERNAME")
                     password = System.getenv("NEXUS_PASSWORD")
