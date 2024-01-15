@@ -13,18 +13,34 @@ The change is incredibly simple for end-developers.
 Change your Gradle `build.gradle` from whatever it currently is to:
 
 ```gradle
-    repositories {
-		    maven { url 'https://repo.prorickey.xyz/repository/maven-public/' } // may change to repo.cybercake.net in the future
-	  }
+repositories {
+	maven { url 'https://repo.cybercake.net/repository/maven-public/' } // may change to repo.cybercake.net in the future
+}
+```
+
+In your dependencies, change the group ID to `net.cybercake.cyberapi`, like:
+```gradle
+dependencies {
+	implementation 'net.cybercake.cyberapi:common:*build*'
+}
 ```
 
 <h3>Maven</h3>
 Change your Maven `pom.xml` from whatever it currently is to:
 
 ```xml
-    <repository>
-        <url>https://repo.prorickey.xyz/repository/maven-public/</url> // may change to repo.cybercake.net in the future
-    </repository>
+<repository>
+	<url>https://repo.cybercake.net/repository/maven-public/</url> // may change to repo.cybercake.net in the future
+</repository>
+```
+
+In your dependencies, change the group ID to `net.cybercake.cyberapi`, like:
+```xml
+<dependency>
+	<groupId>net.cybercake.cyberapi</groupId>
+	<artifactId>common</artifactId>
+	<version>*build*</version>
+</dependency>
 ```
 
 (3) Reload your gradle! And now, you're done.
