@@ -187,7 +187,8 @@ subprojects { Project subProject ->
         publications.create("shadow", MavenPublication.class) { publication ->
 
             project.shadow.component(publication)
-            
+
+            artifact shadowJar
             artifact sourcesJar
             artifact javadocJar
 
@@ -231,6 +232,8 @@ subprojects { Project subProject ->
         dependsOn javadocJar
         dependsOn sourcesJar
 
+        archiveFileName = "cyberapi-" + getProject().getName() + "-b" + build + ".jar"
+
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
 
@@ -243,8 +246,6 @@ subprojects { Project subProject ->
             attributes 'version': String.valueOf(actualVersion)
             attributes 'buildNumber': String.valueOf(build)
         }
-
-        mergeServiceFiles()
     }
 
     shadowJar.finalizedBy copyArtifacts
