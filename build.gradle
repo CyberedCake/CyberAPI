@@ -168,7 +168,7 @@ subprojects { Project subProject ->
         sourcesJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-sources-b" + build + ".jar")
         javadocJar.setArchiveFileName("cyberapi-" + getProject().getName() + "-javadoc-b" + build + ".jar")
 
-        setArchiveFileName("-- DO NOT USE --")
+        setArchiveFileName("old-jar")
 
         from (this.getBuildDir().getAbsolutePath() + File.separator + getProject().getName() + "-build.properties")
         manifest {
@@ -222,9 +222,9 @@ subprojects { Project subProject ->
     }
 
     dependencies {
-        if(!subProject.getName().contains("common")) {
+        if (!subProject.getName().contains("common")) {
             // cyberapi
-            implementation project(path: ':common')
+            implementation project(path: ':common', configuration: 'shadow')
         }
     }
 

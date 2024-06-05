@@ -161,7 +161,7 @@ public abstract class FollowUpGUIAction {
      * @param active a {@link Boolean primitive boolean} object to determine if the previous Consumers will run
      * @since 143
      */
-    public FollowUpGUIAction onlyif (boolean active) {
+    public FollowUpGUIAction onlyIf(boolean active) {
         gui.clickEvents.stream()
                 .filter(consumer -> consumer.getObjectHashCode() != null && consumer.getObjectHashCode() == this.hashCode())
                 .forEach(consumer -> consumer.setActive(active));

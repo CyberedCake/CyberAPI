@@ -216,6 +216,33 @@ public abstract class CustomGUI extends UpdateGUIAction implements InventoryHold
      * @see CustomGUI#addClickEvents(List)
      */
     public void addCloseEvents(List<GUIConsumer<InventoryCloseEvent>> events) { this.closeEvents.addAll(events); }
+
+    /**
+     * Clears all added open events. If you used {@link CustomGUI#addOpenEvent(Consumer) addOpenEvent} before, then
+     * this method will remove that function and disable its use
+     * @since 173
+     * @see CustomGUI#clearAllClickEvents()
+     * @see CustomGUI#clearAllCloseEvents()
+     */
+    public void clearAllOpenEvents() { this.openEvents.clear(); }
+
+    /**
+     * Clears all added click events. If you used {@link CustomGUI#addClickEvent(Consumer) addClickEvent} before, then
+     * this method will remove that function and disable its use
+     * @since 173
+     * @see CustomGUI#clearAllOpenEvents()
+     * @see CustomGUI#clearAllCloseEvents()
+     */
+    public void clearAllClickEvents() { this.clickEvents.clear(); }
+
+    /**
+     * Clears all added close events. If you used {@link CustomGUI#addCloseEvent(Consumer) addCloseEvent} before, then
+     * this method will remove that function and disable its use
+     * @since 173
+     * @see CustomGUI#clearAllOpenEvents()
+     * @see CustomGUI#clearAllClickEvents()
+     */
+    public void clearAllCloseEvents() { this.closeEvents.clear(); }
     //</editor-fold>
 
     //<editor-fold desc="special slot return types">
