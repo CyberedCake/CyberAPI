@@ -105,7 +105,7 @@ public class ProtocolManager {
      * @since 9
      * @deprecated please use {@link ProtocolManager#setVersionVisibility(VersionVisibility)} and set to {@link VersionVisibility#VISIBLE} instead
      */
-    @Deprecated public void setAlwaysShowVersion(boolean alwaysShowVersion) {
+    @Deprecated(forRemoval = true) public void setAlwaysShowVersion(boolean alwaysShowVersion) {
         this.versionVisibility = (alwaysShowVersion ? VersionVisibility.VISIBLE : VersionVisibility.IF_OUTDATED);
     }
 
@@ -115,7 +115,7 @@ public class ProtocolManager {
      * @since 9
      * @deprecated please use {@link ProtocolManager#getVersionVisibility()} instead
      */
-    @Deprecated public boolean shouldAlwaysShowVersion() {
+    @Deprecated(forRemoval = true) public boolean shouldAlwaysShowVersion() {
         return (this.versionVisibility == VersionVisibility.VISIBLE);
     }
 

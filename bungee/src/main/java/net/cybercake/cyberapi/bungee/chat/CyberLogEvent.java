@@ -49,7 +49,7 @@ public class CyberLogEvent extends Event implements Cancellable {
      * @deprecated please use {@link CyberLogEvent#getStackTraceElementCaller()} instead, as it can do more than this {@link String} can
      * @since 88
      */
-    @Deprecated public String getCaller() { return this.stackTraceElement.toString(); }
+    @Deprecated(forRemoval = true) public String getCaller() { return this.stackTraceElement.toString(); }
 
     /**
      * @return the {@link StackTraceElement} of what called the log event

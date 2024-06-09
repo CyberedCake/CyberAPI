@@ -9,7 +9,7 @@ import java.util.List;
  * Represents a command in CyberAPI
  * @deprecated please use {@link SpigotCommand} instead, as this is kinda generic naming-wise
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public abstract class Command extends SpigotCommand {
 
     /**
@@ -19,7 +19,7 @@ public abstract class Command extends SpigotCommand {
      * @since 12
      * @deprecated please use {@link SpigotCommand} instead of extending this class, as this is kinda generic naming-wise
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     protected static CommandInformation.Builder newCommand(String name) {
         return CommandInformation.builder(name);
     }
@@ -30,7 +30,7 @@ public abstract class Command extends SpigotCommand {
      * @since 41
      * @deprecated please use {@link SpigotCommand} instead of extending this class, as this is kinda generic naming-wise
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public Command(CommandInformation... information) {
         super(information);
     }
@@ -41,7 +41,7 @@ public abstract class Command extends SpigotCommand {
      * @since 41
      * @deprecated please use {@link SpigotCommand} instead of extending this class, as this is kinda generic naming-wise
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public Command(CommandInformation.Builder... information) {
         super(information);
     }
@@ -51,7 +51,7 @@ public abstract class Command extends SpigotCommand {
      * @since 41
      * @deprecated please use {@link SpigotCommand} instead of extending this class, as this is kinda generic naming-wise
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     @Override
     public CommandInformation getMainCommand() {
         return super.getMainCommand();
@@ -64,7 +64,7 @@ public abstract class Command extends SpigotCommand {
      * @see Command#getCommand(String) get command by name
      * @deprecated please use {@link SpigotCommand} instead of extending this class, as this is kinda generic naming-wise
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     @Override
     public List<CommandInformation> getCommands() {
         return super.getCommands();
@@ -78,7 +78,7 @@ public abstract class Command extends SpigotCommand {
      *         ({@code index < 0 || index >= size()})
      * @deprecated please use {@link SpigotCommand} instead of extending this class, as this is kinda generic naming-wise
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     @Override
     public CommandInformation getCommand(int index) {
         return super.getCommand(index);
@@ -90,7 +90,7 @@ public abstract class Command extends SpigotCommand {
      * @since 41
      * @deprecated please use {@link SpigotCommand} instead of extending this class, as this is kinda generic naming-wise
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     @Override
     public @Nullable CommandInformation getCommand(String name) {
         return super.getCommand(name);
@@ -103,7 +103,7 @@ public abstract class Command extends SpigotCommand {
      * @since 79
      * @deprecated please use {@link SpigotCommand} instead of extending this class, as this is kinda generic naming-wise
      */
-    @Deprecated
+    @Deprecated(forRemoval = true)
     @Override
     public void cancelCooldown(CommandSender sender, CommandInformation information) {
         super.cancelCooldown(sender, information);

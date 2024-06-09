@@ -18,7 +18,7 @@ public class CachedUsername {
 
     private static final HashMap<UUID, CachedUsername> cachedUsernames = new HashMap<>();
 
-    @Deprecated private CachedUsername() { }
+    private CachedUsername() { }
 
     /**
      * Gets an instance of the cached username

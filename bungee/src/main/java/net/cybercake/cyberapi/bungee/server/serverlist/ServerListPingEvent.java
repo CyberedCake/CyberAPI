@@ -72,11 +72,11 @@ public class ServerListPingEvent extends Event implements Cancellable {
     /**
      * @deprecated please use {@link ServerListPingEvent#setVersionVisibility(VersionVisibility)} and set to {@link VersionVisibility#VISIBLE} instead
      */
-    @Deprecated public void setVersionNameAlwaysVisible(boolean versionNameAlwaysVisible) { this.versionVisibility = (versionNameAlwaysVisible ? VersionVisibility.VISIBLE : VersionVisibility.IF_OUTDATED); }
+    @Deprecated(forRemoval = true) public void setVersionNameAlwaysVisible(boolean versionNameAlwaysVisible) { this.versionVisibility = (versionNameAlwaysVisible ? VersionVisibility.VISIBLE : VersionVisibility.IF_OUTDATED); }
     /**
      * @deprecated please use {@link ServerListPingEvent#getVersionVisibility()} instead
      */
-    @Deprecated public boolean isVersionNameAlwaysVisible() { return (this.versionVisibility == VersionVisibility.VISIBLE); }
+    @Deprecated(forRemoval = true) public boolean isVersionNameAlwaysVisible() { return (this.versionVisibility == VersionVisibility.VISIBLE); }
 
     @Override public boolean isCancelled() { return cancelled; }
     @Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }

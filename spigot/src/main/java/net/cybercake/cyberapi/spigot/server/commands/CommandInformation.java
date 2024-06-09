@@ -130,9 +130,8 @@ public class CommandInformation implements Serializable {
          * @param node the node for the command
          * @since 46
          * @see Builder#setCommodore(boolean)
-         * @deprecated please use {@link Builder#setCommodore(LiteralCommandNode)} and build your {@link com.mojang.brigadier.builder.LiteralArgumentBuilder LiteralArgumentBuilder} instead
          */
-        @Deprecated public Builder setCommodore(com.mojang.brigadier.builder.LiteralArgumentBuilder<?> node) {
+        public Builder setCommodore(com.mojang.brigadier.builder.LiteralArgumentBuilder<?> node) {
             this.node = node.build(); return this;
         }
 

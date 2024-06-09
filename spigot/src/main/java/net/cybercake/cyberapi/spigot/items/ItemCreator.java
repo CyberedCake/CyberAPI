@@ -44,7 +44,7 @@ public class ItemCreator {
     }
 
     public enum SimilarItem {
-        SWORD, SHOVEL, PICKAXE, AXE, HOE, ARMOR;
+        SWORD, SHOVEL, PICKAXE, AXE, HOE, ARMOR
     }
 
     /**
@@ -452,11 +452,11 @@ public class ItemCreator {
             // using luck because for some god-damn reason my old glow class broke CyberAPI, maybe I'll try to fix it at a later date
             return meta(meta -> {
                 if (glow) {
-                    meta.addEnchant(Enchantment.LUCK, 1, true);
+                    meta.addEnchant(Enchantment.LUCK_OF_THE_SEA, 1, true);
                     addFlags(ItemFlag.HIDE_ENCHANTS);
                 }
                 else {
-                    meta.removeEnchant(Enchantment.LUCK);
+                    meta.removeEnchant(Enchantment.LUCK_OF_THE_SEA);
                     if (hideEnchantsIsFromSystem)
                         addFlags(ItemFlag.HIDE_ENCHANTS);
                 }

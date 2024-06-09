@@ -177,25 +177,21 @@ public class Settings {
         public Builder prefix(String prefix) { this.prefix = prefix; return this; }
 
         /**
-         * Sets the commands' path to a certain path. This is for registering commands, if no path is given, it will attempt to get your path for you, and it can take a while everytime your server starts if this value is not set.
-         * <br> <br>
-         * <em>Default Value:</em> *your project's group ID*
-         * @param commandsPath set this to the path where all your commands are located (usually like 'net.cybercake.myplugin.commands')
-         * @deprecated please use {@link Builder#mainPackage(String)} instead, as the other method will define the actual package rather than just the commands path. This method will be removed after build 160 or later.
-         */
-        @Deprecated(forRemoval = true)
-        public Builder commandsPath(String commandsPath) { this.mainPackage = commandsPath; return this; }
-
-        /**
          * Sets the main package of the plugin to a certain path. This is for registering commands and registering listeners, and if no path is given, it will attempt to get your path for you, and it can take a while everytime your server starts if this value is not set.
          * <br> <br>
-         * <em>Default Value:</em> **your project's group ID*
+         * <em>Default Value:</em> **your project's group ID**
          * @param mainPackage set this to the path where your package is located (usually like 'net.cybercake.myplugin')
          * @deprecated please use {@link Builder#build(String)} to build your {@link Settings}, which is direct drop-in replacement for this
          */
-        @Deprecated
+        @Deprecated(forRemoval = true)
         public Builder mainPackage(String mainPackage) { this.mainPackage = mainPackage; return this; }
 
+        /**
+         * Disable auto-registering for certain classes, used for commands and listeners that are registered with CyberAPI.
+         * <br> <br>
+         * <em>Default Value:</em> null
+         * @param disableAutoRegisterFor set this to classes you would like to be ignored in the package scan to be auto-registered
+         */
         public Builder disableAutoRegistering(Class<?>... disableAutoRegisterFor) { this.disableAutoRegisterFor = disableAutoRegisterFor; return this; }
 
         /**
@@ -204,7 +200,7 @@ public class Settings {
          * @since 15
          * @deprecated please use {@link Builder#build(String) the other build method} because CyberAPI requires a main package
          */
-        @Deprecated
+        @Deprecated(forRemoval = true)
         public Settings build() {
             return new Settings(this);
         }

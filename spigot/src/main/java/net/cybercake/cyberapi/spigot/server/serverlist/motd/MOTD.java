@@ -110,7 +110,7 @@ public class MOTD {
          * @param useMiniMessage use bukkit color codes (set to 'false') or use mini message (set to 'true')
          * @deprecated please use {@link Builder#motdTextFormatter(MOTDTextFormatter)} and define a {@link MOTDTextFormatter} instead
          */
-        @Deprecated public Builder shouldUseMiniMessage(boolean useMiniMessage) {
+        @Deprecated(forRemoval = true) public Builder shouldUseMiniMessage(boolean useMiniMessage) {
             if (useMiniMessage) this.motdTextFormatter = MOTDTextFormatter.MINIMESSAGE;
             return this;
         }
@@ -193,7 +193,7 @@ public class MOTD {
      * @since 10
      * @deprecated please use {@link MOTD#getMOTDTextFormatter()} and retrieve a {@link MOTDTextFormatter} instead
      */
-    @Deprecated public boolean isUsingMiniMessage() {
+    @Deprecated(forRemoval = true) public boolean isUsingMiniMessage() {
         return (builder.motdTextFormatter == MOTDTextFormatter.MINIMESSAGE);
     }
 
