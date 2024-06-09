@@ -23,15 +23,15 @@ You can view the to-do list and future plans <a href="https://github.com/Cybered
 Step 1) Include the below code in your build.gradle "repositories" section.
 ```gradle
 	repositories {
-		maven { url 'https://jitpack.io' }
+		maven { url 'https://repo.cybercake.net/repository/maven-public/' } 
 	}
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: It is recommended that you include "common" as well in your gradle dependencies in order to include the common java documentation, though it should be noted that this isn't required.
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: Including the "common" package is a REQUIREMENT! Without this package, the library will fail to initialize.
 ```gradle
 	dependencies {
-	        implementation 'com.github.CyberedCake.CyberAPI:spigot:LATEST BUILD'
-		implementation 'com.github.CyberedCake.CyberAPI:common:LATEST BUILD'
+	        implementation 'net.cybercake.cyberapi:spigot:LATEST BUILD'
+		implementation 'net.cybercake.cyberapi:common:LATEST BUILD'
 	}
 ```
 
@@ -48,22 +48,22 @@ Step 1) Include the below code in your pom.xml "repositories" section.
 ```xml
     <repositories>
     	<repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <id>cybercake.net</id>
+            <url>https://repo.cybercake.net/repository/maven-public/</url>
 	 </repository>
     </repositories>
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: It is recommended that you include "common" as well in your gradle dependencies in order to include the common java documentation, though it should be noted that this isn't required.
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: Including the "common" package is a REQUIREMENT! Without this package, the library will fail to initialize.
 ```xml
     <dependencies>
     	<dependency>
-            <groupId>com.github.CyberedCake.CyberAPI</groupId>
+            <groupId>net.cybercake.cyberapi</groupId>
             <artifactId>spigot</artifactId>
             <version>LATEST BUILD</version>
 	 </dependency>
 	 <dependency>
-            <groupId>com.github.CyberedCake.CyberAPI</groupId>
+            <groupId>net.cybercake.cyberapi</groupId>
             <artifactId>common</artifactId>
             <version>LATEST BUILD</version>
 	 </dependency>
@@ -89,12 +89,10 @@ public class MainClass extends CyberAPI { // you must extend CyberAPI instead of
         startCyberAPI( // this method will start CyberAPI and is **required** to be the first thing in your onEnable() method
                 Settings.builder()
                         // put your settings here, usually in the form of .<setting>(<value>)
-                        
-                        .mainPackage("<your groupID>")
-                        // it is necessary (almost required at this point) to define your main package, as it is used for CyberAPI's
-			// custom command and listener system
-                        
-                        .build() // build once you have changed the settings you want
+
+			// include your main package in the build!
+			// for example: if your Main class is in the package "net.cybercake.testplugin.Main", then put "net.cybercake.testplugin"
+                        .build(*main package*) // build once you have changed the settings you want
         );
         
         // now you have access to everything CyberAPI!
@@ -119,15 +117,15 @@ public class MainClass extends CyberAPI { // you must extend CyberAPI instead of
 Step 1) Include the below code in your build.gradle "repositories" section.
 ```gradle
 	repositories {
-		maven { url 'https://jitpack.io' }
+		maven { url 'https://repo.cybercake.net/repository/maven-public/' } 
 	}
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: It is recommended that you include "common" as well in your gradle dependencies in order to include the common java documentation, though it should be noted that this isn't required.
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: Including the "common" package is a REQUIREMENT! Without this package, the library will fail to initialize.
 ```gradle
 	dependencies {
-	        implementation 'com.github.CyberedCake.CyberAPI:bungee:LATEST BUILD'
-		implementation 'com.github.CyberedCake.CyberAPI:common:LATEST BUILD'
+	        implementation 'net.cybercake.cyberapi:bungee:LATEST BUILD'
+		implementation 'net.cybercake.cyberapi:common:LATEST BUILD'
 	}
 ```
 
@@ -144,22 +142,22 @@ Step 1) Include the below code in your pom.xml "repositories" section.
 ```xml
     <repositories>
     	<repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <id>cybercake.net</id>
+            <url>https://repo.cybercake.net/repository/maven-public/</url>
 	 </repository>
     </repositories>
 ```
 
-Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: It is recommended that you include "common" as well in your gradle dependencies in order to include the common java documentation, though it should be noted that this isn't required.
+Step 2) Include the below code in your build.gradle "dependencies" and replace "LATEST BUILD" with the latest build that you see here: [![](https://jitpack.io/v/CyberedCake/CyberAPI.svg?label=Latest+Build)](https://jitpack.io/p/CyberedCake/CyberAPI) <br> Note: Including the "common" package is a REQUIREMENT! Without this package, the library will fail to initialize.
 ```xml
     <dependencies>
     	<dependency>
-            <groupId>com.github.CyberedCake.CyberAPI</groupId>
+            <groupId>net.cybercake.cyberapi</groupId>
             <artifactId>bungee</artifactId>
             <version>LATEST BUILD</version>
 	 </dependency>
     	<dependency>
-            <groupId>com.github.CyberedCake.CyberAPI</groupId>
+            <groupId>net.cybercake.cyberapi</groupId>
             <artifactId>common</artifactId>
             <version>LATEST BUILD</version>
 	 </dependency>
@@ -186,11 +184,9 @@ public class MainClass extends CyberAPI { // you must extend CyberAPI instead of
                 Settings.builder()
                         // put your settings here, usually in the form of .<setting>(<value>)
 
-                        .mainPackage("<your groupID>")
-                        // it is necessary (almost required at this point) to define your main package, as it is used for CyberAPI's
-			// custom command and listener system
-
-                        .build() // build once you have changed the settings you want
+			// include your main package in the build!
+			// for example: if your Main class is in the package "net.cybercake.testplugin.Main", then put "net.cybercake.testplugin"
+                        .build(*main package*) // build once you have changed the settings you want
         );
 
         // now you have access to everything CyberAPI!
