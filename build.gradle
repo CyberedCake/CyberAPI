@@ -224,7 +224,7 @@ subprojects { Project subProject ->
     dependencies {
         if (!subProject.getName().contains("common")) {
             // cyberapi
-            implementation project(path: ':common', configuration: 'shadow')
+            implementation project(path: ':common')
         }
     }
 
