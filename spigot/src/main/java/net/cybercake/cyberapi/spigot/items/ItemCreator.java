@@ -371,6 +371,7 @@ public class ItemCreator {
          * @since 90
          */
         public ItemBuilder addLore(String line) {
+            if (line == null) return this;
             return addLore(Collections.singletonList(line)); // string is formatted later
         }
 
@@ -379,6 +380,7 @@ public class ItemCreator {
          * @return 90
          */
         public ItemBuilder addLore(String... lines) {
+            if (lines == null) return this;
             return addLore(Arrays.asList(lines)); // strings are formatted later
         }
 
@@ -387,6 +389,8 @@ public class ItemCreator {
          * @return 90
          */
         public ItemBuilder addLore(List<String> lines) {
+            if (lines == null) return this;
+
             List<String> lore = this.meta.getLore();
 
             if (lore == null)
