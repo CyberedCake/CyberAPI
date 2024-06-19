@@ -262,7 +262,7 @@ public abstract class CustomGUI extends UpdateGUIAction implements InventoryHold
      * @param handler the handler, which will supply the {@link Exception exception that occurred}, the {@link Event event}, and the {@link Player player}
      * @since 179
      */
-    public <E extends Event> void addErrorHandler(Class<E> event, GUIErrorHandler<?> handler) {
+    public <E extends Event> void addErrorHandler(Class<E> event, GUIErrorHandler<E> handler) {
         List<Class<?>> allowedTypes = List.of(InventoryClickEvent.class, InventoryOpenEvent.class, InventoryCloseEvent.class);
         Preconditions.checkArgument(
                 allowedTypes.contains(event),
