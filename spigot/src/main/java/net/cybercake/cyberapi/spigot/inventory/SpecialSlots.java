@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.spigot.inventory;
 
+import net.cybercake.cyberapi.common.basic.NumberUtils;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Function;
@@ -32,6 +33,30 @@ public enum SpecialSlots {
                     || integer % 9 == 0
                     || integer < 8
                     || integer > (size - 9))
+                    .toArray()
+    ),
+
+    /**
+     * Returns only the vertical borders of the GUI (i.e., the borders that run up and down on either side of the menu).
+     * @since 179
+     */
+    VERTICAL_BORDERS((size) ->
+            IntStream.range(0, size).filter(integer ->
+                    integer % 9 == 0
+                    || (integer + 1) % 9 == 0
+            ).toArray()
+    ),
+
+    /**
+     * Returns only the horizontal borders of the GUI (i.e., the borders that run side to side on either side of the menu).
+     * @since 179
+     */
+    HORIZONTAL_BORDERS((size) ->
+            IntStream.range(0, size).filter(integer ->
+                            NumberUtils.isBetweenEquals(integer, 0, 9)
+                                    || NumberUtils.isBetweenEquals(integer,
+                                     size - 10, size - 1)
+                    )
                     .toArray()
     ),
 
@@ -119,8 +144,7 @@ public enum SpecialSlots {
             return result;
         }
         else return getIndicesFromRow((int) Math.ceil((double) rows / 2)); // odd
-    })
-    ;
+    });
 
     private final Function<Integer, int[]> slots;
 

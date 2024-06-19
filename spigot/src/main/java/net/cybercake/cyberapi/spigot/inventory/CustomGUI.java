@@ -1,10 +1,15 @@
 package net.cybercake.cyberapi.spigot.inventory;
 
+import com.google.common.base.Preconditions;
 import net.cybercake.cyberapi.common.basic.Pair;
+import net.cybercake.cyberapi.spigot.CyberAPI;
+import net.cybercake.cyberapi.spigot.basic.BetterStackTraces;
+import net.cybercake.cyberapi.spigot.inventory.exceptions.GUIErrorHandler;
 import net.cybercake.cyberapi.spigot.inventory.exceptions.VariantSpecialSlotsFailed;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -19,6 +24,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -32,7 +38,7 @@ import java.util.stream.IntStream;
  * @see CustomGUI#CustomGUI(InventoryType, String)
  * @see CustomGUI#CustomGUI(Function)
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked"})
 public abstract class CustomGUI extends UpdateGUIAction implements InventoryHolder {
 
     //<editor-fold desc="static">
@@ -71,6 +77,12 @@ public abstract class CustomGUI extends UpdateGUIAction implements InventoryHold
      * @since 143
      */
     final List<GUIConsumer<InventoryCloseEvent>> closeEvents = new ArrayList<>();
+
+    /**
+     * The list of {@link GUIErrorHandler gui error handlers} that will be called when an exception is thrown
+     * @since 179
+     */
+    final Map<Class<? extends Event>, List<GUIErrorHandler<?>>> errorHandlers = new HashMap<>();
 
     final Inventory inventory;
     //</editor-fold>
@@ -245,6 +257,23 @@ public abstract class CustomGUI extends UpdateGUIAction implements InventoryHold
     public void clearAllCloseEvents() { this.closeEvents.clear(); }
     //</editor-fold>
 
+    /**
+     * Adds an error handler. These will be called if an exception occurs while handling an {@link InventoryClickEvent}, {@link InventoryCloseEvent}, or {@link InventoryOpenEvent}
+     * @param handler the handler, which will supply the {@link Exception exception that occurred}, the {@link Event event}, and the {@link Player player}
+     * @since 179
+     */
+    public <E extends Event> void addErrorHandler(Class<E> event, GUIErrorHandler<?> handler) {
+        List<Class<?>> allowedTypes = List.of(InventoryClickEvent.class, InventoryOpenEvent.class, InventoryCloseEvent.class);
+        Preconditions.checkArgument(
+                allowedTypes.contains(event),
+                "Event type must be of " + allowedTypes.stream().map(Class::getCanonicalName).collect(Collectors.joining(", "))
+        );
+
+        if (this.errorHandlers.putIfAbsent(event, new ArrayList<>(List.of(handler))) == null) {
+            this.errorHandlers.get(event).add(handler);
+        }
+    }
+
     //<editor-fold desc="special slot return types">
     /**
      * @return all slots in the currently opened menu
@@ -259,6 +288,8 @@ public abstract class CustomGUI extends UpdateGUIAction implements InventoryHold
      * @see SpecialSlots#BORDERS
      */
     public int[] borders() { return SpecialSlots.BORDERS.getSlotsForSize(this.getInventory().getSize()); }
+
+    public int[] horizontalBorders() { return SpecialSlots.HORIZONTAL_BORDERS.getSlotsForSize(this.getInventory().getSize()); }
 
     /**
      * @return only the slots for the corners of the currently opened menu
@@ -399,7 +430,20 @@ public abstract class CustomGUI extends UpdateGUIAction implements InventoryHold
     @ApiStatus.Internal void open(InventoryOpenEvent event, Player player) {
         try {
             onInventoryOpen(event, player);
-        } catch (UnsupportedOperationException ignored) { } // no implementation
+        } catch (UnsupportedOperationException ignored) {
+            // no implementation
+        } catch (Exception exception) {
+            for (GUIErrorHandler<?> handler : errorHandlers.get(InventoryOpenEvent.class)) {
+                try {
+                    GUIErrorHandler<InventoryOpenEvent> castHandler = (GUIErrorHandler<InventoryOpenEvent>) handler;
+                    castHandler.handle(exception, event, player);
+                } catch (Exception exception2) {
+                    CyberAPI.getInstance().getAPILogger().error("Failed to call exception handler! This is likely not your fault, please create a ticket on github.com/CyberedCake/CyberAPI/issues!");
+                    exception2.initCause(exception);
+                    BetterStackTraces.print(exception2);
+                }
+            }
+        }
 
         this.openEvents.stream()
                 .filter(Objects::nonNull)
@@ -417,7 +461,20 @@ public abstract class CustomGUI extends UpdateGUIAction implements InventoryHold
     @ApiStatus.Internal void click(InventoryClickEvent event, Player player) {
         try {
             onInventoryClick(event, player);
-        } catch (UnsupportedOperationException ignored) { } // no implementation
+        } catch (UnsupportedOperationException ignored) {
+            // no implementation
+        } catch (Exception exception) {
+            for (GUIErrorHandler<?> handler : errorHandlers.get(InventoryClickEvent.class)) {
+                try {
+                    GUIErrorHandler<InventoryClickEvent> castHandler = (GUIErrorHandler<InventoryClickEvent>) handler;
+                    castHandler.handle(exception, event, player);
+                } catch (Exception exception2) {
+                    CyberAPI.getInstance().getAPILogger().error("Failed to call exception handler! This is likely not your fault, please create a ticket on github.com/CyberedCake/CyberAPI/issues!");
+                    exception2.initCause(exception);
+                    BetterStackTraces.print(exception2);
+                }
+            }
+        }
 
         this.clickEvents.stream()
                 .filter(Objects::nonNull)
@@ -435,7 +492,20 @@ public abstract class CustomGUI extends UpdateGUIAction implements InventoryHold
     @ApiStatus.Internal void close(InventoryCloseEvent event, Player player) {
         try {
             onInventoryClose(event, player);
-        } catch (UnsupportedOperationException ignored) { } // no implementation
+        } catch (UnsupportedOperationException ignored) {
+            // no implementation
+        } catch (Exception exception) {
+            for (GUIErrorHandler<?> handler : errorHandlers.get(InventoryCloseEvent.class)) {
+                try {
+                    GUIErrorHandler<InventoryCloseEvent> castHandler = (GUIErrorHandler<InventoryCloseEvent>) handler;
+                    castHandler.handle(exception, event, player);
+                } catch (Exception exception2) {
+                    CyberAPI.getInstance().getAPILogger().error("Failed to call exception handler! This is likely not your fault, please create a ticket on github.com/CyberedCake/CyberAPI/issues!");
+                    exception2.initCause(exception);
+                    BetterStackTraces.print(exception2);
+                }
+            }
+        }
 
         this.closeEvents.stream()
                 .filter(Objects::nonNull)
