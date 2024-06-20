@@ -127,7 +127,7 @@ public class CyberAPI extends JavaPlugin implements CommonManager {
 
         log = new APILog(); // for private use only
 
-        if (settings == null) settings = Settings.builder().build(); // use default values
+        if (settings == null) settings = Settings.builder().build(""); // use default values
         this.settings = settings;
         log.verbose("Starting CyberAPI...");
 

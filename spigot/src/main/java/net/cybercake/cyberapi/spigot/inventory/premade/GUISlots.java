@@ -137,7 +137,7 @@ public class GUISlots extends CustomGUI {
             final Material originalMaterial = originalItem.getType();
             ItemMeta meta = originalItem.getItemMeta();
             if (meta == null) Bukkit.getItemFactory().getItemMeta(originalMaterial);
-            final String originalName = (Objects.requireNonNull(meta).hasDisplayName() ? meta.getDisplayName() : meta.getLocalizedName());
+            final String originalName = (Objects.requireNonNull(meta).hasDisplayName() ? meta.getDisplayName() : meta.getItemName());
             CustomGUI gui = this;
             this.task = new BukkitRunnable() {
                 @Override

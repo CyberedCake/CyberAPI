@@ -41,7 +41,8 @@ public class CommandManager {
         try {
             long mss = System.currentTimeMillis();
             for(Class<?> clazz : CyberAPI.getInstance().getPluginClasses()) {
-                if (!(Validators.isSubtype(clazz, SpigotCommand.class)) && !(Validators.isSubtype(clazz, Command.class))) continue;
+                if (!(Validators.isSubtype(clazz, SpigotCommand.class))) continue;
+
                 SpigotCommand command = (SpigotCommand) clazz.getDeclaredConstructors()[0].newInstance();
                 try {
                     for(CommandInformation information : command.getCommands()) {
