@@ -3,6 +3,7 @@ package net.cybercake.cyberapi.common;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.cybercake.cyberapi.common.basic.logs.Logs;
+import net.cybercake.cyberapi.common.builders.settings.Settings;
 import net.cybercake.cyberapi.common.server.ConsoleModifiers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -95,6 +96,16 @@ public interface CommonManager {
         } catch (ClassCastException | IOException exception) {
             throw new IllegalArgumentException("Unable to get the username of " + uuid.toString(), exception);
         }
+    }
+
+    /**
+     * Gets the settings that were set in CyberAPI when the server was initialized.
+     * @return the {@link Settings} object that was used to start CyberAPI
+     * @since 181
+     * @throws UnsupportedOperationException if your API-type does not support this method
+     */
+    default Settings getSettings() {
+        throw new UnsupportedOperationException("getSettings() is currently not supported with your server type!");
     }
 
 }

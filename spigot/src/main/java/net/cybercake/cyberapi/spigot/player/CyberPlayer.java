@@ -5,6 +5,9 @@ import net.cybercake.cyberapi.common.builders.player.PingSettings;
 import net.cybercake.cyberapi.common.builders.player.UserHeadSettings;
 import net.cybercake.cyberapi.common.builders.settings.FeatureSupport;
 import net.cybercake.cyberapi.common.player.CachedUsername;
+import net.cybercake.cyberapi.common.player.LuckPermsData;
+import net.cybercake.cyberapi.common.player.PlayerAdapter;
+import net.cybercake.cyberapi.common.player.adapters.BukkitPlayer;
 import net.cybercake.cyberapi.spigot.CyberAPI;
 import net.cybercake.cyberapi.spigot.Validators;
 import net.cybercake.cyberapi.spigot.chat.UChat;
@@ -188,11 +191,10 @@ public class CyberPlayer {
      * @since 1
      * @apiNote requires LuckPerms support
      */
-    @Nullable public LuckPermsData getLuckPermsData() {
+    @Nullable public net.cybercake.cyberapi.common.player.LuckPermsData getLuckPermsData() {
         Validators.validateLuckPermsHook();
         if (!CyberAPI.getInstance().getLuckPermsSupport().equals(FeatureSupport.SUPPORTED)) return null;
-        UserManager manager = LuckPermsProvider.get().getUserManager();
-        return new LuckPermsData(manager.getUser(getUniqueID()));
+        return new net.cybercake.cyberapi.common.player.LuckPermsData(new BukkitPlayer(this.getOfflinePlayer()));
     }
 
     /**
