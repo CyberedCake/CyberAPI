@@ -1,9 +1,8 @@
 # CyberAPI
-This project has recently upgraded from a Jitpack repository to a Nexus repo. This change is still an experiment, but it is recommended that all users switch over to the nexus repo immediately. There will likely be a time in the near future where the Jitpack repository will stop working and thus any projects using CyberAPI under Jitpack may result in numerous errors.
+This project has recently upgraded from a Jitpack repository to a Nexus repository. This change will be permanent and the Jitpack repository will eventually be dropped. This date will be determined in the near future from July 1st, 2024.
 
 # How to Change
-The change is incredibly simple for end-developers. 
-<br> <br> <strong>PLEASE NOTE: </strong> There is a chance that this URL will change in the next few days.
+The change is incredibly simple for developers.
 
 (1) Open the file where you implement CyberAPI, this is commonly `build.gradle` for Gradle-related projects and `pom.xml` for Maven-related projects.
 
