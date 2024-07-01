@@ -17,6 +17,15 @@ public class ConsoleModifiers extends AbstractFilter implements Filter {
 
     private static final Level DEFAULT_LEVEL = Level.INFO;
 
+    private final CommonManager manager;
+
+    public ConsoleModifiers() {
+        this.manager = null;
+    }
+    public ConsoleModifiers(CommonManager manager) {
+        this.manager = manager;
+    }
+
     @Override
     public LifeCycle.State getState() {
         return State.STARTED;
@@ -152,6 +161,8 @@ public class ConsoleModifiers extends AbstractFilter implements Filter {
     // my hard-coded way to remove Reflection's messages
     // create an issue on GitHub (https://github.com/CyberedCake/CyberAPI/issues) if you have a better way!
     private Result isLoggable(String msg) {
+        if (this.manager == null || !this.manager.getSettings().shouldHideReflections()) return Result.NEUTRAL;
+
         if (msg == null) return Result.NEUTRAL;
         if (!msg.contains("Reflections took") && !msg.contains(CommonManager.THREE_SEPARATION_CHARACTERS)) return Result.NEUTRAL;
         return Result.DENY;

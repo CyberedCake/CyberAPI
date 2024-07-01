@@ -31,9 +31,7 @@ public interface CommonManager {
     @SuppressWarnings({"all"})
     default void registerLog4jModifiers() {
         try {
-            if (!getSettings().shouldHideReflections()) return;
-
-            ((Logger) LogManager.getRootLogger()).addFilter(new ConsoleModifiers());
+            ((Logger) LogManager.getRootLogger()).addFilter(new ConsoleModifiers(this));
         } catch (Exception exception) {
             throw new IllegalArgumentException("Failed to register Log4J modified in CyberAPI! This is CyberAPI's fault.", exception);
         }
