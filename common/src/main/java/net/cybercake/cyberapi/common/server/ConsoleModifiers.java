@@ -1,5 +1,6 @@
 package net.cybercake.cyberapi.common.server;
 
+import net.cybercake.cyberapi.common.CommonAdapter;
 import net.cybercake.cyberapi.common.CommonManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;

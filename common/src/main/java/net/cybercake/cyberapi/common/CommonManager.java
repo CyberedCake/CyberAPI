@@ -2,11 +2,13 @@ package net.cybercake.cyberapi.common;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.netty.util.internal.UnstableApi;
 import net.cybercake.cyberapi.common.basic.logs.Logs;
 import net.cybercake.cyberapi.common.builders.settings.Settings;
 import net.cybercake.cyberapi.common.server.ConsoleModifiers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,10 +27,12 @@ public interface CommonManager {
      * <b>I would not recommend calling this method yourself, just let CyberAPI handle it!</b>
      * @deprecated please do not use this method, just what-so-ever, let CyberAPI handle it
      */
-    @Deprecated
+    @ApiStatus.Internal
     @SuppressWarnings({"all"})
     default void registerLog4jModifiers() {
         try {
+            if (!getSettings().shouldHideReflections()) return;
+
             ((Logger) LogManager.getRootLogger()).addFilter(new ConsoleModifiers());
         } catch (Exception exception) {
             throw new IllegalArgumentException("Failed to register Log4J modified in CyberAPI! This is CyberAPI's fault.", exception);

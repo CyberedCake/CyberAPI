@@ -20,7 +20,7 @@ public class Settings {
      * @since 15
      */
     public static class Builder {
-        private boolean verbose, silenced, checkForUpdates, showPrefixInLogs, muteStartMessage;
+        private boolean verbose, silenced, checkForUpdates, showPrefixInLogs, muteStartMessage, hideReflections;
         private FeatureSupport adventureSupport, miniMessageSupport, luckPermsSupport, protocolLibSupport, placeholderAPISupport, protocolizeSupport;
         private String name, prefix, mainPackage;
         private Class<?>[] disableAutoRegisterFor;
@@ -37,6 +37,7 @@ public class Settings {
             this.checkForUpdates = true;
             this.showPrefixInLogs = false;
             this.muteStartMessage = false;
+            this.hideReflections = true;
             this.adventureSupport = FeatureSupport.AUTO;
             this.miniMessageSupport = FeatureSupport.AUTO;
             this.luckPermsSupport = FeatureSupport.AUTO;
@@ -163,7 +164,7 @@ public class Settings {
         /**
          * Sets the name of the plugin CyberAPI uses
          * <br> <br>
-         * <em>Default Value:</em> *your plugin's name in the <b>plugin.yml</b>*
+         * <em>Default Value:</em> {@code *your plugin's name in the plugin.yml*}
          * @param name set this to the name of your plugin if it's not the same as the 'plugin.yml'
          */
         public Builder name(String name) { this.name = name; return this; }
@@ -171,15 +172,23 @@ public class Settings {
         /**
          * Sets the prefix of the plugin in console logging
          * <br> <br>
-         * <em>Default Value:</em> *your plugin's prefix in the <b>plugin.yml</b>*
+         * <em>Default Value:</em> {@code *your plugin's prefix in the plugin.yml*}
          * @param prefix set this to the prefix to be used when you use a "Log" method of CyberAPI
          */
         public Builder prefix(String prefix) { this.prefix = prefix; return this; }
 
         /**
+         * Sets whether CyberAPI should hide reflections messages or not. This is the "Reflections took *ms* to complete". The default is true because CyberAPI will show this message numerous times when starting if false.
+         * <br> <br>
+         * <em>Default Value:</em> {@code true}
+         * @param hideReflections set this to true to hide the reflections message
+         */
+        public Builder hideReflections(boolean hideReflections) { this.hideReflections = hideReflections; return this; }
+
+        /**
          * Sets the main package of the plugin to a certain path. This is for registering commands and registering listeners, and if no path is given, it will attempt to get your path for you, and it can take a while everytime your server starts if this value is not set.
          * <br> <br>
-         * <em>Default Value:</em> **your project's group ID**
+         * <em>Default Value:</em> {@code **your project's group ID**}
          * @param mainPackage set this to the path where your package is located (usually like 'net.cybercake.myplugin')
          * @deprecated please use {@link Builder#build(String)} to build your {@link Settings}, which is direct drop-in replacement for this
          */
@@ -189,7 +198,7 @@ public class Settings {
         /**
          * Disable auto-registering for certain classes, used for commands and listeners that are registered with CyberAPI.
          * <br> <br>
-         * <em>Default Value:</em> null
+         * <em>Default Value:</em> {@code null}
          * @param disableAutoRegisterFor set this to classes you would like to be ignored in the package scan to be auto-registered
          */
         public Builder disableAutoRegistering(Class<?>... disableAutoRegisterFor) { this.disableAutoRegisterFor = disableAutoRegisterFor; return this; }
@@ -324,6 +333,13 @@ public class Settings {
      * @since 15
      */
     public @Nullable String getPrefix() { return builder.prefix; }
+
+    /**
+     * Gets whether CyberAPI should hide the Reflections messages
+     * @return should hide reflections messages
+     * @since 184
+     */
+    public boolean shouldHideReflections() { return builder.hideReflections; }
 
     /**
      * Gets the package name where all the developer's commands are stored
