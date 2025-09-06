@@ -22,7 +22,7 @@ dependencies {
     implementation 'net.kyori:adventure-text-minimessage:4.17.0'
 
     // bungeecord and plugin hooks
-    compileOnly 'net.md-5:bungeecord-api:1.21-R0.1-SNAPSHOT'
+    compileOnly 'net.md-5:bungeecord-api:1.21-R0.4-SNAPSHOT'
     compileOnly 'net.luckperms:api:5.4'
     // compileOnly 'dev.simplix:protocolize-api:2.2.6'
 

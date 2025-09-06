@@ -17,8 +17,8 @@ import net.luckperms.api.node.types.PrefixNode;
 import net.luckperms.api.node.types.SuffixNode;
 import net.luckperms.api.util.Tristate;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Predicate;
 

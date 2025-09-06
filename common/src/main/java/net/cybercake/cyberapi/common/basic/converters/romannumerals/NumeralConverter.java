@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import net.cybercake.cyberapi.common.basic.Pair;
 import net.cybercake.cyberapi.common.basic.Sort;
 import net.cybercake.cyberapi.common.basic.converters.GenericNumeralConvert;
-import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
@@ -152,7 +151,7 @@ public class NumeralConverter {
      * @see NumeralConverter#toRomanNumeralOptional(int)
      * @see NumeralConverter
      */
-    public static String toRomanNumeralThrows(@IntRange(from = 1, to = 3999) int digits) {
+    public static String toRomanNumeralThrows(int digits) {
         return GenericNumeralConvert.ROMAN_NUMERALS.to(digits);
     }
 
