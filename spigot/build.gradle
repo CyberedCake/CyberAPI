@@ -26,7 +26,7 @@ dependencies {
     // spigot and plugin hooks
     compileOnly 'net.dmulloy2:ProtocolLib:5.4.0'
     compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
-    compileOnly 'net.luckperms:api:5.4'
+    compileOnly 'net.luckperms:api:5.5'
     compileOnly 'me.clip:placeholderapi:2.11.5'
 
     // spigot libraries
