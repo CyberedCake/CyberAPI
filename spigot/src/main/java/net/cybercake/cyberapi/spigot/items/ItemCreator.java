@@ -1,15 +1,24 @@
 package net.cybercake.cyberapi.spigot.items;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -91,6 +100,80 @@ public class ItemCreator {
     }
 
     /**
+     * Creates a random uuid {@link NamespacedKey} under the 'minecraft' namespace.
+     *
+     * @since 188
+     */
+    public static @NotNull NamespacedKey randomKey() {
+        return NamespacedKey.minecraft(UUID.randomUUID().toString());
+    }
+
+    /**
+     * <p>Adds a value under a {@link NamespacedKey} to an {@link ItemStack}'s {@link PersistentDataContainer}.
+     * <p> <i> <small>
+     * This functions exactly like old custom NBT tags; you can add, get, and remove your {@link NamespacedKey}'s values.
+     *
+     * @param item  The {@link ItemStack} to add the data to.
+     * @param key   The {@link NamespacedKey} of the custom data.
+     * @param type  The {@link PersistentDataType} of the custom data.
+     * @param value The value of the custom data.
+     * @param <Z>   The object type of the value.
+     * @since 188
+     */
+    @SuppressWarnings("DataFlowIssue")
+    public static <T, Z> void addCustomData(final @NotNull ItemStack item, final @NotNull NamespacedKey key,
+                                            final @NotNull PersistentDataType<T, Z> type, final @NotNull Z value) {
+
+        if (!item.hasItemMeta()) return;
+
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(key, type, value);
+        item.setItemMeta(meta);
+    }
+
+    /**
+     * <p>Gets the value to a {@link NamespacedKey} from an {@link ItemStack}'s {@link PersistentDataContainer}.
+     * <p> <i> <small>
+     * This functions exactly like old custom NBT tags; you can add, get, and remove your {@link NamespacedKey}'s values.
+     *
+     * @param item  The {@link ItemStack} to get the data from.
+     * @param key   The {@link NamespacedKey} of the custom data.
+     * @param type  The {@link PersistentDataType} of the custom data.
+     * @param <Z>   The object type of the value.
+     * @since 188
+     */
+    public static <T, Z> @Nullable Z getCustomData(final @NotNull ItemStack item, final @NotNull NamespacedKey key,
+                                         final @NotNull PersistentDataType<T, Z> type) {
+
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta == null)
+            return null;
+
+        PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+        return dataContainer.has(key, type) ? dataContainer.get(key, type) : null;
+    }
+
+    /**
+     * <p>Removes a {@link NamespacedKey} from an {@link ItemStack}'s {@link PersistentDataContainer}.
+     * <p> <i> <small>
+     * This functions exactly like old custom NBT tags; you can add, get, and remove your {@link NamespacedKey}'s values.
+     *
+     * @param item  The {@link ItemStack} to remove the data from.
+     * @param key   The {@link NamespacedKey} of the custom data.
+     * @since 188
+     */
+    @SuppressWarnings("DataFlowIssue")
+    public static void removeCustomData(final @NotNull ItemStack item, final @NotNull NamespacedKey key) {
+
+        if (!item.hasItemMeta()) return;
+
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().remove(key);
+        item.setItemMeta(meta);
+    }
+
+    /**
      * Represents a text color and decoration formatter
      * @see net.cybercake.cyberapi.spigot.items.ItemCreator.ItemTextFormatter#PLAIN
      * @see net.cybercake.cyberapi.spigot.items.ItemCreator.ItemTextFormatter#LEGACY
@@ -165,8 +248,8 @@ public class ItemCreator {
      * @see ItemBuilder#ItemBuilder(ItemStack)
      */
     public static class ItemBuilder {
-        private final ItemStack item;
-        private final ItemMeta meta;
+        private final @NotNull ItemStack item;
+        private final @NotNull ItemMeta meta;
 
         private ItemTextFormatter itemTextFormatter;
 
@@ -199,6 +282,7 @@ public class ItemCreator {
          * @param item the {@link ItemStack} to create the {@link ItemBuilder} with
          * @since 90
          */
+        @SuppressWarnings("DataFlowIssue")
         public ItemBuilder(@NotNull ItemStack item) {
             this.item = item;
             this.meta = this.item.getItemMeta();
@@ -211,6 +295,7 @@ public class ItemCreator {
          * @param meta the {@link ItemMeta} to create the {@link ItemBuilder} with
          * @since 90
          */
+        @SuppressWarnings("DataFlowIssue")
         public ItemBuilder(@NotNull ItemMeta meta) {
             ItemStack item = new ItemStack(Material.STONE);
             item.setItemMeta(meta);
@@ -246,7 +331,17 @@ public class ItemCreator {
             };
         }
 
-
+        /**
+         * Overload of {@link #name(String)}
+         * <p> <i>
+         * Automatically wraps the name in {@link UChat#chat}
+         *
+         * @param name change the name of the item
+         * @since 188
+         */
+        public @NotNull ItemBuilder nameFormatted(@NotNull final String name) {
+            return name(UChat.chat(name));
+        }
 
         /**
          * @param name change the name of the item
@@ -263,6 +358,236 @@ public class ItemCreator {
          */
         public ItemBuilder name(net.kyori.adventure.text.Component name) {
             this.meta.setDisplayName(formatString(LegacyComponentSerializer.builder().build().serialize(name))); return this;
+        }
+
+        /**
+         * Sets the attributes of the item to the default attributes of its {@link Material}.
+         *
+         * @since 188
+         */
+        public final @NotNull ItemBuilder setAttributesToDefault() {
+            return setAttributes(getDefaultAttributeModifiers(item.getType()));
+        }
+
+        /**
+         * Sets the attributes of the item.
+         *
+         * @since 188
+         */
+        public final @NotNull ItemBuilder setAttributes(
+                @NotNull final Multimap<@NotNull Attribute, @NotNull AttributeModifier> attributes) {
+
+            meta.setAttributeModifiers(attributes);
+            return this;
+        }
+
+        // Dumb work around because spigot doesn't have #getDefaultAttributeModifiers() like paper does
+        // and instead has #getDefaultAttributeModifiers(EquipmentSlot)
+        private static @NotNull Multimap<@NotNull Attribute, @NotNull AttributeModifier> getDefaultAttributeModifiers(
+                @NotNull final Material material) {
+
+            Multimap<Attribute, AttributeModifier> defaultAttributeModifiers = HashMultimap.create();
+
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                defaultAttributeModifiers.putAll(material.getDefaultAttributeModifiers(slot));
+            }
+
+            return defaultAttributeModifiers;
+        }
+
+        /**
+         * <p> Overload for {@link #addAttribute(Attribute, AttributeModifier)}
+         * <p> <i>
+         * <small> Automatically sets the {@link AttributeModifier.Operation} to {@link AttributeModifier.Operation#ADD_NUMBER}.
+         *
+         * @param attribute The {@link Attribute} for the modifier to affect.
+         * @param key       The {@link NamespacedKey} identifier for the modifier.
+         * @param amount    The value of the attribute.
+         * @param slotGroup The {@link EquipmentSlotGroup} that the item needs to be in for the attribute to take effect.
+         * @since 188
+         */
+        @SuppressWarnings("UnstableApiUsage")
+        public @NotNull final ItemBuilder addAttribute(@NotNull final Attribute attribute,
+                                                    @NotNull final NamespacedKey key,
+                                                    final float amount,
+                                                    @NotNull final EquipmentSlotGroup slotGroup) {
+
+            return addAttribute(attribute, new AttributeModifier(key, amount, AttributeModifier.Operation.ADD_NUMBER, slotGroup));
+        }
+
+        /**
+         * Overload for {@link #addAttribute(Attribute, NamespacedKey, float, AttributeModifier.Operation, EquipmentSlotGroup)}
+         * <p> <i>
+         * <small> Automatically sets the {@link AttributeModifier.Operation} to {@link AttributeModifier.Operation#ADD_NUMBER}.
+         *
+         * @param attribute The {@link Attribute} for the modifier to affect.
+         * @param key       The {@link NamespacedKey} identifier for the modifier.
+         * @param amount    The value of the attribute.
+         * @param slot      The {@link EquipmentSlot} that the item needs to be in for the attribute to take effect.
+         * @since 188
+         */
+        @SuppressWarnings("UnstableApiUsage")
+        public @NotNull final ItemBuilder addAttribute(@NotNull final Attribute attribute,
+                                                    @NotNull final NamespacedKey key,
+                                                    final float amount,
+                                                    @NotNull final EquipmentSlot slot) {
+
+            return addAttribute(attribute, key, amount, AttributeModifier.Operation.ADD_NUMBER, slot.getGroup());
+        }
+
+        /**
+         * Overload for {@link #addAttribute(Attribute, NamespacedKey, float, AttributeModifier.Operation)}
+         * <p> <i>
+         * <small> Automatically sets the {@link AttributeModifier.Operation} to {@link AttributeModifier.Operation#ADD_NUMBER}.
+         *
+         * @param attribute The {@link Attribute} for the modifier to affect.
+         * @param key       The {@link NamespacedKey} identifier for the modifier.
+         * @param amount    The value of the attribute.
+         * @since 188
+         */
+        public @NotNull final ItemBuilder addAttribute(@NotNull final Attribute attribute,
+                                                    @NotNull final NamespacedKey key,
+                                                    final float amount) {
+
+            return addAttribute(attribute, key, amount, AttributeModifier.Operation.ADD_NUMBER, item.getType().getEquipmentSlot());
+        }
+
+        /**
+         * Overload for {@link #addAttribute(Attribute, NamespacedKey, float, AttributeModifier.Operation, EquipmentSlot)}
+         * <p> <i>
+         * <small> Automatically sets the {@link EquipmentSlot} to the result of {@link Material#getEquipmentSlot()}.
+         *
+         * @param attribute The {@link Attribute} for the modifier to affect.
+         * @param key       The {@link NamespacedKey} identifier for the modifier.
+         * @param amount    The value of the attribute.
+         * @param operation The {@link org.bukkit.attribute.AttributeModifier.Operation} to use when applying the attribute.
+         * @since 188
+         */
+        public @NotNull final ItemBuilder addAttribute(@NotNull final Attribute attribute,
+                                                    @NotNull final NamespacedKey key,
+                                                    final float amount,
+                                                    @NotNull final AttributeModifier.Operation operation) {
+
+            return addAttribute(attribute, key, amount, operation, item.getType().getEquipmentSlot());
+        }
+
+        /**
+         * Overload for {@link #addAttribute(Attribute, NamespacedKey, float, AttributeModifier.Operation, EquipmentSlotGroup)}
+         *
+         * @param attribute The {@link Attribute} for the modifier to affect.
+         * @param key       The {@link NamespacedKey} identifier for the modifier.
+         * @param amount    The value of the attribute.
+         * @param operation The {@link org.bukkit.attribute.AttributeModifier.Operation} to use when applying the attribute.
+         * @param slot      The {@link EquipmentSlot} that the item needs to be in for the attribute to take effect.
+         * @since 188
+         */
+        @SuppressWarnings("UnstableApiUsage")
+        public @NotNull final ItemBuilder addAttribute(@NotNull final Attribute attribute,
+                                                    @NotNull final NamespacedKey key,
+                                                    final float amount,
+                                                    @NotNull final AttributeModifier.Operation operation,
+                                                    @NotNull final EquipmentSlot slot) {
+
+            return addAttribute(attribute, key, amount, operation, slot.getGroup());
+        }
+
+        /**
+         * <p> Overload for {@link #addAttribute(Attribute, AttributeModifier)}
+         * <p>
+         * <i>If two modifiers have the same {@link NamespacedKey} and affect the same attribute,
+         * then they do not stack; instead, only the one most recently added takes effect,
+         * overriding previous modifiers.
+         * <p>
+         * {@link #randomKey()} can be used to create a random minecraft-namespaced uuid key.
+         * <p>
+         * {@link AttributeData#getAttributeData(Attribute)} can be used to get information on the attribute; like the minimum, maximum, and default values.
+         * </i>
+         *
+         * @param attribute The {@link Attribute} for the modifier to affect.
+         * @param key       The {@link NamespacedKey} identifier for the modifier.
+         * @param amount    The value of the attribute.
+         * @param operation The {@link org.bukkit.attribute.AttributeModifier.Operation} to use when applying the attribute.
+         * @param slotGroup The {@link EquipmentSlotGroup} that the item needs to be in for the attribute to take effect.
+         * @since 188
+         */
+        @SuppressWarnings("UnstableApiUsage")
+        public @NotNull final ItemBuilder addAttribute(@NotNull final Attribute attribute,
+                                                    @NotNull final NamespacedKey key,
+                                                    final float amount,
+                                                    @NotNull final AttributeModifier.Operation operation,
+                                                    @NotNull final EquipmentSlotGroup slotGroup) {
+
+            return addAttribute(attribute, new AttributeModifier(key, amount, operation, slotGroup));
+        }
+
+        /**
+         * <p>Adds an attribute modifier to the item.
+         * <p>
+         * <i>If you're not using the same modifier for different items or attributes it's recommended to use:<p>
+         * {@link #addAttribute(Attribute, NamespacedKey, float, AttributeModifier.Operation, EquipmentSlotGroup)}</p>
+         * <p>{@link #addAttribute(Attribute, NamespacedKey, float, AttributeModifier.Operation, EquipmentSlot)}</i></p>
+         *
+         * @param attribute The {@link Attribute} for the modifier to affect.
+         * @param modifier  The {@link AttributeModifier}.
+         * @since 188
+         */
+        public @NotNull final ItemBuilder addAttribute(@NotNull final Attribute attribute,
+                                                    @NotNull final AttributeModifier modifier) {
+
+            meta.addAttributeModifier(attribute, modifier);
+            return this;
+        }
+
+        /**
+         * Overload for {@link #addCustomData(NamespacedKey, PersistentDataType, Object)}
+         *
+         * @param key   The {@link NamespacedKey} of the custom data.
+         * @param value The value of the custom data.
+         * @since 188
+         */
+        public final @NotNull ItemBuilder addCustomDataString(@NotNull final NamespacedKey key, @NotNull final String value) {
+            return addCustomData(key, PersistentDataType.STRING, value);
+        }
+
+        /**
+         * Overload for {@link #addCustomData(NamespacedKey, PersistentDataType, Object)}
+         *
+         * @param key   The {@link NamespacedKey} of the custom data.
+         * @param value The value of the custom data.
+         * @since 188
+         */
+        public final @NotNull ItemBuilder addCustomDataBoolean(@NotNull final NamespacedKey key, final boolean value) {
+            return addCustomData(key, PersistentDataType.BOOLEAN, value);
+        }
+
+        /**
+         * Overload for {@link #addCustomData(NamespacedKey, PersistentDataType, Object)}
+         *
+         * @param key   The {@link NamespacedKey} of the custom data.
+         * @param value The value of the custom data.
+         * @since 188
+         */
+        public final @NotNull ItemBuilder addCustomDataFloat(@NotNull final NamespacedKey key, final float value) {
+            return addCustomData(key, PersistentDataType.FLOAT, value);
+        }
+
+        /**
+         * <p>Adds a value under a {@link NamespacedKey} to this item's {@link PersistentDataContainer}.
+         * <p> <i> <small>
+         * This functions exactly like old custom NBT tags; you can add, get, and remove your {@link NamespacedKey}'s values.
+         *
+         * @param key   The {@link NamespacedKey} of the custom data.
+         * @param type  The {@link PersistentDataType} of the custom data.
+         * @param value The value of the custom data.
+         * @param <Z>   The object type of the value.
+         * @since 188
+         */
+        public final @NotNull <T, Z> ItemBuilder addCustomData(@NotNull final NamespacedKey key,
+                                                               @NotNull final PersistentDataType<T, Z> type,
+                                                               @NotNull final Z value) {
+
+            meta.getPersistentDataContainer().set(key, type, value);
+            return this;
         }
 
         /**
@@ -364,6 +689,40 @@ public class ItemCreator {
          */
         public ItemBuilder lore(List<String> lore) {
             this.meta.setLore(lore.stream().map(this::formatString).toList()); return this;
+        }
+
+        /**
+         * Overload of {@link #addFormattedLore(Collection)}
+         * 
+         * @param line The {@link String} to add to the lore.
+         * @since 188
+         */
+        public final ItemBuilder addFormattedLore(final @NotNull String line) {
+            return addFormattedLore(Collections.singletonList(line));
+        }
+
+        /**
+         * Overload of {@link #addFormattedLore(Collection)}
+         *
+         * @param lines The {@link String}[] to add to the lore.
+         * @since 188
+         */
+        public final ItemBuilder addFormattedLore(final @NotNull String... lines) {
+            return addFormattedLore(Arrays.asList(lines));
+        }
+
+        /**
+         * Overload of {@link #addLore(List)}
+         * <p> <i>
+         * Automatically wraps the lore in {@link UChat#chat}
+         *
+         * @param lines The {@link Collection} of {@link String}s to add to the lore.
+         * @since 188
+         */
+        public final ItemBuilder addFormattedLore(final @NotNull Collection<@NotNull String> lines) {
+            List<@NotNull String> ret = new ArrayList<>(lines.size());
+            lines.forEach(l -> ret.add(UChat.chat(l)));
+            return addLore(ret);
         }
 
         /**

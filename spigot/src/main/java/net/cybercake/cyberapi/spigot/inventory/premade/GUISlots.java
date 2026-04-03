@@ -3,6 +3,7 @@ package net.cybercake.cyberapi.spigot.inventory.premade;
 import com.google.common.base.Preconditions;
 import net.cybercake.cyberapi.common.basic.Pair;
 import net.cybercake.cyberapi.common.basic.StringUtils;
+import net.cybercake.cyberapi.dependencies.jetbrains.annotations.Range;
 import net.cybercake.cyberapi.spigot.CyberAPI;
 import net.cybercake.cyberapi.spigot.chat.UChat;
 import net.cybercake.cyberapi.spigot.inventory.CustomGUI;
@@ -24,7 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +65,7 @@ public class GUISlots extends CustomGUI {
      * @since 143
      * @see GUISlots#GUISlots(Player, int, Integer)
      */
-    public GUISlots(@NotNull Player player, @IntRange(from = 1, to = 6) int rows) { this(player, rows, null); }
+    public GUISlots(@NotNull Player player, @Range(from = 1, to = 6) int rows) { this(player, rows, null); }
 
     /**
      * Creates a GUISlots menu and opens it for the {@link Player}
@@ -75,7 +75,7 @@ public class GUISlots extends CustomGUI {
      *                  its location in the menu. Any number between 0 and the row number times 9
      * @since 143
      */
-    public GUISlots(@NotNull Player player, @IntRange(from = 1, to = 6) int rows, @Nullable @IntRange(from = 0, to = 53) Integer highlight) {
+    public GUISlots(@NotNull Player player, @Range(from = 1, to = 6) int rows, @Nullable @Range(from = 0, to = 53) Integer highlight) {
         super(9 * rows, rows + " " + StringUtils.pluralize("row!s", rows) + ", size of " + (9 * rows));
         if (highlight != null)
             Preconditions.checkArgument(IntStream.range(0, 9*rows).anyMatch(slot -> slot == highlight), "Highlight must be within the GUI range. Must be between 0 - " + (9*rows) + ".");
