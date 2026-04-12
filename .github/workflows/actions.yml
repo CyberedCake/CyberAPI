@@ -17,25 +17,25 @@ jobs:
       packages: write
     steps:
       - name: Actions Checkout
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v6.0.2
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v5.0.0
+        uses: actions/setup-java@v5.2.0
         with:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
           cache: 'gradle'
       - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1.0.4
+        uses: gradle/wrapper-validation-action@v3.5.0
       - name: Set Gradle Version
-        uses: gradle/gradle-build-action@v2.4.2
+        uses: gradle/gradle-build-action@v3.5.0
         with:
           gradle-version: release-candidate
       - name: Build Gradle
-        uses: gradle/gradle-build-action@v2.4.2
+        uses: gradle/gradle-build-action@v3.5.0
         with:
           arguments: shadowJar --stacktrace
       - name: Release CyberAPI to Nexus
-        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25
+        uses: gradle/gradle-build-action@v3.5.0
         with:
           arguments: publish
         env:
@@ -43,18 +43,18 @@ jobs:
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
       - name: Read Version
         id: version
-        uses: christian-draeger/read-properties@1.0.1
+        uses: christian-draeger/read-properties@1.1.1
         with:
           path: 'build/common-build.properties'
           property: 'version'
       - name: Read Build Number
         id: build
-        uses: christian-draeger/read-properties@1.0.1
+        uses: christian-draeger/read-properties@1.1.1
         with:
           path: 'build/common-build.properties'
           property: 'buildNumber'
       - name: Release CyberAPI to GitHub
-        uses: ncipollo/release-action@v1.10.0
+        uses: ncipollo/release-action@v1.21.0
         with:
           artifacts: "build/artifacts/*.jar"
           name: "Build #${{ steps.build.outputs.value }}"
